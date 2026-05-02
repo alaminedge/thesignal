@@ -1,0 +1,8 @@
+name = "the-signal"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "SIGNAL_DB"
+database_name = "the-signal-db"
+database_id = "f9866c17-7523-4ca9-a7f3-fc4b3e136247"
