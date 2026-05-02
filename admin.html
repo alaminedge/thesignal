@@ -8,133 +8,786 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cabinet+Grotesk:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#05080f;--surface:#0b0f1a;--surface2:#111827;--surface3:#161e2e;
-  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.11);
-  --teal:#ff6b35;--teal2:#e55a2b;--teal-dim:rgba(255,107,53,0.08);
-  --white:#f0f4f8;--gray:#7a8899;--gray2:#a0adb8;
-  --red:#f0566a;--red-dim:rgba(240,86,106,0.09);
-  --green:#10d48e;--green-dim:rgba(16,212,142,0.09);
-  --orange:#f59e0b;--orange-dim:rgba(245,158,11,0.09);
-  --radius:9px;--radius-lg:13px;--transition:.18s cubic-bezier(.4,0,.2,1);--sw:230px;
+  --bg:#05080f;
+  --surface:#0b0f1a;
+  --surface2:#111827;
+  --surface3:#161e2e;
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.11);
+  --teal:#ff6b35;
+  --teal2:#e55a2b;
+  --teal-dim:rgba(255,107,53,0.08);
+  --white:#f0f4f8;
+  --gray:#7a8899;
+  --gray2:#a0adb8;
+  --red:#f0566a;
+  --red-dim:rgba(240,86,106,0.09);
+  --green:#10d48e;
+  --green-dim:rgba(16,212,142,0.09);
+  --orange:#f59e0b;
+  --orange-dim:rgba(245,158,11,0.09);
+  --radius:9px;
+  --radius-lg:13px;
+  --transition:.18s cubic-bezier(.4,0,.2,1);
+  --sw:230px;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--white);display:flex;min-height:100vh;overflow-x:hidden}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:4px}
 
-.sidebar{width:var(--sw);background:var(--surface);border-right:1px solid var(--border2);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:60;overflow-y:auto}
-.sb-head{padding:20px 18px 14px;border-bottom:1px solid var(--border);text-align:center}
-.sb-head h2{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700}
-.sb-head h2 em{font-style:italic;color:var(--teal)}
-.sb-role{font-family:'DM Mono',monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.13em;color:rgba(255,255,255,0.22);padding:8px 18px}
-.nav-group{font-family:'DM Mono',monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,0.2);padding:10px 18px 4px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:.79rem;font-weight:500;color:var(--gray2);cursor:pointer;border:none;background:transparent;width:100%;text-align:left;transition:all var(--transition);border-left:2px solid transparent}
-.nav-item:hover{color:var(--white);background:var(--surface2)}
-.nav-item.active{color:var(--teal);background:var(--teal-dim);border-left-color:var(--teal)}
-.sb-footer{margin-top:auto;padding:14px 18px;border-top:1px solid var(--border)}
-.btn-logout{width:100%;padding:8px;background:transparent;border:1px solid rgba(255,255,255,0.1);color:var(--gray);border-radius:var(--radius);font-size:.7rem;font-weight:600;cursor:pointer;transition:all var(--transition);text-transform:uppercase}
-.btn-logout:hover{border-color:var(--red);color:var(--red)}
+*,*::before,*::after{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-height:100vh}
-.topbar{height:56px;padding:0 24px;background:rgba(5,8,15,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
-.topbar-title{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.05rem}
-.btn-view-site{padding:6px 14px;border:1px solid var(--border2);color:var(--gray);border-radius:20px;font-size:.7rem;text-decoration:none}
-.btn-view-site:hover{border-color:var(--teal);color:var(--teal)}
-.content{padding:24px;flex:1}
-.view{display:none;animation:fadeIn .2s ease}
-.view.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+body{
+  font-family:'Cabinet Grotesk',sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  display:flex;
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:26px}
-.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 14px}
-.stat-label{font-family:'DM Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:8px}
-.stat-val{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--teal)}
+::-webkit-scrollbar{
+  width:4px;
+}
+::-webkit-scrollbar-track{
+  background:transparent;
+}
+::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,0.08);
+  border-radius:4px;
+}
 
-.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
-.sec-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700}
+/* ═══════════════ SIDEBAR ═══════════════ */
+.sidebar{
+  width:var(--sw);
+  background:var(--surface);
+  border-right:1px solid var(--border2);
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  top:0;
+  left:0;
+  bottom:0;
+  z-index:60;
+  overflow-y:auto;
+}
 
-.btn{font-family:'Cabinet Grotesk',sans-serif;font-size:.72rem;font-weight:600;padding:8px 16px;border-radius:var(--radius);border:none;cursor:pointer;transition:all var(--transition);display:inline-flex;align-items:center;gap:5px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
-.btn-primary{background:var(--teal);color:#fff}.btn-primary:hover{background:var(--teal2)}
-.btn-ghost{background:transparent;color:var(--gray);border:1.5px solid var(--border2)}.btn-ghost:hover{border-color:var(--teal);color:var(--teal)}
-.btn-danger{background:var(--red-dim);color:var(--red);border:1.5px solid rgba(240,86,106,0.18)}.btn-danger:hover{background:var(--red);color:#fff}
-.btn-success{background:var(--green-dim);color:var(--green);border:1.5px solid rgba(16,212,142,0.2)}
-.btn-xs{padding:3px 8px;font-size:.63rem;border-radius:5px}
+.sb-head{
+  padding:20px 18px 14px;
+  border-bottom:1px solid var(--border);
+  text-align:center;
+}
 
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:18px}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse}
-thead tr{background:var(--surface2);border-bottom:2px solid var(--border)}
-th{padding:10px 13px;text-align:left;font-family:'DM Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);white-space:nowrap}
-td{padding:10px 13px;font-size:.79rem;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--gray2)}
-td.strong{font-weight:600;color:var(--white)}
-tr:last-child td{border-bottom:none}
-.td-max{max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.empty-row td{text-align:center;padding:40px!important;color:var(--gray)!important}
+.sb-head h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;
+  font-weight:700;
+}
 
-.badge{font-family:'DM Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:20px;display:inline-block}
-.b-published{background:var(--green-dim);color:var(--green);border:1px solid rgba(16,212,142,0.2)}
-.b-draft{background:rgba(122,136,153,0.08);color:var(--gray);border:1px solid var(--border)}
-.b-pinned{background:var(--orange-dim);color:var(--orange);border:1px solid rgba(245,158,11,0.2)}
+.sb-head h2 em{
+  font-style:italic;
+  color:var(--teal);
+}
 
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.fg{margin-bottom:14px}
-.fl{display:block;font-family:'DM Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);margin-bottom:6px}
-.fi,.fs,.fta{width:100%;padding:10px 13px;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--white);font-size:.84rem;outline:none;transition:all var(--transition)}
-.fi:focus,.fs:focus,.fta:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-dim)}
-.fs{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%237a8899'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
-.fta{resize:vertical;min-height:200px;line-height:1.55}
-.toggle-row{display:flex;align-items:center;gap:8px;font-size:.82rem;cursor:pointer;color:var(--gray2);margin-top:4px}
-input[type=checkbox]{accent-color:var(--teal);width:14px;height:14px;cursor:pointer}
-.hint{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gray);margin-top:4px}
+.sb-role{
+  font-family:'DM Mono',monospace;
+  font-size:.56rem;
+  text-transform:uppercase;
+  letter-spacing:.13em;
+  color:rgba(255,255,255,0.22);
+  padding:8px 18px;
+}
 
-.alert{padding:10px 14px;border-radius:var(--radius);font-size:.77rem;margin-bottom:12px;display:none}
-.alert.show{display:block}
-.alert-error{background:var(--red-dim);border:1px solid rgba(240,86,106,0.22);color:var(--red)}
-.alert-success{background:var(--green-dim);border:1px solid rgba(16,212,142,0.2);color:var(--green)}
+.nav-group{
+  font-family:'DM Mono',monospace;
+  font-size:.56rem;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  color:rgba(255,255,255,0.2);
+  padding:10px 18px 4px;
+}
 
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:200;display:none;place-items:center;padding:20px}
-.modal-overlay.open{display:grid}
-.modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);max-width:800px;width:100%;max-height:90vh;overflow-y:auto;animation:slideUp .22s cubic-bezier(.34,1.3,.64,1)}
-@keyframes slideUp{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-.modal-head{padding:20px 22px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--surface);z-index:1}
-.modal-head h3{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700}
-.modal-close{background:var(--surface2);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray)}
-.modal-close:hover{background:var(--border2);color:var(--white)}
-.modal-body{padding:20px 22px}
-.modal-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px}
+.nav-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 16px;
+  font-size:.79rem;
+  font-weight:500;
+  color:var(--gray2);
+  cursor:pointer;
+  border:none;
+  background:transparent;
+  width:100%;
+  text-align:left;
+  transition:all var(--transition);
+  border-left:2px solid transparent;
+}
 
-.toast{position:fixed;bottom:22px;right:22px;padding:11px 18px;border-radius:var(--radius);font-size:.8rem;font-weight:600;z-index:999;transform:translateY(20px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
-.toast.show{transform:translateY(0);opacity:1}
-.toast-success{background:var(--green-dim);border:1px solid rgba(16,212,142,.25);color:var(--green)}
-.toast-error{background:var(--red-dim);border:1px solid rgba(240,86,106,.25);color:var(--red)}
+.nav-item:hover{
+  color:var(--white);
+  background:var(--surface2);
+}
 
+.nav-item.active{
+  color:var(--teal);
+  background:var(--teal-dim);
+  border-left-color:var(--teal);
+}
+
+.sb-footer{
+  margin-top:auto;
+  padding:14px 18px;
+  border-top:1px solid var(--border);
+}
+
+.btn-logout{
+  width:100%;
+  padding:8px;
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.1);
+  color:var(--gray);
+  border-radius:var(--radius);
+  font-size:.7rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:all var(--transition);
+  text-transform:uppercase;
+}
+
+.btn-logout:hover{
+  border-color:var(--red);
+  color:var(--red);
+}
+
+/* ═══════════════ MAIN ═══════════════ */
+.main{
+  margin-left:var(--sw);
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+.topbar{
+  height:56px;
+  padding:0 24px;
+  background:rgba(5,8,15,0.95);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:40;
+}
+
+.topbar-title{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:700;
+  font-size:1.05rem;
+}
+
+.btn-view-site{
+  padding:6px 14px;
+  border:1px solid var(--border2);
+  color:var(--gray);
+  border-radius:20px;
+  font-size:.7rem;
+  text-decoration:none;
+}
+
+.btn-view-site:hover{
+  border-color:var(--teal);
+  color:var(--teal);
+}
+
+.content{
+  padding:24px;
+  flex:1;
+}
+
+.view{
+  display:none;
+  animation:fadeIn .2s ease;
+}
+
+.view.active{
+  display:block;
+}
+
+@keyframes fadeIn{
+  from{
+    opacity:0;
+    transform:translateY(6px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* ═══════════════ STATS ═══════════════ */
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:12px;
+  margin-bottom:26px;
+}
+
+.stat{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:16px 14px;
+}
+
+.stat-label{
+  font-family:'DM Mono',monospace;
+  font-size:.58rem;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--gray);
+  margin-bottom:8px;
+}
+
+.stat-val{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2rem;
+  font-weight:700;
+  color:var(--teal);
+}
+
+/* ═══════════════ SECTION HEAD ═══════════════ */
+.sec-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:16px;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.sec-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem;
+  font-weight:700;
+}
+
+/* ═══════════════ BUTTONS ═══════════════ */
+.btn{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:.72rem;
+  font-weight:600;
+  padding:8px 16px;
+  border-radius:var(--radius);
+  border:none;
+  cursor:pointer;
+  transition:all var(--transition);
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+.btn-primary{
+  background:var(--teal);
+  color:#fff;
+}
+
+.btn-primary:hover{
+  background:var(--teal2);
+}
+
+.btn-ghost{
+  background:transparent;
+  color:var(--gray);
+  border:1.5px solid var(--border2);
+}
+
+.btn-ghost:hover{
+  border-color:var(--teal);
+  color:var(--teal);
+}
+
+.btn-danger{
+  background:var(--red-dim);
+  color:var(--red);
+  border:1.5px solid rgba(240,86,106,0.18);
+}
+
+.btn-danger:hover{
+  background:var(--red);
+  color:#fff;
+}
+
+.btn-success{
+  background:var(--green-dim);
+  color:var(--green);
+  border:1.5px solid rgba(16,212,142,0.2);
+}
+
+.btn-xs{
+  padding:3px 8px;
+  font-size:.63rem;
+  border-radius:5px;
+}
+
+/* ═══════════════ CARD / TABLE ═══════════════ */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  margin-bottom:18px;
+}
+
+.table-wrap{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+thead tr{
+  background:var(--surface2);
+  border-bottom:2px solid var(--border);
+}
+
+th{
+  padding:10px 13px;
+  text-align:left;
+  font-family:'DM Mono',monospace;
+  font-size:.58rem;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--gray);
+  white-space:nowrap;
+}
+
+td{
+  padding:10px 13px;
+  font-size:.79rem;
+  border-bottom:1px solid var(--border);
+  vertical-align:middle;
+  color:var(--gray2);
+}
+
+td.strong{
+  font-weight:600;
+  color:var(--white);
+}
+
+tr:last-child td{
+  border-bottom:none;
+}
+
+.td-max{
+  max-width:200px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.empty-row td{
+  text-align:center;
+  padding:40px!important;
+  color:var(--gray)!important;
+}
+
+/* ═══════════════ BADGES ═══════════════ */
+.badge{
+  font-family:'DM Mono',monospace;
+  font-size:.58rem;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  padding:3px 8px;
+  border-radius:20px;
+  display:inline-block;
+}
+
+.b-published{
+  background:var(--green-dim);
+  color:var(--green);
+  border:1px solid rgba(16,212,142,0.2);
+}
+
+.b-draft{
+  background:rgba(122,136,153,0.08);
+  color:var(--gray);
+  border:1px solid var(--border);
+}
+
+.b-pinned{
+  background:var(--orange-dim);
+  color:var(--orange);
+  border:1px solid rgba(245,158,11,0.2);
+}
+
+.b-hero{
+  background:rgba(255,107,53,0.15);
+  color:var(--teal);
+  border:1px solid rgba(255,107,53,0.3);
+}
+
+.b-feed{
+  background:rgba(16,212,142,0.1);
+  color:var(--green);
+  border:1px solid rgba(16,212,142,0.2);
+}
+
+.b-visual{
+  background:rgba(245,158,11,0.1);
+  color:var(--orange);
+  border:1px solid rgba(245,158,11,0.2);
+}
+
+.b-spotlight{
+  background:rgba(240,86,106,0.1);
+  color:var(--red);
+  border:1px solid rgba(240,86,106,0.2);
+}
+
+/* ═══════════════ FORMS ═══════════════ */
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.fg{
+  margin-bottom:14px;
+}
+
+.fl{
+  display:block;
+  font-family:'DM Mono',monospace;
+  font-size:.6rem;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--gray);
+  margin-bottom:6px;
+}
+
+.fi,.fs,.fta{
+  width:100%;
+  padding:10px 13px;
+  background:var(--surface2);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius);
+  color:var(--white);
+  font-size:.84rem;
+  outline:none;
+  transition:all var(--transition);
+}
+
+.fi:focus,.fs:focus,.fta:focus{
+  border-color:var(--teal);
+  box-shadow:0 0 0 3px var(--teal-dim);
+}
+
+.fs{
+  cursor:pointer;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%237a8899'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 12px center;
+}
+
+.fta{
+  resize:vertical;
+  min-height:200px;
+  line-height:1.55;
+}
+
+.toggle-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:.82rem;
+  cursor:pointer;
+  color:var(--gray2);
+  margin-top:4px;
+}
+
+input[type=checkbox]{
+  accent-color:var(--teal);
+  width:14px;
+  height:14px;
+  cursor:pointer;
+}
+
+.hint{
+  font-family:'DM Mono',monospace;
+  font-size:.6rem;
+  color:var(--gray);
+  margin-top:4px;
+}
+
+/* ═══════════════ ALERT ═══════════════ */
+.alert{
+  padding:10px 14px;
+  border-radius:var(--radius);
+  font-size:.77rem;
+  margin-bottom:12px;
+  display:none;
+}
+
+.alert.show{
+  display:block;
+}
+
+.alert-error{
+  background:var(--red-dim);
+  border:1px solid rgba(240,86,106,0.22);
+  color:var(--red);
+}
+
+.alert-success{
+  background:var(--green-dim);
+  border:1px solid rgba(16,212,142,0.2);
+  color:var(--green);
+}
+
+/* ═══════════════ MODAL ═══════════════ */
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.72);
+  z-index:200;
+  display:none;
+  place-items:center;
+  padding:20px;
+}
+
+.modal-overlay.open{
+  display:grid;
+}
+
+.modal{
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-radius:var(--radius-lg);
+  max-width:800px;
+  width:100%;
+  max-height:90vh;
+  overflow-y:auto;
+  animation:slideUp .22s cubic-bezier(.34,1.3,.64,1);
+}
+
+@keyframes slideUp{
+  from{
+    opacity:0;
+    transform:translateY(16px) scale(.97);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+.modal-head{
+  padding:20px 22px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  background:var(--surface);
+  z-index:1;
+}
+
+.modal-head h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;
+  font-weight:700;
+}
+
+.modal-close{
+  background:var(--surface2);
+  border:none;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gray);
+}
+
+.modal-close:hover{
+  background:var(--border2);
+  color:var(--white);
+}
+
+.modal-body{
+  padding:20px 22px;
+}
+
+.modal-footer{
+  padding:14px 22px;
+  border-top:1px solid var(--border);
+  display:flex;
+  gap:10px;
+}
+
+/* ═══════════════ IMAGE UPLOAD ═══════════════ */
+.upload-area{
+  border:2px dashed var(--border2);
+  border-radius:var(--radius);
+  padding:24px;
+  text-align:center;
+  cursor:pointer;
+  transition:all .2s;
+  margin-bottom:8px;
+}
+
+.upload-area:hover{
+  border-color:var(--teal);
+  background:var(--teal-dim);
+}
+
+.upload-preview{
+  width:100%;
+  max-height:200px;
+  object-fit:cover;
+  border-radius:var(--radius);
+  margin-top:8px;
+  display:none;
+}
+
+.upload-progress{
+  height:4px;
+  background:var(--border);
+  border-radius:2px;
+  margin-top:8px;
+  overflow:hidden;
+  display:none;
+}
+
+.upload-progress-bar{
+  height:100%;
+  background:var(--teal);
+  width:0%;
+  transition:width .3s;
+}
+
+.remove-image-btn{
+  display:none;
+  margin-top:8px;
+  font-size:.7rem;
+  color:var(--red);
+  cursor:pointer;
+  background:none;
+  border:none;
+}
+
+/* ═══════════════ TOAST ═══════════════ */
+.toast{
+  position:fixed;
+  bottom:22px;
+  right:22px;
+  padding:11px 18px;
+  border-radius:var(--radius);
+  font-size:.8rem;
+  font-weight:600;
+  z-index:999;
+  transform:translateY(20px);
+  opacity:0;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;
+}
+
+.toast.show{
+  transform:translateY(0);
+  opacity:1;
+}
+
+.toast-success{
+  background:var(--green-dim);
+  border:1px solid rgba(16,212,142,.25);
+  color:var(--green);
+}
+
+.toast-error{
+  background:var(--red-dim);
+  border:1px solid rgba(240,86,106,.25);
+  color:var(--red);
+}
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
 @media(max-width:768px){
-  .sidebar{display:none}.main{margin-left:0}
-  .form-row{grid-template-columns:1fr}
+  .sidebar{
+    display:none;
+  }
+  .main{
+    margin-left:0;
+  }
+  .form-row{
+    grid-template-columns:1fr;
+  }
+  .pinned-grid{
+    grid-template-columns:1fr;
+  }
+  .articles-grid{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
 <body>
 
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
 <aside class="sidebar">
-  <div class="sb-head"><h2>The <em>Signal</em></h2></div>
+  <div class="sb-head">
+    <h2>The <em>Signal</em></h2>
+  </div>
   <div class="sb-role">Admin Panel</div>
-  <button class="nav-item active" data-view="dashboard" onclick="showView('dashboard')">📊 Dashboard</button>
+  
+  <button class="nav-item active" data-view="dashboard" onclick="showView('dashboard')">
+    📊 Dashboard
+  </button>
+  
   <div class="nav-group">Content</div>
-  <button class="nav-item" data-view="articles" onclick="showView('articles')">📝 Articles</button>
-  <button class="nav-item" data-view="categories" onclick="showView('categories')">📂 Categories</button>
-  <button class="nav-item" data-view="subcategories" onclick="showView('subcategories')">📁 Subcategories</button>
+  
+  <button class="nav-item" data-view="articles" onclick="showView('articles')">
+    📝 Articles
+  </button>
+  
+  <button class="nav-item" data-view="categories" onclick="showView('categories')">
+    📂 Categories
+  </button>
+  
+  <button class="nav-item" data-view="subcategories" onclick="showView('subcategories')">
+    📁 Subcategories
+  </button>
+  
   <div class="nav-group">Settings</div>
-  <button class="nav-item" data-view="settings" onclick="showView('settings')">⚙️ Site Settings</button>
+  
+  <button class="nav-item" data-view="settings" onclick="showView('settings')">
+    ⚙️ Site Settings
+  </button>
+  
   <div class="sb-footer">
     <button class="btn-logout" onclick="logout()">Sign Out</button>
   </div>
 </aside>
 
+<!-- ═══════════════ MAIN ═══════════════ -->
 <main class="main">
   <div class="topbar">
     <span class="topbar-title" id="topbarTitle">Dashboard</span>
     <a href="/index.html" target="_blank" class="btn-view-site">View Site →</a>
   </div>
+  
   <div class="content">
     <div class="view active" id="view-dashboard"></div>
     <div class="view" id="view-articles"></div>
@@ -144,225 +797,484 @@ input[type=checkbox]{accent-color:var(--teal);width:14px;height:14px;cursor:poin
   </div>
 </main>
 
+<!-- ═══════════════ MODAL ═══════════════ -->
 <div class="modal-overlay" id="gModal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
-    <div class="modal-head"><h3 id="gModalTitle">—</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-head">
+      <h3 id="gModalTitle">—</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
     <div class="modal-body" id="gModalBody"></div>
     <div class="modal-footer" id="gModalFooter"></div>
   </div>
 </div>
 
+<!-- ═══════════════ TOAST ═══════════════ -->
 <div class="toast" id="toast"></div>
 
+<!-- ═══════════════ SCRIPTS ═══════════════ -->
 <script>
-// ═══════════════ AUTH ═══════════════
+// ═══════════════ AUTH CHECK ═══════════════
 var token = localStorage.getItem('signal_token');
 var admin = JSON.parse(localStorage.getItem('signal_admin') || 'null');
-if (!token) { window.location.href = '/signin.html'; }
 
-function logout() { localStorage.clear(); window.location.href = '/signin.html'; }
+if (!token) {
+  window.location.href = '/signin.html';
+}
+
+// ═══════════════ GLOBAL VARIABLES ═══════════════
+var allArticles = [];
+var allCategories = [];
+var allSubcategories = [];
+var IMGBB_API_KEY = '4a780b9806217405482ea7632dac862b';
+var currentUploadedUrl = '';
+
+// ═══════════════ HELPERS ═══════════════
+function logout() {
+  localStorage.clear();
+  window.location.href = '/signin.html';
+}
+
 function showToast(msg, type) {
   type = type || 'success';
   var t = document.getElementById('toast');
   t.textContent = msg;
   t.className = 'toast toast-' + type + ' show';
-  setTimeout(function() { t.classList.remove('show'); }, 3000);
+  setTimeout(function() {
+    t.classList.remove('show');
+  }, 3000);
 }
 
-function esc(s) { var d = document.createElement('div'); d.textContent = String(s || ''); return d.innerHTML; }
-function fmtDate(d) { if(!d) return '—'; return new Date(d).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }); }
+function esc(s) {
+  var d = document.createElement('div');
+  d.textContent = String(s || '');
+  return d.innerHTML;
+}
 
+function fmtDate(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+
+// ═══════════════ API FUNCTION ═══════════════
 async function api(method, path, body) {
   try {
-    var opts = { method: method, headers: { 'Content-Type':'application/json', 'Authorization':'Bearer '+token } };
-    if (body) opts.body = JSON.stringify(body);
+    var opts = {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    };
+    
+    if (body) {
+      opts.body = JSON.stringify(body);
+    }
+    
     var res = await fetch('/api' + path, opts);
     var data = await res.json();
-    return { ok: res.ok, data: data };
-  } catch(e) {
-    return { ok: false, data: { error: 'Network error' } };
+    
+    return {
+      ok: res.ok,
+      data: data
+    };
+  } catch (e) {
+    console.error('API Error:', e);
+    return {
+      ok: false,
+      data: { error: 'Network error' }
+    };
   }
 }
 
+// ═══════════════ NAVIGATION ═══════════════
 function showView(id) {
-  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
-  document.querySelectorAll('.nav-item').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.view').forEach(function(v) {
+    v.classList.remove('active');
+  });
+  
+  document.querySelectorAll('.nav-item').forEach(function(b) {
+    b.classList.remove('active');
+  });
+  
   var vEl = document.getElementById('view-' + id);
-  if (vEl) vEl.classList.add('active');
+  if (vEl) {
+    vEl.classList.add('active');
+  }
+  
   var nBtn = document.querySelector('.nav-item[data-view="' + id + '"]');
-  if (nBtn) nBtn.classList.add('active');
+  if (nBtn) {
+    nBtn.classList.add('active');
+  }
+  
   document.getElementById('topbarTitle').textContent = id.charAt(0).toUpperCase() + id.slice(1);
-  var loaders = { dashboard: loadDashboard, articles: loadArticles, categories: loadCategories, subcategories: loadSubcategories, settings: loadSettings };
-  if (loaders[id]) loaders[id]();
+  
+  var loaders = {
+    dashboard: loadDashboard,
+    articles: loadArticles,
+    categories: loadCategories,
+    subcategories: loadSubcategories,
+    settings: loadSettings
+  };
+  
+  if (loaders[id]) {
+    loaders[id]();
+  }
 }
 
+// ═══════════════ MODAL ═══════════════
 function openModal(title, bodyHtml, footerHtml) {
   document.getElementById('gModalTitle').textContent = title;
   document.getElementById('gModalBody').innerHTML = bodyHtml;
   document.getElementById('gModalFooter').innerHTML = footerHtml || '';
   document.getElementById('gModal').classList.add('open');
 }
-function closeModal() { document.getElementById('gModal').classList.remove('open'); }
+
+function closeModal() {
+  document.getElementById('gModal').classList.remove('open');
+}
+
 function showAlert(msg, type) {
   type = type || 'error';
   var el = document.getElementById('_alert');
-  if (el) { el.className = 'alert alert-' + type + ' show'; el.textContent = msg; }
+  if (el) {
+    el.className = 'alert alert-' + type + ' show';
+    el.textContent = msg;
+  }
 }
 
-// ═══ DASHBOARD ═══
+// ═══════════════ DASHBOARD ═══════════════
 async function loadDashboard() {
   var result = await api('GET', '/admin/stats');
-  var stats = result.ok ? result.data : { total_articles: 0, published_articles: 0, categories: 0, pinned_articles: 0 };
-  document.getElementById('view-dashboard').innerHTML =
-    '<div class="stats-grid">' +
-    '<div class="stat"><div class="stat-label">Total Articles</div><div class="stat-val">' + stats.total_articles + '</div></div>' +
-    '<div class="stat"><div class="stat-label">Published</div><div class="stat-val">' + stats.published_articles + '</div></div>' +
-    '<div class="stat"><div class="stat-label">Categories</div><div class="stat-val">' + stats.categories + '</div></div>' +
-    '<div class="stat"><div class="stat-label">Pinned</div><div class="stat-val">' + stats.pinned_articles + '</div></div>' +
-    '</div>';
+  var stats = result.ok ? result.data : {
+    total_articles: 0,
+    published_articles: 0,
+    categories: 0,
+    pinned_articles: 0
+  };
+
+  var html = '<div class="stats-grid">';
+  html += '<div class="stat"><div class="stat-label">Total Articles</div><div class="stat-val">' + stats.total_articles + '</div></div>';
+  html += '<div class="stat"><div class="stat-label">Published</div><div class="stat-val">' + stats.published_articles + '</div></div>';
+  html += '<div class="stat"><div class="stat-label">Categories</div><div class="stat-val">' + stats.categories + '</div></div>';
+  html += '<div class="stat"><div class="stat-label">Pinned</div><div class="stat-val">' + stats.pinned_articles + '</div></div>';
+  html += '</div>';
+  
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px">';
+  html += '<div class="card" style="padding:20px">';
+  html += '<h3 style="font-family:Cormorant Garamond,serif;font-size:1rem;margin-bottom:12px">📌 Block A: Hero</h3>';
+  html += '<p style="color:var(--gray);font-size:.78rem">Main story shown at the top of homepage. Select an article and set its display block to "Hero".</p>';
+  html += '</div>';
+  html += '<div class="card" style="padding:20px">';
+  html += '<h3 style="font-family:Cormorant Garamond,serif;font-size:1rem;margin-bottom:12px">📋 Block B: Intelligence Feed</h3>';
+  html += '<p style="color:var(--gray);font-size:.78rem">Quick headlines for scanning. Select articles and set their display block to "Feed".</p>';
+  html += '</div>';
+  html += '<div class="card" style="padding:20px">';
+  html += '<h3 style="font-family:Cormorant Garamond,serif;font-size:1rem;margin-bottom:12px">🖼️ Block C: Visual Break</h3>';
+  html += '<p style="color:var(--gray);font-size:.78rem">Large artistic image with article. Set display block to "Visual" (requires image).</p>';
+  html += '</div>';
+  html += '<div class="card" style="padding:20px">';
+  html += '<h3 style="font-family:Cormorant Garamond,serif;font-size:1rem;margin-bottom:12px">🔦 Block D: Category Spotlights</h3>';
+  html += '<p style="color:var(--gray);font-size:.78rem">Topic-specific boxes. Set display block to "Spotlight" and choose a category.</p>';
+  html += '</div>';
+  html += '</div>';
+
+  document.getElementById('view-dashboard').innerHTML = html;
 }
 
-// ═══ ARTICLES ═══
-var allArticles = [];
-var allCategories = [];
-
+// ═══════════════ ARTICLES ═══════════════
 async function loadArticles() {
   var catResult = await api('GET', '/admin/categories');
   allCategories = catResult.ok ? catResult.data : [];
-  
+
   var result = await api('GET', '/admin/articles');
   allArticles = result.ok ? result.data : [];
 
-  var html = '<div class="sec-head"><h2 class="sec-title">Articles (' + allArticles.length + ')</h2><button class="btn btn-primary" onclick="openArticleModal()">+ New Article</button></div>';
-  html += '<div class="card"><div class="table-wrap"><table><thead><tr><th>Title</th><th>Author</th><th>Category</th><th>Status</th><th>Pinned</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
+  var html = '';
+  html += '<div class="sec-head">';
+  html += '<h2 class="sec-title">Articles (' + allArticles.length + ')</h2>';
+  html += '<button class="btn btn-primary" onclick="openArticleModal()">+ New Article</button>';
+  html += '</div>';
+  
+  html += '<div class="card"><div class="table-wrap"><table>';
+  html += '<thead><tr>';
+  html += '<th>Title</th>';
+  html += '<th>Author</th>';
+  html += '<th>Category</th>';
+  html += '<th>Block</th>';
+  html += '<th>Status</th>';
+  html += '<th>Pinned</th>';
+  html += '<th>Date</th>';
+  html += '<th>Actions</th>';
+  html += '</tr></thead><tbody>';
 
   if (allArticles.length > 0) {
     allArticles.forEach(function(a) {
+      var blockLabel = '—';
+      var blockClass = '';
+      
+      if (a.display_block === 'hero') {
+        blockLabel = 'Hero';
+        blockClass = 'b-hero';
+      } else if (a.display_block === 'feed') {
+        blockLabel = 'Feed';
+        blockClass = 'b-feed';
+      } else if (a.display_block === 'visual') {
+        blockLabel = 'Visual';
+        blockClass = 'b-visual';
+      } else if (a.display_block === 'spotlight') {
+        blockLabel = 'Spotlight';
+        blockClass = 'b-spotlight';
+      }
+
       html += '<tr>';
       html += '<td class="strong td-max">' + (a.is_pinned ? '📌 ' : '') + esc(a.title) + '</td>';
       html += '<td>' + esc(a.author || 'The Signal') + '</td>';
       html += '<td>' + esc(a.category_name || '—') + '</td>';
+      html += '<td>' + (blockLabel !== '—' ? '<span class="badge ' + blockClass + '">' + blockLabel + '</span>' : '—') + '</td>';
       html += '<td><span class="badge ' + (a.is_published ? 'b-published' : 'b-draft') + '">' + (a.is_published ? 'Published' : 'Draft') + '</span></td>';
       html += '<td>' + (a.is_pinned ? '<span class="badge b-pinned">Pinned</span>' : '—') + '</td>';
       html += '<td style="font-size:.7rem">' + fmtDate(a.published_at || a.created_at) + '</td>';
-      html += '<td><button class="btn btn-ghost btn-xs" onclick="openArticleModal(' + a.id + ')">Edit</button> <button class="btn btn-danger btn-xs" onclick="deleteArticle(' + a.id + ')">Del</button></td>';
+      html += '<td>';
+      html += '<button class="btn btn-ghost btn-xs" onclick="openArticleModal(' + a.id + ')">Edit</button> ';
+      html += '<button class="btn btn-danger btn-xs" onclick="deleteArticle(' + a.id + ')">Del</button>';
+      html += '</td>';
       html += '</tr>';
     });
   } else {
-    html += '<tr class="empty-row"><td colspan="7">No articles yet</td></tr>';
+    html += '<tr class="empty-row"><td colspan="8">No articles yet. Create your first article!</td></tr>';
   }
 
   html += '</tbody></table></div></div>';
   document.getElementById('view-articles').innerHTML = html;
 }
 
+// ═══════════════ ARTICLE MODAL ═══════════════
 function openArticleModal(id) {
-  var a = id ? allArticles.find(function(x) { return x.id === id; }) : null;
+  var article = id ? allArticles.find(function(x) { return x.id === id; }) : null;
+  currentUploadedUrl = article ? (article.image_url || '') : '';
 
-  var catOpts = '<option value="">— Select —</option>';
+  var categoryOptions = '<option value="">— Select Category —</option>';
   allCategories.forEach(function(c) {
-    catOpts += '<option value="' + c.id + '"' + (a && a.category_id === c.id ? ' selected' : '') + '>' + esc(c.name) + '</option>';
+    var selected = (article && article.category_id === c.id) ? ' selected' : '';
+    categoryOptions += '<option value="' + c.id + '"' + selected + '>' + esc(c.name) + '</option>';
   });
 
-  var html = '<div class="alert" id="_alert"></div>';
-  html += '<input type="hidden" id="_id" value="' + (a ? a.id : '') + '">';
-
-  html += '<div class="fg"><label class="fl">Title *</label><input class="fi" id="_title" value="' + esc(a ? a.title : '') + '" placeholder="Article title" oninput="autoSlug()"></div>';
-
-  html += '<div class="fg"><label class="fl">Slug</label><input class="fi" id="_slug" value="' + esc(a ? a.slug : '') + '" placeholder="Auto-generated if empty"><div class="hint">Leave empty to auto-generate from title</div></div>';
-
-  html += '<div class="form-row">';
-  html += '<div class="fg"><label class="fl">Author</label><input class="fi" id="_author" value="' + esc(a ? a.author : 'The Signal') + '" placeholder="Author name"></div>';
-  html += '<div class="fg"><label class="fl">Category</label><select class="fs" id="_category">' + catOpts + '</select></div>';
+  var html = '';
+  
+  // Alert
+  html += '<div class="alert" id="_alert"></div>';
+  
+  // Hidden ID
+  html += '<input type="hidden" id="_id" value="' + (article ? article.id : '') + '">';
+  
+  // Title
+  html += '<div class="fg">';
+  html += '<label class="fl">Title *</label>';
+  html += '<input class="fi" id="_title" value="' + esc(article ? article.title : '') + '" placeholder="Article title" oninput="autoGenerateSlug()">';
   html += '</div>';
-
-  html += '<div class="fg"><label class="fl">Excerpt</label><textarea class="fta" id="_excerpt" style="min-height:60px" placeholder="Short summary for article cards (max 200 chars)" maxlength="200">' + esc(a ? a.excerpt : '') + '</textarea><div class="hint" id="_excerptCount">' + (a && a.excerpt ? a.excerpt.length : 0) + '/200</div></div>';
-
-  html += '<div class="fg"><label class="fl">Featured Image URL (ImageBB)</label><input class="fi" id="_image" value="' + esc(a ? a.image_url : '') + '" placeholder="https://i.ibb.co/..."></div>';
-
-  html += '<div class="fg"><label class="fl">Content *</label><textarea class="fta" id="_content" placeholder="Write your article... Use ## for headings, > for quotes">' + esc(a ? a.content : '') + '</textarea></div>';
-
+  
+  // Slug
+  html += '<div class="fg">';
+  html += '<label class="fl">Slug (auto-generated if empty)</label>';
+  html += '<input class="fi" id="_slug" value="' + esc(article ? article.slug : '') + '" placeholder="Auto-generated from title">';
+  html += '<div class="hint">Leave empty to auto-generate. Must be unique.</div>';
+  html += '</div>';
+  
+  // Author + Category
+  html += '<div class="form-row">';
+  html += '<div class="fg">';
+  html += '<label class="fl">Author</label>';
+  html += '<input class="fi" id="_author" value="' + esc(article ? article.author : 'The Signal') + '" placeholder="Author name">';
+  html += '</div>';
+  html += '<div class="fg">';
+  html += '<label class="fl">Category</label>';
+  html += '<select class="fs" id="_category">' + categoryOptions + '</select>';
+  html += '</div>';
+  html += '</div>';
+  
+  // Excerpt
+  html += '<div class="fg">';
+  html += '<label class="fl">Excerpt (shown in article cards)</label>';
+  html += '<textarea class="fta" id="_excerpt" style="min-height:60px" placeholder="Short summary for article cards (max 200 chars)" maxlength="200">' + esc(article ? article.excerpt : '') + '</textarea>';
+  html += '<div class="hint" id="_excerptCount">' + (article && article.excerpt ? article.excerpt.length : 0) + '/200</div>';
+  html += '</div>';
+  
+  // Image Upload
+  html += '<div class="fg">';
+  html += '<label class="fl">Featured Image</label>';
+  html += createImageUploader(article ? article.image_url : '');
+  html += '</div>';
+  
+  // Content
+  html += '<div class="fg">';
+  html += '<label class="fl">Content *</label>';
+  html += '<textarea class="fta" id="_content" placeholder="Write your article... Use ## for headings, > for quotes">' + esc(article ? article.content : '') + '</textarea>';
+  html += '</div>';
+  
+  // Display Block
+  html += '<div class="fg">';
+  html += '<label class="fl">Display Block (Rhythm of the Scroll)</label>';
+  html += '<select class="fs" id="_block">';
+  html += '<option value="">— None (not displayed on homepage) —</option>';
+  html += '<option value="hero"' + (article && article.display_block === 'hero' ? ' selected' : '') + '>📌 Block A: Hero — Main story, full width at top</option>';
+  html += '<option value="feed"' + (article && article.display_block === 'feed' ? ' selected' : '') + '>📋 Block B: Intelligence Feed — Quick headlines list</option>';
+  html += '<option value="visual"' + (article && article.display_block === 'visual' ? ' selected' : '') + '>🖼️ Block C: Visual Break — Large artistic image</option>';
+  html += '<option value="spotlight"' + (article && article.display_block === 'spotlight' ? ' selected' : '') + '>🔦 Block D: Category Spotlight — Topic-specific box</option>';
+  html += '</select>';
+  html += '</div>';
+  
+  // Spotlight Label (shown when block D selected)
+  html += '<div class="fg" id="_spotlightLabelWrap" style="display:' + (article && article.display_block === 'spotlight' ? 'block' : 'none') + '">';
+  html += '<label class="fl">Spotlight Label (optional custom title)</label>';
+  html += '<input class="fi" id="_spotlightLabel" value="' + esc(article ? article.spotlight_label : '') + '" placeholder="e.g. Geopolitics Focus, Tech Strategy">';
+  html += '</div>';
+  
+  // Toggles
   html += '<div style="display:flex;gap:20px;margin-top:8px">';
-  html += '<label class="toggle-row"><input type="checkbox" id="_pinned"' + (a && a.is_pinned ? ' checked' : '') + '><span>📌 Pin Article (max 2)</span></label>';
-  html += '<label class="toggle-row"><input type="checkbox" id="_published"' + (!a || a.is_published ? ' checked' : '') + '><span>✅ Published</span></label>';
+  html += '<label class="toggle-row"><input type="checkbox" id="_pinned"' + (article && article.is_pinned ? ' checked' : '') + '><span>📌 Pin Article (max 2)</span></label>';
+  html += '<label class="toggle-row"><input type="checkbox" id="_published"' + (!article || article.is_published ? ' checked' : '') + '><span>✅ Published</span></label>';
   html += '</div>';
 
   openModal(
-    a ? 'Edit Article' : 'New Article',
+    article ? 'Edit Article' : 'New Article',
     html,
     '<button class="btn btn-primary" onclick="saveArticle()">Save Article</button><button class="btn btn-ghost" onclick="closeModal()">Cancel</button>'
   );
 
-  // Excerpt counter
+  // Block selector toggle
   setTimeout(function() {
+    var blockSelect = document.getElementById('_block');
+    var spotlightWrap = document.getElementById('_spotlightLabelWrap');
+    
+    if (blockSelect && spotlightWrap) {
+      blockSelect.addEventListener('change', function() {
+        spotlightWrap.style.display = this.value === 'spotlight' ? 'block' : 'none';
+      });
+    }
+
+    // Excerpt counter
     var excerptEl = document.getElementById('_excerpt');
     if (excerptEl) {
       excerptEl.addEventListener('input', function() {
-        document.getElementById('_excerptCount').textContent = this.value.length + '/200';
+        var countEl = document.getElementById('_excerptCount');
+        if (countEl) {
+          countEl.textContent = this.value.length + '/200';
+        }
       });
     }
   }, 100);
 }
 
-function autoSlug() {
+// ═══════════════ AUTO SLUG ═══════════════
+function autoGenerateSlug() {
   var title = document.getElementById('_title').value;
-  var slug = title.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').substring(0, 80);
+  var slug = title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .substring(0, 80);
+  
   var slugEl = document.getElementById('_slug');
   if (slugEl && !slugEl.value) {
     slugEl.placeholder = slug;
   }
 }
 
+// ═══════════════ SAVE ARTICLE ═══════════════
 async function saveArticle() {
   var id = document.getElementById('_id').value;
+  
   var payload = {
     title: document.getElementById('_title').value.trim(),
     slug: document.getElementById('_slug').value.trim() || null,
     excerpt: document.getElementById('_excerpt').value.trim(),
     content: document.getElementById('_content').value.trim(),
-    image_url: document.getElementById('_image').value.trim() || null,
+    image_url: document.getElementById('imageUrlInput').value || null,
     category_id: parseInt(document.getElementById('_category').value) || null,
     author: document.getElementById('_author').value.trim() || 'The Signal',
+    display_block: document.getElementById('_block').value || null,
+    spotlight_label: document.getElementById('_spotlightLabel') ? document.getElementById('_spotlightLabel').value.trim() : null,
     is_pinned: document.getElementById('_pinned').checked ? 1 : 0,
     is_published: document.getElementById('_published').checked ? 1 : 0
   };
 
-  if (!payload.title) { showAlert('Title is required'); return; }
-  if (!payload.content) { showAlert('Content is required'); return; }
+  if (!payload.title) {
+    showAlert('Title is required');
+    return;
+  }
 
-  var result = await api(id ? 'PUT' : 'POST', '/admin/articles' + (id ? '/' + id : ''), payload);
-  if (!result.ok) { showAlert(result.data.error || 'Error saving'); return; }
+  if (!payload.content) {
+    showAlert('Content is required');
+    return;
+  }
+
+  console.log('Saving article:', payload);
+
+  var url = '/admin/articles';
+  if (id) {
+    url += '/' + id;
+  }
+
+  var result = await api(id ? 'PUT' : 'POST', url, payload);
+  console.log('Save result:', result);
+
+  if (!result.ok) {
+    showAlert(result.data.error || 'Error saving article');
+    return;
+  }
+
   closeModal();
   loadArticles();
   loadDashboard();
-  showToast(id ? 'Article updated' : 'Article created! Slug: ' + result.data.slug);
+  showToast(id ? 'Article updated!' : 'Article created! Slug: ' + result.data.slug);
 }
 
+// ═══════════════ DELETE ARTICLE ═══════════════
 async function deleteArticle(id) {
-  if (!confirm('Delete this article?')) return;
-  await api('DELETE', '/admin/articles/' + id);
-  loadArticles();
-  loadDashboard();
-  showToast('Article deleted');
+  if (!confirm('Delete this article permanently?')) {
+    return;
+  }
+
+  var result = await api('DELETE', '/admin/articles/' + id);
+  
+  if (result.ok) {
+    loadArticles();
+    loadDashboard();
+    showToast('Article deleted');
+  }
 }
 
-// ═══ CATEGORIES ═══
-var allCats = [];
-
+// ═══════════════ CATEGORIES ═══════════════
 async function loadCategories() {
   var result = await api('GET', '/admin/categories');
-  allCats = result.ok ? result.data : [];
+  allCategories = result.ok ? result.data : [];
 
-  var html = '<div class="sec-head"><h2 class="sec-title">Categories</h2><button class="btn btn-primary" onclick="openCategoryModal()">+ New Category</button></div>';
-  html += '<div class="card"><div class="table-wrap"><table><thead><tr><th>Name</th><th>Slug</th><th>Description</th><th>Actions</th></tr></thead><tbody>';
+  var html = '';
+  html += '<div class="sec-head">';
+  html += '<h2 class="sec-title">Categories (' + allCategories.length + ')</h2>';
+  html += '<button class="btn btn-primary" onclick="openCategoryModal()">+ New Category</button>';
+  html += '</div>';
+  
+  html += '<div class="card"><div class="table-wrap"><table>';
+  html += '<thead><tr><th>Name</th><th>Slug</th><th>Description</th><th>Actions</th></tr></thead><tbody>';
 
-  if (allCats.length > 0) {
-    allCats.forEach(function(c) {
+  if (allCategories.length > 0) {
+    allCategories.forEach(function(c) {
       html += '<tr>';
       html += '<td class="strong">' + esc(c.name) + '</td>';
       html += '<td style="font-family:DM Mono,monospace;font-size:.7rem">' + esc(c.slug) + '</td>';
       html += '<td>' + esc(c.description || '—') + '</td>';
-      html += '<td><button class="btn btn-ghost btn-xs" onclick="openCategoryModal(' + c.id + ')">Edit</button> <button class="btn btn-danger btn-xs" onclick="deleteCategory(' + c.id + ')">Del</button></td>';
+      html += '<td>';
+      html += '<button class="btn btn-ghost btn-xs" onclick="openCategoryModal(' + c.id + ')">Edit</button> ';
+      html += '<button class="btn btn-danger btn-xs" onclick="deleteCategory(' + c.id + ')">Del</button>';
+      html += '</td>';
       html += '</tr>';
     });
   } else {
@@ -374,13 +1286,17 @@ async function loadCategories() {
 }
 
 function openCategoryModal(id) {
-  var c = id ? allCats.find(function(x) { return x.id === id; }) : null;
+  var category = id ? allCategories.find(function(x) { return x.id === id; }) : null;
+
+  var html = '';
+  html += '<div class="alert" id="_alert"></div>';
+  html += '<input type="hidden" id="_id" value="' + (category ? category.id : '') + '">';
+  html += '<div class="fg"><label class="fl">Name *</label><input class="fi" id="_name" value="' + esc(category ? category.name : '') + '" placeholder="Category name"></div>';
+  html += '<div class="fg"><label class="fl">Description</label><input class="fi" id="_desc" value="' + esc(category ? category.description : '') + '" placeholder="Short description"></div>';
+
   openModal(
-    c ? 'Edit Category' : 'New Category',
-    '<div class="alert" id="_alert"></div>' +
-    '<input type="hidden" id="_id" value="' + (c ? c.id : '') + '">' +
-    '<div class="fg"><label class="fl">Name *</label><input class="fi" id="_name" value="' + esc(c ? c.name : '') + '" placeholder="Category name"></div>' +
-    '<div class="fg"><label class="fl">Description</label><input class="fi" id="_desc" value="' + esc(c ? c.description : '') + '" placeholder="Short description"></div>',
+    category ? 'Edit Category' : 'New Category',
+    html,
     '<button class="btn btn-primary" onclick="saveCategory()">Save</button><button class="btn btn-ghost" onclick="closeModal()">Cancel</button>'
   );
 }
@@ -388,36 +1304,59 @@ function openCategoryModal(id) {
 async function saveCategory() {
   var id = document.getElementById('_id').value;
   var name = document.getElementById('_name').value.trim();
-  if (!name) { showAlert('Name required'); return; }
-  var result = await api(id ? 'PUT' : 'POST', '/admin/categories' + (id ? '/' + id : ''), { name: name, description: document.getElementById('_desc').value.trim() });
-  if (!result.ok) { showAlert(result.data.error); return; }
+  var description = document.getElementById('_desc').value.trim();
+
+  if (!name) {
+    showAlert('Name is required');
+    return;
+  }
+
+  var url = '/admin/categories';
+  if (id) {
+    url += '/' + id;
+  }
+
+  var result = await api(id ? 'PUT' : 'POST', url, { name: name, description: description });
+
+  if (!result.ok) {
+    showAlert(result.data.error);
+    return;
+  }
+
   closeModal();
   loadCategories();
   showToast('Category saved');
 }
 
 async function deleteCategory(id) {
-  if (!confirm('Delete this category? Subcategories will be removed.')) return;
+  if (!confirm('Delete this category? Subcategories will also be removed.')) {
+    return;
+  }
+
   await api('DELETE', '/admin/categories/' + id);
   loadCategories();
   showToast('Category deleted');
 }
 
-// ═══ SUBCATEGORIES ═══
-var allSubs = [];
-
+// ═══════════════ SUBCATEGORIES ═══════════════
 async function loadSubcategories() {
   var subResult = await api('GET', '/admin/subcategories');
-  allSubs = subResult.ok ? subResult.data : [];
-  
+  allSubcategories = subResult.ok ? subResult.data : [];
+
   var catResult = await api('GET', '/admin/categories');
   allCategories = catResult.ok ? catResult.data : [];
 
-  var html = '<div class="sec-head"><h2 class="sec-title">Subcategories</h2><button class="btn btn-primary" onclick="openSubcategoryModal()">+ New Subcategory</button></div>';
-  html += '<div class="card"><div class="table-wrap"><table><thead><tr><th>Name</th><th>Category</th><th>Slug</th><th>Actions</th></tr></thead><tbody>';
+  var html = '';
+  html += '<div class="sec-head">';
+  html += '<h2 class="sec-title">Subcategories (' + allSubcategories.length + ')</h2>';
+  html += '<button class="btn btn-primary" onclick="openSubcategoryModal()">+ New Subcategory</button>';
+  html += '</div>';
+  
+  html += '<div class="card"><div class="table-wrap"><table>';
+  html += '<thead><tr><th>Name</th><th>Category</th><th>Slug</th><th>Actions</th></tr></thead><tbody>';
 
-  if (allSubs.length > 0) {
-    allSubs.forEach(function(s) {
+  if (allSubcategories.length > 0) {
+    allSubcategories.forEach(function(s) {
       html += '<tr>';
       html += '<td class="strong">' + esc(s.name) + '</td>';
       html += '<td>' + esc(s.category_name || '—') + '</td>';
@@ -434,15 +1373,19 @@ async function loadSubcategories() {
 }
 
 function openSubcategoryModal() {
-  var catOpts = '<option value="">— Select Category —</option>';
+  var catOptions = '<option value="">— Select Category —</option>';
   allCategories.forEach(function(c) {
-    catOpts += '<option value="' + c.id + '">' + esc(c.name) + '</option>';
+    catOptions += '<option value="' + c.id + '">' + esc(c.name) + '</option>';
   });
+
+  var html = '';
+  html += '<div class="alert" id="_alert"></div>';
+  html += '<div class="fg"><label class="fl">Category *</label><select class="fs" id="_catId">' + catOptions + '</select></div>';
+  html += '<div class="fg"><label class="fl">Name *</label><input class="fi" id="_name" placeholder="Subcategory name"></div>';
+
   openModal(
     'New Subcategory',
-    '<div class="alert" id="_alert"></div>' +
-    '<div class="fg"><label class="fl">Category *</label><select class="fs" id="_catId">' + catOpts + '</select></div>' +
-    '<div class="fg"><label class="fl">Name *</label><input class="fi" id="_name" placeholder="Subcategory name"></div>',
+    html,
     '<button class="btn btn-primary" onclick="saveSubcategory()">Save</button><button class="btn btn-ghost" onclick="closeModal()">Cancel</button>'
   );
 }
@@ -450,36 +1393,51 @@ function openSubcategoryModal() {
 async function saveSubcategory() {
   var category_id = parseInt(document.getElementById('_catId').value);
   var name = document.getElementById('_name').value.trim();
-  if (!category_id || !name) { showAlert('Category and name required'); return; }
+
+  if (!category_id || !name) {
+    showAlert('Category and name are required');
+    return;
+  }
+
   var result = await api('POST', '/admin/subcategories', { category_id: category_id, name: name });
-  if (!result.ok) { showAlert(result.data.error); return; }
+
+  if (!result.ok) {
+    showAlert(result.data.error);
+    return;
+  }
+
   closeModal();
   loadSubcategories();
   showToast('Subcategory created');
 }
 
 async function deleteSubcategory(id) {
-  if (!confirm('Delete this subcategory?')) return;
+  if (!confirm('Delete this subcategory?')) {
+    return;
+  }
+
   await api('DELETE', '/admin/subcategories/' + id);
   loadSubcategories();
   showToast('Subcategory deleted');
 }
 
-// ═══ SETTINGS ═══
+// ═══════════════ SETTINGS ═══════════════
 async function loadSettings() {
   var result = await api('GET', '/admin/settings');
   var s = result.ok ? result.data : { site_title: 'The Signal', site_tagline: 'Smart Analysis & Insights' };
 
-  document.getElementById('view-settings').innerHTML =
-    '<div class="sec-head"><h2 class="sec-title">Site Settings</h2></div>' +
-    '<div class="card"><div style="padding:20px">' +
-    '<div class="alert" id="_alert"></div>' +
-    '<div class="fg"><label class="fl">Site Title</label><input class="fi" id="_title" value="' + esc(s.site_title) + '"></div>' +
-    '<div class="fg"><label class="fl">Tagline</label><input class="fi" id="_tagline" value="' + esc(s.site_tagline) + '"></div>' +
-    '<div class="fg"><label class="fl">Logo URL</label><input class="fi" id="_logo" value="' + esc(s.logo_url || '') + '" placeholder="https://i.ibb.co/..."></div>' +
-    '<div class="fg"><label class="fl">About Text</label><textarea class="fta" id="_about" style="min-height:100px">' + esc(s.about_text || '') + '</textarea></div>' +
-    '<button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>' +
-    '</div></div>';
+  var html = '';
+  html += '<div class="sec-head"><h2 class="sec-title">Site Settings</h2></div>';
+  html += '<div class="card"><div style="padding:20px">';
+  html += '<div class="alert" id="_alert"></div>';
+  html += '<div class="fg"><label class="fl">Site Title</label><input class="fi" id="_title" value="' + esc(s.site_title) + '"></div>';
+  html += '<div class="fg"><label class="fl">Tagline</label><input class="fi" id="_tagline" value="' + esc(s.site_tagline) + '"></div>';
+  html += '<div class="fg"><label class="fl">Logo URL</label><input class="fi" id="_logo" value="' + esc(s.logo_url || '') + '" placeholder="https://i.ibb.co/..."></div>';
+  html += '<div class="fg"><label class="fl">About Text</label><textarea class="fta" id="_about" style="min-height:100px">' + esc(s.about_text || '') + '</textarea></div>';
+  html += '<button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>';
+  html += '</div></div>';
+
+  document.getElementById('view-settings').innerHTML = html;
 }
 
 async function saveSettings() {
@@ -489,11 +1447,109 @@ async function saveSettings() {
     logo_url: document.getElementById('_logo').value.trim() || null,
     about_text: document.getElementById('_about').value.trim()
   });
-  if (!result.ok) { showAlert(result.data.error); return; }
+
+  if (!result.ok) {
+    var alertEl = document.getElementById('_alert');
+    if (alertEl) {
+      alertEl.className = 'alert alert-error show';
+      alertEl.textContent = result.data.error || 'Error saving settings';
+    }
+    return;
+  }
+
   showToast('Settings saved');
 }
 
-// Init
+// ═══════════════ IMGBB UPLOAD ═══════════════
+function createImageUploader(existingUrl) {
+  currentUploadedUrl = existingUrl || '';
+  
+  var html = '';
+  html += '<div class="upload-area" id="uploadArea" onclick="document.getElementById(\'fileInput\').click()">';
+  html += '<div style="font-size:1.5rem;margin-bottom:8px">📁</div>';
+  html += '<div style="font-size:.78rem;color:var(--gray)">Click to upload image</div>';
+  html += '<div style="font-size:.65rem;color:var(--gray);margin-top:4px">Max 32MB. Images only. Powered by ImgBB</div>';
+  html += '</div>';
+  html += '<input type="file" id="fileInput" accept="image/*" style="display:none" onchange="uploadToImgBB()">';
+  html += '<div class="upload-progress" id="uploadProgress"><div class="upload-progress-bar" id="uploadBar"></div></div>';
+  html += '<img id="imagePreview" class="upload-preview" src="' + (existingUrl || '') + '" style="' + (existingUrl ? 'display:block' : 'display:none') + '">';
+  html += '<button class="remove-image-btn" id="removeImageBtn" style="' + (existingUrl ? 'display:block' : 'display:none') + '" onclick="removeUploadedImage()">✕ Remove Image</button>';
+  html += '<input type="hidden" id="imageUrlInput" value="' + (existingUrl || '') + '">';
+  
+  return html;
+}
+
+async function uploadToImgBB() {
+  var fileInput = document.getElementById('fileInput');
+  var file = fileInput.files[0];
+  
+  if (!file) return;
+  
+  if (file.size > 32 * 1024 * 1024) {
+    alert('File too large. Maximum is 32MB.');
+    return;
+  }
+  
+  var progressDiv = document.getElementById('uploadProgress');
+  var progressBar = document.getElementById('uploadBar');
+  var uploadArea = document.getElementById('uploadArea');
+  
+  progressDiv.style.display = 'block';
+  progressBar.style.width = '20%';
+  uploadArea.style.opacity = '0.5';
+  
+  var formData = new FormData();
+  formData.append('image', file);
+  
+  try {
+    progressBar.style.width = '50%';
+    
+    var response = await fetch('https://api.imgbb.com/1/upload?key=' + IMGBB_API_KEY, {
+      method: 'POST',
+      body: formData
+    });
+    
+    var data = await response.json();
+    
+    if (data.success) {
+      var imageUrl = data.data.url;
+      currentUploadedUrl = imageUrl;
+      
+      document.getElementById('imageUrlInput').value = imageUrl;
+      document.getElementById('imagePreview').src = imageUrl;
+      document.getElementById('imagePreview').style.display = 'block';
+      document.getElementById('removeImageBtn').style.display = 'block';
+      document.getElementById('fileInput').value = '';
+      
+      progressBar.style.width = '100%';
+      
+      showToast('Image uploaded successfully!');
+    } else {
+      alert('Upload failed: ' + (data.error ? data.error.message : 'Unknown error'));
+    }
+  } catch (e) {
+    console.error('Upload error:', e);
+    alert('Network error. Please try again.');
+  } finally {
+    setTimeout(function() {
+      progressDiv.style.display = 'none';
+      progressBar.style.width = '0%';
+      uploadArea.style.opacity = '1';
+    }, 1500);
+  }
+}
+
+function removeUploadedImage() {
+  currentUploadedUrl = '';
+  document.getElementById('imageUrlInput').value = '';
+  document.getElementById('imagePreview').style.display = 'none';
+  document.getElementById('imagePreview').src = '';
+  document.getElementById('removeImageBtn').style.display = 'none';
+  document.getElementById('fileInput').value = '';
+  showToast('Image removed');
+}
+
+// ═══════════════ INIT ═══════════════
 loadDashboard();
 </script>
 </body>
