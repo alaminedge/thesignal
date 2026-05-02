@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Signal — Article</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cabinet+Grotesk:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05080f;--surface:#0b0f1a;--surface2:#111827;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --accent:#ff6b35;--accent2:#e55a2b;
+  --white:#f0f4f8;--gray:#7a8899;--gray2:#a0adb8;
+  --radius:9px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
+header{position:sticky;top:0;z-index:80;background:rgba(5,8,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px}
+.hdr{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.hdr-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;text-decoration:none;color:var(--white)}
+.hdr-logo em{font-style:italic;color:var(--accent)}
+
+.article{max-width:800px;margin:0 auto;padding:40px 24px}
+.breadcrumb{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gray);margin-bottom:20px}
+.breadcrumb a{color:var(--accent);text-decoration:none}
+.article-img{width:100%;max-height:400px;object-fit:cover;border-radius:var(--radius);margin-bottom:24px}
+.article-cat{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.article-title{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;line-height:1.2;margin-bottom:16px}
+.article-meta{font-family:'DM Mono',monospace;font-size:.64rem;color:var(--gray);margin-bottom:24px;display:flex;gap:20px;flex-wrap:wrap}
+.article-content{font-size:.92rem;line-height:1.8;color:var(--gray2)}
+.article-content h2{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--white);margin:24px 0 12px}
+.article-content blockquote{border-left:3px solid var(--accent);padding-left:16px;margin:16px 0;color:var(--gray);font-style:italic}
+
+.share-bar{display:flex;gap:10px;margin-top:32px;padding-top:20px;border-top:1px solid var(--border)}
+.share-btn{padding:8px 16px;border:1px solid var(--border2);color:var(--gray2);border-radius:20px;font-size:.7rem;cursor:pointer;text-decoration:none;transition:all .2s}
+.share-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+.related{margin-top:40px;padding-top:30px;border-top:2px solid var(--accent)}
+.related-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;margin-bottom:16px}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.related-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-decoration:none;color:var(--white);transition:all .2s}
+.related-card:hover{border-color:var(--accent)}
+.related-card h4{font-size:.82rem;margin-bottom:6px}
+.related-card p{font-size:.68rem;color:var(--gray)}
+
+footer{background:var(--surface);border-top:1px solid var(--border);padding:24px;text-align:center}
+footer p{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gray)}
+
+@media(max-width:600px){
+  .article-title{font-size:1.5rem}
+  .related-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="hdr">
+    <a href="/" class="hdr-logo">The <em>Signal</em></a>
+  </div>
+</header>
+
+<div class="article" id="articleContent">
+  <p style="color:var(--gray);text-align:center;padding:60px">Loading article...</p>
+</div>
+
+<footer><p>© 2024 The Signal · Smart Analysis & Insights</p></footer>
+
+<script>
+var slug = new URLSearchParams(location.search).get('slug');
+if (!slug) { window.location.href = '/'; }
+
+async function loadArticle() {
+  try {
+    var res = await fetch('/api/article/' + slug);
+    var data = await res.json();
+    if (!res.ok) { document.getElementById('articleContent').innerHTML = '<p style="text-align:center;padding:60px;color:var(--gray)">Article not found</p>'; return; }
+
+    var a = data.article;
+    document.title = a.title + ' — The Signal';
+
+    var html = '';
+    html += '<div class="breadcrumb"><a href="/">Home</a> › ' + (a.category_name || '') + (a.subcategory_name ? ' › ' + a.subcategory_name : '') + '</div>';
+    if (a.image_url) html += '<img src="' + a.image_url + '" class="article-img" alt="" onerror="this.style.display=\'none\'">';
+    html += '<div class="article-cat">' + (a.category_name || '') + (a.subcategory_name ? ' > ' + a.subcategory_name : '') + '</div>';
+    html += '<h1 class="article-title">' + a.title + '</h1>';
+    html += '<div class="article-meta"><span>✍️ ' + (a.author || 'The Signal') + '</span><span>🕐 ' + new Date(a.published_at || a.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) + '</span></div>';
+
+    // Convert markdown-like content to HTML
+    var content = a.content
+      .replace(/## (.+)/g, '<h2>$1</h2>')
+      .replace(/> (.+)/g, '<blockquote>$1</blockquote>')
+      .replace(/\n/g, '<br>');
+
+    html += '<div class="article-content">' + content + '</div>';
+
+    // Share buttons
+    var shareUrl = encodeURIComponent(window.location.href);
+    var shareTitle = encodeURIComponent(a.title);
+    html += '<div class="share-bar">';
+    html += '<a href="https://twitter.com/intent/tweet?url=' + shareUrl + '&text=' + shareTitle + '" target="_blank" class="share-btn">Twitter</a>';
+    html += '<a href="https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '" target="_blank" class="share-btn">Facebook</a>';
+    html += '<a href="https://www.linkedin.com/sharing/share-offsite/?url=' + shareUrl + '" target="_blank" class="share-btn">LinkedIn</a>';
+    html += '<button class="share-btn" onclick="navigator.clipboard.writeText(window.location.href);alert(\'Link copied!\')">Copy Link</button>';
+    html += '</div>';
+
+    // Related articles
+    if (data.related && data.related.length > 0) {
+      html += '<div class="related"><h3 class="related-title">Related Analysis</h3><div class="related-grid">';
+      data.related.forEach(function(r) {
+        html += '<a href="/article.html?slug=' + r.slug + '" class="related-card">';
+        html += '<h4>' + r.title + '</h4>';
+        html += '<p>✍️ ' + (r.author || 'The Signal') + '</p>';
+        html += '</a>';
+      });
+      html += '</div></div>';
+    }
+
+    document.getElementById('articleContent').innerHTML = html;
+  } catch(e) {
+    document.getElementById('articleContent').innerHTML = '<p style="text-align:center;padding:60px;color:var(--gray)">Error loading article</p>';
+  }
+}
+
+loadArticle();
+</script>
+</body>
+</html>
