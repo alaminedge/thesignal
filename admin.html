@@ -8,9 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 
-/* ══════════════════════════════════════════════════════════════
-   DESIGN TOKENS
-   ══════════════════════════════════════════════════════════════ */
 :root{
   --bg:#FAFAF9;
   --surface:#FFFFFF;
@@ -23,7 +20,6 @@
   --text:#1A1A1A;
   --text-secondary:#4A4A4A;
   --text-muted:#6B6B6B;
-  --text-light:#8A8A8A;
   --white:#FFFFFF;
   --red:#C44536;
   --red-light:rgba(196,69,54,0.08);
@@ -33,71 +29,111 @@
   --orange-light:rgba(212,129,43,0.08);
   --radius:6px;
   --radius-lg:10px;
-  --transition:0.2s cubic-bezier(0.4,0,0.2,1);
-  --sidebar-width:240px;
   --font-heading:'Playfair Display', Georgia, serif;
   --font-body:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono:'DM Mono', monospace;
 }
 
-*,*::before,*::after{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 
 body{
   font-family:var(--font-body);
   background:var(--bg);
   color:var(--text);
-  display:flex;
   min-height:100vh;
   font-size:15px;
   line-height:1.6;
 }
 
-/* ══════════════════════════════════════════════════════════════
-   SIDEBAR
-   ══════════════════════════════════════════════════════════════ */
-.sidebar{
-  width:var(--sidebar-width);
+/* ═══════════════ TOP BAR (Mobile Friendly) ═══════════════ */
+.topbar{
   background:var(--text);
   color:var(--white);
+  padding:14px 20px;
   display:flex;
-  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.topbar-brand{
+  font-family:var(--font-heading);
+  font-size:1rem;
+  font-weight:700;
+  letter-spacing:0.5px;
+}
+
+.topbar-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.btn-menu{
+  background:none;
+  border:none;
+  color:var(--white);
+  cursor:pointer;
+  padding:6px;
+  display:flex;
+  align-items:center;
+}
+
+.btn-menu svg{width:22px;height:22px;}
+
+.btn-view-site{
+  padding:6px 14px;
+  border:1px solid rgba(255,255,255,0.3);
+  color:var(--white);
+  border-radius:20px;
+  font-size:0.72rem;
+  text-decoration:none;
+  white-space:nowrap;
+}
+
+.btn-signout{
+  background:none;
+  border:1px solid rgba(255,255,255,0.2);
+  color:rgba(255,255,255,0.7);
+  padding:6px 12px;
+  border-radius:var(--radius);
+  font-size:0.7rem;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+/* ═══════════════ SIDEBAR OVERLAY (Mobile) ═══════════════ */
+.sidebar-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  z-index:200;
+  display:none;
+}
+
+.sidebar-overlay.open{display:block;}
+
+.sidebar{
   position:fixed;
   top:0;
   left:0;
   bottom:0;
-  z-index:60;
+  width:260px;
+  background:var(--text);
+  color:var(--white);
+  z-index:300;
+  transform:translateX(-100%);
+  transition:transform 0.25s ease;
+  display:flex;
+  flex-direction:column;
   overflow-y:auto;
 }
 
-.sidebar-brand{
-  padding:24px 20px 20px;
-  border-bottom:1px solid rgba(255,255,255,0.08);
-}
+.sidebar.open{transform:translateX(0);}
 
-.sidebar-brand h2{
-  font-family:var(--font-heading);
-  font-size:1.2rem;
-  font-weight:700;
-  color:var(--white);
-  letter-spacing:0.5px;
-}
-
-.sidebar-brand span{
-  font-family:var(--font-mono);
-  font-size:0.55rem;
-  text-transform:uppercase;
-  letter-spacing:0.1em;
-  color:rgba(255,255,255,0.3);
-  display:block;
-  margin-top:4px;
-}
-
-.sidebar-nav{
-  flex:1;
+.sidebar-section{
   padding:8px 0;
 }
 
@@ -106,386 +142,189 @@ body{
   font-size:0.55rem;
   text-transform:uppercase;
   letter-spacing:0.12em;
-  color:rgba(255,255,255,0.2);
-  padding:12px 20px 6px;
+  color:rgba(255,255,255,0.25);
+  padding:14px 20px 6px;
 }
 
 .sidebar-link{
   display:flex;
   align-items:center;
   gap:10px;
-  padding:10px 20px;
-  font-size:0.82rem;
+  padding:11px 20px;
+  font-size:0.84rem;
   font-weight:500;
-  color:rgba(255,255,255,0.5);
+  color:rgba(255,255,255,0.55);
   cursor:pointer;
   border:none;
   background:transparent;
   width:100%;
   text-align:left;
-  transition:all var(--transition);
+  transition:all 0.15s ease;
   border-left:2px solid transparent;
   font-family:var(--font-body);
 }
 
-.sidebar-link:hover{
-  color:rgba(255,255,255,0.8);
-  background:rgba(255,255,255,0.03);
+.sidebar-link:hover{color:var(--white);background:rgba(255,255,255,0.04);}
+.sidebar-link.active{color:var(--white);background:rgba(0,105,148,0.25);border-left-color:var(--accent);}
+
+.sidebar-link svg{width:16px;height:16px;flex-shrink:0;opacity:0.5;}
+.sidebar-link.active svg{opacity:1;}
+
+/* ═══════════════ MAIN CONTENT ═══════════════ */
+.main-content{
+  padding:20px;
+  max-width:1100px;
+  margin:0 auto;
 }
 
-.sidebar-link.active{
-  color:var(--white);
-  background:rgba(0,105,148,0.2);
-  border-left-color:var(--accent);
-}
+.view{display:none;}
+.view.active{display:block;animation:fadeIn 0.2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
 
-.sidebar-link svg{
-  width:16px;
-  height:16px;
-  flex-shrink:0;
-  opacity:0.5;
-}
-
-.sidebar-link.active svg{
-  opacity:1;
-}
-
-.sidebar-footer{
-  padding:16px 20px;
-  border-top:1px solid rgba(255,255,255,0.08);
-}
-
-.btn-signout{
-  width:100%;
-  padding:8px;
-  background:transparent;
-  border:1px solid rgba(255,255,255,0.15);
-  color:rgba(255,255,255,0.5);
-  border-radius:var(--radius);
-  font-family:var(--font-body);
-  font-size:0.75rem;
-  font-weight:500;
-  cursor:pointer;
-  transition:all var(--transition);
-}
-
-.btn-signout:hover{
-  border-color:var(--red);
-  color:var(--red);
-}
-
-/* ══════════════════════════════════════════════════════════════
-   MAIN CONTENT AREA
-   ══════════════════════════════════════════════════════════════ */
-.main{
-  margin-left:var(--sidebar-width);
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
-}
-
-.topbar{
-  height:56px;
-  padding:0 28px;
-  background:var(--white);
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:40;
-}
-
-.topbar-title{
-  font-family:var(--font-heading);
-  font-size:1.05rem;
-  font-weight:700;
-  color:var(--text);
-}
-
-.btn-view-site{
-  padding:6px 16px;
-  border:1px solid var(--border2);
-  color:var(--text-secondary);
-  border-radius:20px;
-  font-size:0.75rem;
-  text-decoration:none;
-  transition:all var(--transition);
-}
-
-.btn-view-site:hover{
-  border-color:var(--accent);
-  color:var(--accent);
-}
-
-.content{
-  padding:28px;
-  flex:1;
-}
-
-.view{
-  display:none;
-}
-
-.view.active{
-  display:block;
-  animation:fadeIn 0.25s ease;
-}
-
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(6px);}
-  to{opacity:1;transform:translateY(0);}
-}
-
-/* ══════════════════════════════════════════════════════════════
-   STATS CARDS
-   ══════════════════════════════════════════════════════════════ */
+/* ═══════════════ STATS ═══════════════ */
 .stats-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-  gap:14px;
-  margin-bottom:28px;
+  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:12px;
+  margin-bottom:24px;
 }
 
 .stat-card{
   background:var(--white);
   border:1px solid var(--border);
   border-radius:var(--radius-lg);
-  padding:18px 16px;
+  padding:16px;
 }
 
 .stat-label{
   font-family:var(--font-mono);
   font-size:0.58rem;
   text-transform:uppercase;
-  letter-spacing:0.08em;
+  letter-spacing:0.06em;
   color:var(--text-muted);
-  margin-bottom:8px;
+  margin-bottom:6px;
 }
 
 .stat-value{
   font-family:var(--font-heading);
-  font-size:2rem;
+  font-size:1.8rem;
   font-weight:700;
   color:var(--accent);
   line-height:1;
 }
 
-/* ══════════════════════════════════════════════════════════════
-   SECTION HEADER
-   ══════════════════════════════════════════════════════════════ */
+/* ═══════════════ SECTION HEAD ═══════════════ */
 .sec-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin-bottom:18px;
+  margin-bottom:16px;
   flex-wrap:wrap;
-  gap:12px;
+  gap:10px;
 }
 
 .sec-title{
   font-family:var(--font-heading);
-  font-size:1.2rem;
+  font-size:1.15rem;
   font-weight:700;
-  color:var(--text);
 }
 
-/* ══════════════════════════════════════════════════════════════
-   BUTTONS
-   ══════════════════════════════════════════════════════════════ */
+/* ═══════════════ BUTTONS ═══════════════ */
 .btn{
   font-family:var(--font-body);
   font-size:0.75rem;
   font-weight:600;
-  padding:8px 18px;
+  padding:9px 18px;
   border-radius:var(--radius);
   border:none;
   cursor:pointer;
-  transition:all var(--transition);
+  transition:all 0.15s ease;
   display:inline-flex;
   align-items:center;
   gap:6px;
-  letter-spacing:0.02em;
   white-space:nowrap;
 }
 
-.btn-primary{
-  background:var(--accent);
-  color:var(--white);
-}
+.btn-primary{background:var(--accent);color:var(--white);}
+.btn-primary:hover{background:var(--accent-dark);}
+.btn-ghost{background:transparent;color:var(--text-secondary);border:1.5px solid var(--border2);}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+.btn-danger{background:var(--red-light);color:var(--red);border:1.5px solid rgba(196,69,54,0.2);}
+.btn-danger:hover{background:var(--red);color:var(--white);}
+.btn-xs{padding:4px 10px;font-size:0.65rem;border-radius:4px;}
 
-.btn-primary:hover{
-  background:var(--accent-dark);
-  transform:translateY(-1px);
-}
-
-.btn-ghost{
-  background:transparent;
-  color:var(--text-secondary);
-  border:1.5px solid var(--border2);
-}
-
-.btn-ghost:hover{
-  border-color:var(--accent);
-  color:var(--accent);
-}
-
-.btn-danger{
-  background:var(--red-light);
-  color:var(--red);
-  border:1.5px solid rgba(196,69,54,0.2);
-}
-
-.btn-danger:hover{
-  background:var(--red);
-  color:var(--white);
-  border-color:var(--red);
-}
-
-.btn-xs{
-  padding:4px 10px;
-  font-size:0.65rem;
-  border-radius:4px;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   TABLES
-   ══════════════════════════════════════════════════════════════ */
+/* ═══════════════ TABLE ═══════════════ */
 .card{
   background:var(--white);
   border:1px solid var(--border);
   border-radius:var(--radius-lg);
   overflow:hidden;
-  margin-bottom:18px;
+  margin-bottom:16px;
 }
 
-.table-wrap{
-  overflow-x:auto;
-}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
 
-table{
-  width:100%;
-  border-collapse:collapse;
-}
+table{width:100%;border-collapse:collapse;min-width:600px;}
 
-thead tr{
-  background:var(--surface2);
-  border-bottom:2px solid var(--border);
-}
+thead tr{background:var(--surface2);border-bottom:2px solid var(--border);}
 
 th{
-  padding:10px 14px;
+  padding:10px 12px;
   text-align:left;
-  font-family:var(--font-mono);
-  font-size:0.58rem;
-  text-transform:uppercase;
-  letter-spacing:0.08em;
-  color:var(--text-muted);
-  white-space:nowrap;
-  font-weight:500;
-}
-
-td{
-  padding:10px 14px;
-  font-size:0.82rem;
-  border-bottom:1px solid var(--border);
-  vertical-align:middle;
-  color:var(--text-secondary);
-}
-
-td.strong{
-  font-weight:600;
-  color:var(--text);
-}
-
-tr:last-child td{
-  border-bottom:none;
-}
-
-tr:hover td{
-  background:var(--accent-light);
-  cursor:pointer;
-}
-
-.td-max{
-  max-width:200px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.empty-row td{
-  text-align:center;
-  padding:40px;
-  color:var(--text-light);
-  font-style:italic;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   BADGES
-   ══════════════════════════════════════════════════════════════ */
-.badge{
   font-family:var(--font-mono);
   font-size:0.56rem;
   text-transform:uppercase;
   letter-spacing:0.06em;
+  color:var(--text-muted);
+  white-space:nowrap;
+}
+
+td{
+  padding:10px 12px;
+  font-size:0.8rem;
+  border-bottom:1px solid var(--border);
+  color:var(--text-secondary);
+}
+
+td.strong{font-weight:600;color:var(--text);}
+tr:last-child td{border-bottom:none;}
+
+.empty-row td{text-align:center;padding:40px;color:var(--text-muted);font-style:italic;}
+
+/* ═══════════════ BADGES ═══════════════ */
+.badge{
+  font-family:var(--font-mono);
+  font-size:0.54rem;
+  text-transform:uppercase;
+  letter-spacing:0.05em;
   padding:3px 8px;
   border-radius:20px;
   display:inline-block;
 }
 
-.badge-published{
-  background:var(--green-light);
-  color:var(--green);
-  border:1px solid rgba(45,140,107,0.2);
-}
+.badge-published{background:var(--green-light);color:var(--green);}
+.badge-draft{background:rgba(107,107,107,0.06);color:var(--text-muted);}
+.badge-pinned{background:var(--orange-light);color:var(--orange);}
+.badge-hero{background:rgba(0,105,148,0.1);color:var(--accent);}
+.badge-feed{background:var(--green-light);color:var(--green);}
+.badge-visual{background:var(--orange-light);color:var(--orange);}
+.badge-spotlight{background:var(--red-light);color:var(--red);}
 
-.badge-draft{
-  background:rgba(107,107,107,0.06);
-  color:var(--text-muted);
-  border:1px solid var(--border);
-}
-
-.badge-pinned{
-  background:var(--orange-light);
-  color:var(--orange);
-  border:1px solid rgba(212,129,43,0.2);
-}
-
-.badge-hero{background:rgba(0,105,148,0.1);color:var(--accent);border:1px solid rgba(0,105,148,0.2);}
-.badge-feed{background:var(--green-light);color:var(--green);border:1px solid rgba(45,140,107,0.2);}
-.badge-visual{background:var(--orange-light);color:var(--orange);border:1px solid rgba(212,129,43,0.2);}
-.badge-spotlight{background:var(--red-light);color:var(--red);border:1px solid rgba(196,69,54,0.2);}
-
-/* ══════════════════════════════════════════════════════════════
-   FORMS
-   ══════════════════════════════════════════════════════════════ */
-.form-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
-}
-
-.form-group{
-  margin-bottom:16px;
-}
-
+/* ═══════════════ FORMS ═══════════════ */
+.form-group{margin-bottom:14px;}
 .form-label{
   display:block;
   font-family:var(--font-mono);
-  font-size:0.6rem;
+  font-size:0.58rem;
   text-transform:uppercase;
-  letter-spacing:0.08em;
+  letter-spacing:0.06em;
   color:var(--text-muted);
-  margin-bottom:6px;
-  font-weight:500;
+  margin-bottom:5px;
 }
 
 .form-input,.form-select,.form-textarea{
   width:100%;
-  padding:10px 14px;
+  padding:10px 12px;
   background:var(--white);
   border:1.5px solid var(--border2);
   border-radius:var(--radius);
@@ -493,7 +332,7 @@ tr:hover td{
   font-size:0.84rem;
   color:var(--text);
   outline:none;
-  transition:all var(--transition);
+  transition:border-color 0.15s ease;
 }
 
 .form-input:focus,.form-select:focus,.form-textarea:focus{
@@ -506,20 +345,17 @@ tr:hover td{
   appearance:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%236B6B6B'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat:no-repeat;
-  background-position:right 12px center;
-  padding-right:36px;
+  background-position:right 10px center;
+  padding-right:32px;
 }
 
-.form-textarea{
-  resize:vertical;
-  min-height:200px;
-  line-height:1.6;
-}
+.form-textarea{resize:vertical;min-height:180px;line-height:1.6;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 
 .form-hint{
   font-family:var(--font-mono);
-  font-size:0.6rem;
-  color:var(--text-light);
+  font-size:0.58rem;
+  color:var(--text-muted);
   margin-top:4px;
 }
 
@@ -527,51 +363,29 @@ tr:hover td{
   display:flex;
   align-items:center;
   gap:8px;
-  font-size:0.84rem;
+  font-size:0.82rem;
   color:var(--text-secondary);
   cursor:pointer;
 }
 
-input[type=checkbox]{
-  accent-color:var(--accent);
-  width:15px;
-  height:15px;
-  cursor:pointer;
-}
+input[type=checkbox]{accent-color:var(--accent);width:15px;height:15px;cursor:pointer;}
 
-/* ══════════════════════════════════════════════════════════════
-   IMAGE UPLOAD
-   ══════════════════════════════════════════════════════════════ */
+/* ═══════════════ IMAGE UPLOAD ═══════════════ */
 .upload-area{
   border:2px dashed var(--border2);
   border-radius:var(--radius);
-  padding:28px;
+  padding:24px;
   text-align:center;
   cursor:pointer;
-  transition:all var(--transition);
-  margin-bottom:8px;
+  transition:all 0.15s ease;
   background:var(--surface2);
 }
 
-.upload-area:hover{
-  border-color:var(--accent);
-  background:var(--accent-light);
-}
-
-.upload-area svg{
-  width:32px;
-  height:32px;
-  color:var(--text-muted);
-  margin-bottom:8px;
-}
-
-.upload-area:hover svg{
-  color:var(--accent);
-}
+.upload-area:hover{border-color:var(--accent);background:var(--accent-light);}
 
 .upload-preview{
   width:100%;
-  max-height:220px;
+  max-height:200px;
   object-fit:cover;
   border-radius:var(--radius);
   margin-top:8px;
@@ -602,44 +416,24 @@ input[type=checkbox]{
   cursor:pointer;
   background:none;
   border:none;
-  font-family:var(--font-body);
 }
 
-.btn-remove-image:hover{
-  text-decoration:underline;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   ALERT / TOAST
-   ══════════════════════════════════════════════════════════════ */
+/* ═══════════════ ALERT / TOAST ═══════════════ */
 .alert{
   padding:10px 14px;
   border-radius:var(--radius);
   font-size:0.78rem;
-  margin-bottom:14px;
+  margin-bottom:12px;
   display:none;
 }
 
-.alert.show{
-  display:block;
-}
-
-.alert-error{
-  background:var(--red-light);
-  border:1px solid rgba(196,69,54,0.25);
-  color:var(--red);
-}
-
-.alert-success{
-  background:var(--green-light);
-  border:1px solid rgba(45,140,107,0.25);
-  color:var(--green);
-}
+.alert.show{display:block;}
+.alert-error{background:var(--red-light);border:1px solid rgba(196,69,54,0.25);color:var(--red);}
 
 .toast{
   position:fixed;
-  bottom:24px;
-  right:24px;
+  bottom:20px;
+  right:20px;
   padding:12px 20px;
   border-radius:var(--radius);
   font-size:0.82rem;
@@ -651,58 +445,35 @@ input[type=checkbox]{
   pointer-events:none;
 }
 
-.toast.show{
-  transform:translateY(0);
-  opacity:1;
-}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast-success{background:var(--green-light);border:1px solid rgba(45,140,107,0.3);color:var(--green);}
+.toast-error{background:var(--red-light);border:1px solid rgba(196,69,54,0.3);color:var(--red);}
 
-.toast-success{
-  background:var(--green-light);
-  border:1px solid rgba(45,140,107,0.3);
-  color:var(--green);
-}
-
-.toast-error{
-  background:var(--red-light);
-  border:1px solid rgba(196,69,54,0.3);
-  color:var(--red);
-}
-
-/* ══════════════════════════════════════════════════════════════
-   MODAL
-   ══════════════════════════════════════════════════════════════ */
+/* ═══════════════ MODAL ═══════════════ */
 .modal-overlay{
   position:fixed;
   inset:0;
   background:rgba(0,0,0,0.5);
-  z-index:200;
+  z-index:400;
   display:none;
   place-items:center;
-  padding:20px;
+  padding:16px;
 }
 
-.modal-overlay.open{
-  display:grid;
-}
+.modal-overlay.open{display:grid;}
 
 .modal{
   background:var(--white);
   border-radius:var(--radius-lg);
-  max-width:800px;
+  max-width:750px;
   width:100%;
-  max-height:90vh;
+  max-height:85vh;
   overflow-y:auto;
-  animation:slideUp 0.25s cubic-bezier(0.34,1.3,0.64,1);
   box-shadow:0 20px 60px rgba(0,0,0,0.15);
 }
 
-@keyframes slideUp{
-  from{opacity:0;transform:translateY(16px) scale(0.97);}
-  to{opacity:1;transform:translateY(0) scale(1);}
-}
-
 .modal-head{
-  padding:20px 24px 16px;
+  padding:16px 20px;
   border-bottom:1px solid var(--border);
   display:flex;
   align-items:center;
@@ -713,68 +484,76 @@ input[type=checkbox]{
   z-index:1;
 }
 
-.modal-head h3{
-  font-family:var(--font-heading);
-  font-size:1.1rem;
-  font-weight:700;
-}
+.modal-head h3{font-family:var(--font-heading);font-size:1rem;font-weight:700;}
 
 .modal-close{
   background:var(--surface2);
   border:none;
-  width:30px;
-  height:30px;
+  width:28px;
+  height:28px;
   border-radius:50%;
   cursor:pointer;
   display:flex;
   align-items:center;
   justify-content:center;
   color:var(--text-muted);
-  transition:all var(--transition);
+  font-size:1rem;
 }
 
-.modal-close:hover{
-  background:var(--border2);
-  color:var(--text);
+.modal-body{padding:16px 20px;}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;}
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media(min-width:768px){
+  .topbar{display:none;}
+  .sidebar{transform:translateX(0);position:fixed;}
+  .sidebar-overlay{display:none !important;}
+  .main-content{margin-left:260px;padding:28px;}
+  .form-row{grid-template-columns:1fr 1fr;}
 }
 
-.modal-body{
-  padding:24px;
-}
-
-.modal-footer{
-  padding:16px 24px;
-  border-top:1px solid var(--border);
-  display:flex;
-  gap:10px;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   RESPONSIVE
-   ══════════════════════════════════════════════════════════════ */
-@media(max-width:768px){
-  .sidebar{display:none;}
-  .main{margin-left:0;}
+@media(max-width:767px){
+  .main-content{padding:14px;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
   .form-row{grid-template-columns:1fr;}
-  .content{padding:16px;}
+  .modal{padding:0;max-height:90vh;}
+  .modal-body{padding:12px 14px;}
+  .modal-head{padding:12px 14px;}
+  .modal-footer{padding:12px 14px;}
 }
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════════════════
-   SIDEBAR
-   ══════════════════════════════════════════════════════════════ -->
-<aside class="sidebar">
-  <div class="sidebar-brand">
-    <h2>The Pacific Signal</h2>
-    <span>Admin Panel</span>
+<!-- ═══════════════ MOBILE TOP BAR ═══════════════ -->
+<div class="topbar">
+  <span class="topbar-brand">The Pacific Signal</span>
+  <div class="topbar-actions">
+    <a href="/" target="_blank" class="btn-view-site">View Site</a>
+    <button class="btn-menu" onclick="toggleSidebar()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
   </div>
-  <nav class="sidebar-nav">
+</div>
+
+<!-- ═══════════════ SIDEBAR OVERLAY ═══════════════ -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div style="padding:20px;border-bottom:1px solid rgba(255,255,255,0.08)">
+    <div style="font-family:var(--font-heading);font-size:1.1rem;font-weight:700">The Pacific Signal</div>
+    <div style="font-family:var(--font-mono);font-size:0.5rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-top:2px">Admin Panel</div>
+  </div>
+
+  <div class="sidebar-section">
     <button class="sidebar-link active" data-view="dashboard" onclick="showView('dashboard')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
       Dashboard
     </button>
+  </div>
+
+  <div class="sidebar-section">
     <div class="sidebar-section-title">Content</div>
     <button class="sidebar-link" data-view="articles" onclick="showView('articles')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -784,80 +563,57 @@ input[type=checkbox]{
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       Categories
     </button>
+  </div>
+
+  <div class="sidebar-section">
     <div class="sidebar-section-title">Settings</div>
     <button class="sidebar-link" data-view="settings" onclick="showView('settings')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       Settings
     </button>
-  </nav>
-  <div class="sidebar-footer">
-    <button class="btn-signout" onclick="logout()">Sign Out</button>
+  </div>
+
+  <div style="padding:14px 20px;margin-top:auto;border-top:1px solid rgba(255,255,255,0.08)">
+    <button class="btn-signout" onclick="logout()" style="width:100%">Sign Out</button>
   </div>
 </aside>
 
-<!-- ══════════════════════════════════════════════════════════════
-   MAIN
-   ══════════════════════════════════════════════════════════════ -->
-<main class="main">
-  <div class="topbar">
-    <span class="topbar-title" id="topbarTitle">Dashboard</span>
-    <a href="/" target="_blank" class="btn-view-site">View Site</a>
-  </div>
-  <div class="content">
-    <div class="view active" id="view-dashboard"></div>
-    <div class="view" id="view-articles"></div>
-    <div class="view" id="view-categories"></div>
-    <div class="view" id="view-settings"></div>
-  </div>
-</main>
+<!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+<div class="main-content" id="mainContent">
+  <div class="view active" id="view-dashboard"></div>
+  <div class="view" id="view-articles"></div>
+  <div class="view" id="view-categories"></div>
+  <div class="view" id="view-settings"></div>
+</div>
 
-<!-- ══════════════════════════════════════════════════════════════
-   MODAL
-   ══════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════ MODAL ═══════════════ -->
 <div class="modal-overlay" id="gModal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-head">
       <h3 id="gModalTitle"></h3>
-      <button class="modal-close" onclick="closeModal()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
+      <button class="modal-close" onclick="closeModal()">&#10005;</button>
     </div>
     <div class="modal-body" id="gModalBody"></div>
     <div class="modal-footer" id="gModalFooter"></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════
-   TOAST
-   ══════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════ TOAST ═══════════════ -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════════════════════════
-// AUTH CHECK
-// ══════════════════════════════════════════════════════════════
+// ═══════════════ AUTH ═══════════════
 var token = localStorage.getItem('pacific_signal_token');
 var admin = JSON.parse(localStorage.getItem('pacific_signal_admin') || 'null');
+if (!token) { window.location.href = '/signin.html'; }
 
-if (!token) {
-  window.location.href = '/signin.html';
-}
-
-// ══════════════════════════════════════════════════════════════
-// GLOBAL STATE
-// ══════════════════════════════════════════════════════════════
 var allArticles = [];
 var allCategories = [];
 var IMGBB_API_KEY = '4a780b9806217405482ea7632dac862b';
 var currentUploadedImageUrl = '';
 
-// ══════════════════════════════════════════════════════════════
-// HELPERS
-// ══════════════════════════════════════════════════════════════
-function logout() {
-  localStorage.clear();
-  window.location.href = '/signin.html';
-}
+// ═══════════════ HELPERS ═══════════════
+function logout() { localStorage.clear(); window.location.href = '/signin.html'; }
 
 function showToast(msg, type) {
   type = type || 'success';
@@ -882,10 +638,7 @@ async function api(method, path, body) {
   try {
     var opts = {
       method: method,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      }
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
     };
     if (body) opts.body = JSON.stringify(body);
     var res = await fetch('/api' + path, opts);
@@ -897,9 +650,18 @@ async function api(method, path, body) {
   }
 }
 
-// ══════════════════════════════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════════════════════════════
+// ═══════════════ SIDEBAR ═══════════════
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+// ═══════════════ NAVIGATION ═══════════════
 function showView(id) {
   document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
   document.querySelectorAll('.sidebar-link').forEach(function(b) { b.classList.remove('active'); });
@@ -907,11 +669,12 @@ function showView(id) {
   if (viewEl) viewEl.classList.add('active');
   var navBtn = document.querySelector('.sidebar-link[data-view="' + id + '"]');
   if (navBtn) navBtn.classList.add('active');
-  document.getElementById('topbarTitle').textContent = id.charAt(0).toUpperCase() + id.slice(1);
+  closeSidebar();
   var loaders = { dashboard: loadDashboard, articles: loadArticles, categories: loadCategories, settings: loadSettings };
   if (loaders[id]) loaders[id]();
 }
 
+// ═══════════════ MODAL ═══════════════
 function openModal(title, bodyHTML, footerHTML) {
   document.getElementById('gModalTitle').textContent = title;
   document.getElementById('gModalBody').innerHTML = bodyHTML;
@@ -923,18 +686,15 @@ function closeModal() {
   document.getElementById('gModal').classList.remove('open');
 }
 
-function showAlert(msg, type) {
-  type = type || 'error';
+function showAlert(msg) {
   var el = document.getElementById('_alert');
   if (el) {
-    el.className = 'alert alert-' + type + ' show';
+    el.className = 'alert alert-error show';
     el.textContent = msg;
   }
 }
 
-// ══════════════════════════════════════════════════════════════
-// DASHBOARD
-// ══════════════════════════════════════════════════════════════
+// ═══════════════ DASHBOARD ═══════════════
 async function loadDashboard() {
   var result = await api('GET', '/admin/stats');
   var stats = result.ok ? result.data : { total_articles: 0, published_articles: 0, categories: 0, pinned_articles: 0, total_subscribers: 0 };
@@ -947,22 +707,34 @@ async function loadDashboard() {
   html += '<div class="stat-card"><div class="stat-label">Subscribers</div><div class="stat-value">' + stats.total_subscribers + '</div></div>';
   html += '</div>';
 
+  // Quick guide
+  html += '<div class="card" style="padding:20px">';
+  html += '<h3 style="font-family:var(--font-heading);font-size:1rem;margin-bottom:8px">Quick Guide</h3>';
+  html += '<p style="color:var(--text-secondary);font-size:0.82rem;line-height:1.6">';
+  html += '1. Go to <strong>Articles</strong> to create your first article.<br>';
+  html += '2. Set the <strong>Display Block</strong> to choose where it appears on the homepage.<br>';
+  html += '3. Use <strong>ImgBB upload</strong> to add images directly.<br>';
+  html += '4. <strong>Pin</strong> important articles (max 2).<br>';
+  html += '5. Check <strong>Categories</strong> to manage topics.';
+  html += '</p></div>';
+
   document.getElementById('view-dashboard').innerHTML = html;
 }
 
-// ══════════════════════════════════════════════════════════════
-// ARTICLES
-// ══════════════════════════════════════════════════════════════
+// ═══════════════ ARTICLES ═══════════════
 async function loadArticles() {
+  // Load categories FIRST
   var catResult = await api('GET', '/admin/categories');
   allCategories = catResult.ok ? catResult.data : [];
+  console.log('Categories loaded:', allCategories.length);
 
+  // Then load articles
   var result = await api('GET', '/admin/articles');
   allArticles = result.ok ? result.data : [];
 
   var html = '<div class="sec-head"><h2 class="sec-title">Articles (' + allArticles.length + ')</h2><button class="btn btn-primary" onclick="openArticleModal()">+ New Article</button></div>';
   html += '<div class="card"><div class="table-wrap"><table>';
-  html += '<thead><tr><th>Title</th><th>Author</th><th>Category</th><th>Block</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
+  html += '<thead><tr><th>Title</th><th>Category</th><th>Block</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
 
   if (allArticles.length > 0) {
     allArticles.forEach(function(a) {
@@ -971,15 +743,13 @@ async function loadArticles() {
       if (a.display_block === 'hero') { blockLabel = 'Hero'; blockClass = 'badge-hero'; }
       else if (a.display_block === 'feed') { blockLabel = 'Feed'; blockClass = 'badge-feed'; }
       else if (a.display_block === 'visual') { blockLabel = 'Visual'; blockClass = 'badge-visual'; }
-      else if (a.display_block === 'spotlight') { blockLabel = 'Spotlight'; blockClass = 'badge-spotlight'; }
+      else if (a.display_block === 'spotlight') { blockLabel = 'Spot'; blockClass = 'badge-spotlight'; }
 
       html += '<tr>';
-      html += '<td class="strong td-max">' + (a.is_pinned ? '[PINNED] ' : '') + escapeHTML(a.title) + '</td>';
-      html += '<td>' + escapeHTML(a.author || 'TPS') + '</td>';
+      html += '<td class="strong">' + (a.is_pinned ? '[PIN] ' : '') + escapeHTML(a.title) + '</td>';
       html += '<td>' + escapeHTML(a.category_name || '---') + '</td>';
       html += '<td>' + (blockLabel !== '---' ? '<span class="badge ' + blockClass + '">' + blockLabel + '</span>' : '---') + '</td>';
-      html += '<td><span class="badge ' + (a.is_published ? 'badge-published' : 'badge-draft') + '">' + (a.is_published ? 'Published' : 'Draft') + '</span></td>';
-      html += '<td style="font-size:0.7rem">' + formatDate(a.published_at || a.created_at) + '</td>';
+      html += '<td><span class="badge ' + (a.is_published ? 'badge-published' : 'badge-draft') + '">' + (a.is_published ? 'Live' : 'Draft') + '</span></td>';
       html += '<td>';
       html += '<button class="btn btn-ghost btn-xs" onclick="openArticleModal(' + a.id + ')">Edit</button> ';
       html += '<button class="btn btn-danger btn-xs" onclick="deleteArticle(' + a.id + ')">Del</button>';
@@ -987,118 +757,70 @@ async function loadArticles() {
       html += '</tr>';
     });
   } else {
-    html += '<tr class="empty-row"><td colspan="7">No articles yet. Create your first article.</td></tr>';
+    html += '<tr class="empty-row"><td colspan="5">No articles yet. Click "+ New Article" to start.</td></tr>';
   }
 
   html += '</tbody></table></div></div>';
   document.getElementById('view-articles').innerHTML = html;
 }
 
-// ══════════════════════════════════════════════════════════════
-// ARTICLE MODAL
-// ══════════════════════════════════════════════════════════════
+// ═══════════════ ARTICLE MODAL ═══════════════
 function openArticleModal(id) {
   var article = id ? allArticles.find(function(x) { return x.id === id; }) : null;
   currentUploadedImageUrl = article ? (article.image_url || '') : '';
 
   var categoryOptions = '<option value="">-- Select Category --</option>';
-  allCategories.forEach(function(c) {
-    var sel = (article && article.category_id === c.id) ? ' selected' : '';
-    categoryOptions += '<option value="' + c.id + '"' + sel + '>' + escapeHTML(c.name) + '</option>';
-  });
+  if (allCategories && allCategories.length > 0) {
+    allCategories.forEach(function(c) {
+      var selected = (article && article.category_id === c.id) ? ' selected' : '';
+      categoryOptions += '<option value="' + c.id + '"' + selected + '>' + escapeHTML(c.name) + '</option>';
+    });
+  }
 
   var html = '';
   html += '<div class="alert" id="_alert"></div>';
   html += '<input type="hidden" id="_id" value="' + (article ? article.id : '') + '">';
 
-  // Title
-  html += '<div class="form-group">';
-  html += '<label class="form-label">Title *</label>';
-  html += '<input class="form-input" id="_title" value="' + escapeHTML(article ? article.title : '') + '" placeholder="Article title" oninput="autoSlug()">';
-  html += '</div>';
+  html += '<div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="_title" value="' + escapeHTML(article ? article.title : '') + '" placeholder="Article title" oninput="autoSlug()"></div>';
 
-  // Slug
-  html += '<div class="form-group">';
-  html += '<label class="form-label">Slug (auto-generated if empty)</label>';
-  html += '<input class="form-input" id="_slug" value="' + escapeHTML(article ? article.slug : '') + '" placeholder="Auto-generated from title">';
-  html += '<span class="form-hint">Leave empty to auto-generate. Must be unique.</span>';
-  html += '</div>';
+  html += '<div class="form-group"><label class="form-label">Slug (auto if empty)</label><input class="form-input" id="_slug" value="' + escapeHTML(article ? article.slug : '') + '" placeholder="Auto-generated"><span class="form-hint">Leave empty to auto-generate</span></div>';
 
-  // Author + Category
   html += '<div class="form-row">';
-  html += '<div class="form-group">';
-  html += '<label class="form-label">Author</label>';
-  html += '<input class="form-input" id="_author" value="' + escapeHTML(article ? article.author : 'The Pacific Signal') + '" placeholder="Author name">';
-  html += '</div>';
-  html += '<div class="form-group">';
-  html += '<label class="form-label">Category</label>';
-  html += '<select class="form-select" id="_category">' + categoryOptions + '</select>';
-  html += '</div>';
+  html += '<div class="form-group"><label class="form-label">Author</label><input class="form-input" id="_author" value="' + escapeHTML(article ? article.author : 'The Pacific Signal') + '"></div>';
+  html += '<div class="form-group"><label class="form-label">Category</label><select class="form-select" id="_category">' + categoryOptions + '</select></div>';
   html += '</div>';
 
-  // Excerpt
-  html += '<div class="form-group">';
-  html += '<label class="form-label">Excerpt (shown in article cards)</label>';
-  html += '<textarea class="form-textarea" id="_excerpt" style="min-height:60px" placeholder="Short summary (max 200 characters)" maxlength="200">' + escapeHTML(article ? article.excerpt : '') + '</textarea>';
-  html += '<span class="form-hint" id="_excerptCount">' + (article && article.excerpt ? article.excerpt.length : 0) + '/200</span>';
+  html += '<div class="form-group"><label class="form-label">Excerpt (card preview)</label><textarea class="form-textarea" id="_excerpt" style="min-height:50px" placeholder="Short summary (max 200 chars)" maxlength="200">' + escapeHTML(article ? article.excerpt : '') + '</textarea></div>';
+
+  html += '<div class="form-group"><label class="form-label">Featured Image</label>';
+  html += '<div class="upload-area" onclick="document.getElementById(\'fileInput\').click()"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px">Click to upload (ImgBB)</div></div>';
+  html += '<input type="file" id="fileInput" accept="image/*" style="display:none" onchange="uploadToImgBB()">';
+  html += '<div class="upload-progress" id="uploadProgress"><div class="upload-progress-bar" id="uploadBar"></div></div>';
+  html += '<img id="imagePreview" class="upload-preview" src="' + (article ? article.image_url || '' : '') + '" style="' + (article && article.image_url ? 'display:block' : 'display:none') + '">';
+  html += '<button class="btn-remove-image" id="removeImageBtn" style="' + (article && article.image_url ? 'display:block' : 'display:none') + '" onclick="removeUploadedImage()">Remove Image</button>';
+  html += '<input type="hidden" id="imageUrlInput" value="' + (article ? article.image_url || '' : '') + '">';
   html += '</div>';
 
-  // Image Upload
-  html += '<div class="form-group">';
-  html += '<label class="form-label">Featured Image</label>';
-  html += createImageUploader(article ? article.image_url : '');
-  html += '</div>';
+  html += '<div class="form-group"><label class="form-label">Content *</label><textarea class="form-textarea" id="_content" placeholder="Write your article...">' + escapeHTML(article ? article.content : '') + '</textarea></div>';
 
-  // Content
-  html += '<div class="form-group">';
-  html += '<label class="form-label">Content *</label>';
-  html += '<textarea class="form-textarea" id="_content" placeholder="Write your article...">' + escapeHTML(article ? article.content : '') + '</textarea>';
-  html += '</div>';
+  html += '<div class="form-group"><label class="form-label">Display Block</label><select class="form-select" id="_block"><option value="">-- None --</option><option value="hero"' + (article && article.display_block === 'hero' ? ' selected' : '') + '>Block A: Hero</option><option value="feed"' + (article && article.display_block === 'feed' ? ' selected' : '') + '>Block B: Feed</option><option value="visual"' + (article && article.display_block === 'visual' ? ' selected' : '') + '>Block C: Visual</option><option value="spotlight"' + (article && article.display_block === 'spotlight' ? ' selected' : '') + '>Block D: Spotlight</option></select></div>';
 
-  // Display Block
-  html += '<div class="form-group">';
-  html += '<label class="form-label">Display Block (Rhythm of the Scroll)</label>';
-  html += '<select class="form-select" id="_block">';
-  html += '<option value="">-- None (not displayed on homepage) --</option>';
-  html += '<option value="hero"' + (article && article.display_block === 'hero' ? ' selected' : '') + '>Block A: Hero (main story, full width)</option>';
-  html += '<option value="feed"' + (article && article.display_block === 'feed' ? ' selected' : '') + '>Block B: Intelligence Feed (quick headlines)</option>';
-  html += '<option value="visual"' + (article && article.display_block === 'visual' ? ' selected' : '') + '>Block C: Visual Break (large image)</option>';
-  html += '<option value="spotlight"' + (article && article.display_block === 'spotlight' ? ' selected' : '') + '>Block D: Category Spotlight</option>';
-  html += '</select>';
-  html += '</div>';
+  html += '<div class="form-group" id="_spotlightLabelWrap" style="display:' + (article && article.display_block === 'spotlight' ? 'block' : 'none') + '"><label class="form-label">Spotlight Label</label><input class="form-input" id="_spotlightLabel" value="' + escapeHTML(article ? article.spotlight_label : '') + '" placeholder="e.g. Geopolitics Focus"></div>';
 
-  // Spotlight Label
-  html += '<div class="form-group" id="_spotlightLabelWrap" style="display:' + (article && article.display_block === 'spotlight' ? 'block' : 'none') + '">';
-  html += '<label class="form-label">Spotlight Label (custom title for Block D)</label>';
-  html += '<input class="form-input" id="_spotlightLabel" value="' + escapeHTML(article ? article.spotlight_label : '') + '" placeholder="e.g. Geopolitics Focus, Tech Strategy">';
-  html += '</div>';
-
-  // Toggles
-  html += '<div style="display:flex;gap:24px;margin-top:8px">';
-  html += '<label class="toggle-row"><input type="checkbox" id="_pinned"' + (article && article.is_pinned ? ' checked' : '') + '>Pin Article (max 2)</label>';
+  html += '<div style="display:flex;gap:20px;flex-wrap:wrap">';
+  html += '<label class="toggle-row"><input type="checkbox" id="_pinned"' + (article && article.is_pinned ? ' checked' : '') + '>Pin (max 2)</label>';
   html += '<label class="toggle-row"><input type="checkbox" id="_published"' + (!article || article.is_published ? ' checked' : '') + '>Published</label>';
   html += '</div>';
 
-  openModal(
-    article ? 'Edit Article' : 'New Article',
-    html,
+  openModal(article ? 'Edit Article' : 'New Article', html,
     '<button class="btn btn-primary" onclick="saveArticle()">Save Article</button><button class="btn btn-ghost" onclick="closeModal()">Cancel</button>'
   );
 
-  // Wire up block selector
   setTimeout(function() {
     var blockSelect = document.getElementById('_block');
-    var spotlightWrap = document.getElementById('_spotlightLabelWrap');
-    if (blockSelect && spotlightWrap) {
+    if (blockSelect) {
       blockSelect.addEventListener('change', function() {
-        spotlightWrap.style.display = this.value === 'spotlight' ? 'block' : 'none';
-      });
-    }
-    var excerptEl = document.getElementById('_excerpt');
-    if (excerptEl) {
-      excerptEl.addEventListener('input', function() {
-        var countEl = document.getElementById('_excerptCount');
-        if (countEl) countEl.textContent = this.value.length + '/200';
+        document.getElementById('_spotlightLabelWrap').style.display = this.value === 'spotlight' ? 'block' : 'none';
       });
     }
   }, 100);
@@ -1111,9 +833,6 @@ function autoSlug() {
   if (slugEl && !slugEl.value) slugEl.placeholder = slug;
 }
 
-// ══════════════════════════════════════════════════════════════
-// SAVE ARTICLE
-// ══════════════════════════════════════════════════════════════
 async function saveArticle() {
   var id = document.getElementById('_id').value;
   var payload = {
@@ -1135,7 +854,6 @@ async function saveArticle() {
 
   var url = '/admin/articles' + (id ? '/' + id : '');
   var result = await api(id ? 'PUT' : 'POST', url, payload);
-
   if (!result.ok) { showAlert(result.data.error || 'Error saving'); return; }
   closeModal();
   loadArticles();
@@ -1144,73 +862,49 @@ async function saveArticle() {
 }
 
 async function deleteArticle(id) {
-  if (!confirm('Delete this article permanently?')) return;
+  if (!confirm('Delete permanently?')) return;
   await api('DELETE', '/admin/articles/' + id);
   loadArticles();
   loadDashboard();
-  showToast('Article deleted');
+  showToast('Deleted');
 }
 
-// ══════════════════════════════════════════════════════════════
-// IMGBB UPLOAD
-// ══════════════════════════════════════════════════════════════
-function createImageUploader(existingUrl) {
-  currentUploadedImageUrl = existingUrl || '';
-  var html = '';
-  html += '<div class="upload-area" id="uploadArea" onclick="document.getElementById(\'fileInput\').click()">';
-  html += '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
-  html += '<div style="font-size:0.8rem;color:var(--text-muted)">Click to upload image</div>';
-  html += '<div style="font-size:0.65rem;color:var(--text-light);margin-top:4px">Max 32MB. Powered by ImgBB</div>';
-  html += '</div>';
-  html += '<input type="file" id="fileInput" accept="image/*" style="display:none" onchange="uploadToImgBB()">';
-  html += '<div class="upload-progress" id="uploadProgress"><div class="upload-progress-bar" id="uploadBar"></div></div>';
-  html += '<img id="imagePreview" class="upload-preview" src="' + (existingUrl || '') + '" style="' + (existingUrl ? 'display:block' : 'display:none') + '">';
-  html += '<button class="btn-remove-image" id="removeImageBtn" style="' + (existingUrl ? 'display:block' : 'display:none') + '" onclick="removeUploadedImage()">Remove Image</button>';
-  html += '<input type="hidden" id="imageUrlInput" value="' + (existingUrl || '') + '">';
-  return html;
-}
-
+// ═══════════════ IMGBB UPLOAD ═══════════════
 async function uploadToImgBB() {
   var fileInput = document.getElementById('fileInput');
   var file = fileInput.files[0];
   if (!file) return;
-  if (file.size > 32 * 1024 * 1024) { alert('File too large. Maximum 32MB.'); return; }
+  if (file.size > 32 * 1024 * 1024) { alert('File too large. Max 32MB.'); return; }
 
-  var progressDiv = document.getElementById('uploadProgress');
-  var progressBar = document.getElementById('uploadBar');
-  var uploadArea = document.getElementById('uploadArea');
-  progressDiv.style.display = 'block';
-  progressBar.style.width = '30%';
-  uploadArea.style.opacity = '0.5';
+  document.getElementById('uploadProgress').style.display = 'block';
+  document.getElementById('uploadBar').style.width = '30%';
 
   var formData = new FormData();
   formData.append('image', file);
 
   try {
-    progressBar.style.width = '60%';
+    document.getElementById('uploadBar').style.width = '60%';
     var response = await fetch('https://api.imgbb.com/1/upload?key=' + IMGBB_API_KEY, { method: 'POST', body: formData });
     var data = await response.json();
 
     if (data.success) {
-      var imageUrl = data.data.url;
-      currentUploadedImageUrl = imageUrl;
-      document.getElementById('imageUrlInput').value = imageUrl;
-      document.getElementById('imagePreview').src = imageUrl;
+      currentUploadedImageUrl = data.data.url;
+      document.getElementById('imageUrlInput').value = data.data.url;
+      document.getElementById('imagePreview').src = data.data.url;
       document.getElementById('imagePreview').style.display = 'block';
       document.getElementById('removeImageBtn').style.display = 'block';
       document.getElementById('fileInput').value = '';
-      progressBar.style.width = '100%';
-      showToast('Image uploaded successfully');
+      document.getElementById('uploadBar').style.width = '100%';
+      showToast('Image uploaded');
     } else {
-      alert('Upload failed: ' + (data.error ? data.error.message : 'Unknown error'));
+      alert('Upload failed');
     }
   } catch (e) {
-    alert('Network error. Please try again.');
+    alert('Network error');
   } finally {
     setTimeout(function() {
-      progressDiv.style.display = 'none';
-      progressBar.style.width = '0%';
-      uploadArea.style.opacity = '1';
+      document.getElementById('uploadProgress').style.display = 'none';
+      document.getElementById('uploadBar').style.width = '0%';
     }, 1500);
   }
 }
@@ -1219,35 +913,26 @@ function removeUploadedImage() {
   currentUploadedImageUrl = '';
   document.getElementById('imageUrlInput').value = '';
   document.getElementById('imagePreview').style.display = 'none';
-  document.getElementById('imagePreview').src = '';
   document.getElementById('removeImageBtn').style.display = 'none';
   document.getElementById('fileInput').value = '';
 }
 
-// ══════════════════════════════════════════════════════════════
-// CATEGORIES
-// ══════════════════════════════════════════════════════════════
+// ═══════════════ CATEGORIES ═══════════════
 async function loadCategories() {
   var result = await api('GET', '/admin/categories');
   allCategories = result.ok ? result.data : [];
 
-  var html = '<div class="sec-head"><h2 class="sec-title">Categories (' + allCategories.length + ')</h2><button class="btn btn-primary" onclick="openCategoryModal()">+ New Category</button></div>';
+  var html = '<div class="sec-head"><h2 class="sec-title">Categories (' + allCategories.length + ')</h2><button class="btn btn-primary" onclick="openCategoryModal()">+ New</button></div>';
   html += '<div class="card"><div class="table-wrap"><table>';
   html += '<thead><tr><th>Name</th><th>Slug</th><th>Actions</th></tr></thead><tbody>';
 
   if (allCategories.length > 0) {
     allCategories.forEach(function(c) {
-      html += '<tr>';
-      html += '<td class="strong">' + escapeHTML(c.name) + '</td>';
-      html += '<td style="font-family:var(--font-mono);font-size:0.7rem">' + escapeHTML(c.slug) + '</td>';
-      html += '<td>';
-      html += '<button class="btn btn-ghost btn-xs" onclick="openCategoryModal(' + c.id + ')">Edit</button> ';
-      html += '<button class="btn btn-danger btn-xs" onclick="deleteCategory(' + c.id + ')">Del</button>';
-      html += '</td>';
-      html += '</tr>';
+      html += '<tr><td class="strong">' + escapeHTML(c.name) + '</td><td style="font-family:var(--font-mono);font-size:0.68rem">' + escapeHTML(c.slug) + '</td>';
+      html += '<td><button class="btn btn-ghost btn-xs" onclick="openCategoryModal(' + c.id + ')">Edit</button> <button class="btn btn-danger btn-xs" onclick="deleteCategory(' + c.id + ')">Del</button></td></tr>';
     });
   } else {
-    html += '<tr class="empty-row"><td colspan="3">No categories yet</td></tr>';
+    html += '<tr class="empty-row"><td colspan="3">No categories</td></tr>';
   }
 
   html += '</tbody></table></div></div>';
@@ -1255,18 +940,17 @@ async function loadCategories() {
 }
 
 function openCategoryModal(id) {
-  var category = id ? allCategories.find(function(x) { return x.id === id; }) : null;
-  var html = '';
-  html += '<div class="alert" id="_alert"></div>';
-  html += '<input type="hidden" id="_id" value="' + (category ? category.id : '') + '">';
-  html += '<div class="form-group"><label class="form-label">Name *</label><input class="form-input" id="_name" value="' + escapeHTML(category ? category.name : '') + '" placeholder="Category name"></div>';
-  openModal(category ? 'Edit Category' : 'New Category', html, '<button class="btn btn-primary" onclick="saveCategory()">Save</button><button class="btn btn-ghost" onclick="closeModal()">Cancel</button>');
+  var c = id ? allCategories.find(function(x) { return x.id === id; }) : null;
+  var html = '<div class="alert" id="_alert"></div><input type="hidden" id="_id" value="' + (c ? c.id : '') + '">';
+  html += '<div class="form-group"><label class="form-label">Name *</label><input class="form-input" id="_name" value="' + escapeHTML(c ? c.name : '') + '"></div>';
+  openModal(c ? 'Edit Category' : 'New Category', html,
+    '<button class="btn btn-primary" onclick="saveCategory()">Save</button><button class="btn btn-ghost" onclick="closeModal()">Cancel</button>');
 }
 
 async function saveCategory() {
   var id = document.getElementById('_id').value;
   var name = document.getElementById('_name').value.trim();
-  if (!name) { showAlert('Name is required'); return; }
+  if (!name) { showAlert('Name required'); return; }
   var url = '/admin/categories' + (id ? '/' + id : '');
   var result = await api(id ? 'PUT' : 'POST', url, { name: name });
   if (!result.ok) { showAlert(result.data.error); return; }
@@ -1276,26 +960,21 @@ async function saveCategory() {
 }
 
 async function deleteCategory(id) {
-  if (!confirm('Delete this category?')) return;
+  if (!confirm('Delete?')) return;
   await api('DELETE', '/admin/categories/' + id);
   loadCategories();
-  showToast('Category deleted');
+  showToast('Deleted');
 }
 
-// ══════════════════════════════════════════════════════════════
-// SETTINGS
-// ══════════════════════════════════════════════════════════════
+// ═══════════════ SETTINGS ═══════════════
 async function loadSettings() {
   var result = await api('GET', '/admin/settings');
   var s = result.ok ? result.data : { site_title: 'The Pacific Signal', site_tagline: 'Beyond the Headlines' };
-  var html = '<div class="sec-head"><h2 class="sec-title">Site Settings</h2></div>';
-  html += '<div class="card"><div style="padding:24px">';
-  html += '<div class="alert" id="_alert"></div>';
+  var html = '<div class="sec-head"><h2 class="sec-title">Settings</h2></div>';
+  html += '<div class="card"><div style="padding:20px"><div class="alert" id="_alert"></div>';
   html += '<div class="form-group"><label class="form-label">Site Title</label><input class="form-input" id="_siteTitle" value="' + escapeHTML(s.site_title) + '"></div>';
   html += '<div class="form-group"><label class="form-label">Tagline</label><input class="form-input" id="_tagline" value="' + escapeHTML(s.site_tagline) + '"></div>';
-  html += '<div class="form-group"><label class="form-label">Logo URL</label><input class="form-input" id="_logoUrl" value="' + escapeHTML(s.logo_url || '') + '" placeholder="https://..."></div>';
-  html += '<div class="form-group"><label class="form-label">About Text</label><textarea class="form-textarea" id="_about" style="min-height:100px">' + escapeHTML(s.about_text || '') + '</textarea></div>';
-  html += '<button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>';
+  html += '<button class="btn btn-primary" onclick="saveSettings()">Save</button>';
   html += '</div></div>';
   document.getElementById('view-settings').innerHTML = html;
 }
@@ -1303,17 +982,13 @@ async function loadSettings() {
 async function saveSettings() {
   var result = await api('PUT', '/admin/settings', {
     site_title: document.getElementById('_siteTitle').value.trim(),
-    site_tagline: document.getElementById('_tagline').value.trim(),
-    logo_url: document.getElementById('_logoUrl').value.trim() || null,
-    about_text: document.getElementById('_about').value.trim()
+    site_tagline: document.getElementById('_tagline').value.trim()
   });
   if (!result.ok) { showAlert(result.data.error); return; }
   showToast('Settings saved');
 }
 
-// ══════════════════════════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════════════════════════
+// ═══════════════ INIT ═══════════════
 loadDashboard();
 </script>
 </body>
