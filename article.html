@@ -3,126 +3,793 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Signal — Article</title>
+<title>The Pacific Signal — Article</title>
+<meta name="description" content="The Pacific Signal — Beyond the Headlines. Independent analysis and explained articles.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cabinet+Grotesk:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+
+/* ══════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+   ══════════════════════════════════════════════════════════════ */
 :root{
-  --bg:#05080f;--surface:#0b0f1a;--surface2:#111827;
-  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
-  --accent:#ff6b35;--accent2:#e55a2b;
-  --white:#f0f4f8;--gray:#7a8899;--gray2:#a0adb8;
-  --radius:9px;
+  --bg-white:#FAFAF9;
+  --bg-warm:#F5F5F0;
+  --text-primary:#1A1A1A;
+  --text-secondary:#4A4A4A;
+  --text-muted:#6B6B6B;
+  --text-light:#8A8A8A;
+  --accent:#006994;
+  --accent-dark:#004D6B;
+  --accent-light:#E8F4F8;
+  --border-light:#E5E5E0;
+  --border-medium:#D5D5D0;
+  --white:#FFFFFF;
+  --black:#111111;
+  --max-width:1240px;
+  --content-width:680px;
+  --font-heading:'Playfair Display', Georgia, serif;
+  --font-body:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:'DM Mono', monospace;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
-header{position:sticky;top:0;z-index:80;background:rgba(5,8,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px}
-.hdr{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
-.hdr-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;text-decoration:none;color:var(--white)}
-.hdr-logo em{font-style:italic;color:var(--accent)}
 
-.article{max-width:800px;margin:0 auto;padding:40px 24px}
-.breadcrumb{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gray);margin-bottom:20px}
-.breadcrumb a{color:var(--accent);text-decoration:none}
-.article-img{width:100%;max-height:400px;object-fit:cover;border-radius:var(--radius);margin-bottom:24px}
-.article-cat{font-family:'DM Mono',monospace;font-size:.62rem;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
-.article-title{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;line-height:1.2;margin-bottom:16px}
-.article-meta{font-family:'DM Mono',monospace;font-size:.64rem;color:var(--gray);margin-bottom:24px;display:flex;gap:20px;flex-wrap:wrap}
-.article-content{font-size:.92rem;line-height:1.8;color:var(--gray2)}
-.article-content h2{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--white);margin:24px 0 12px}
-.article-content blockquote{border-left:3px solid var(--accent);padding-left:16px;margin:16px 0;color:var(--gray);font-style:italic}
+*,*::before,*::after{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-.share-bar{display:flex;gap:10px;margin-top:32px;padding-top:20px;border-top:1px solid var(--border)}
-.share-btn{padding:8px 16px;border:1px solid var(--border2);color:var(--gray2);border-radius:20px;font-size:.7rem;cursor:pointer;text-decoration:none;transition:all .2s}
-.share-btn:hover{border-color:var(--accent);color:var(--accent)}
+html{
+  scroll-behavior:smooth;
+  -webkit-font-smoothing:antialiased;
+}
 
-.related{margin-top:40px;padding-top:30px;border-top:2px solid var(--accent)}
-.related-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;margin-bottom:16px}
-.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.related-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-decoration:none;color:var(--white);transition:all .2s}
-.related-card:hover{border-color:var(--accent)}
-.related-card h4{font-size:.82rem;margin-bottom:6px}
-.related-card p{font-size:.68rem;color:var(--gray)}
+body{
+  font-family:var(--font-body);
+  background:var(--bg-white);
+  color:var(--text-primary);
+  line-height:1.7;
+  font-size:16px;
+  min-height:100vh;
+}
 
-footer{background:var(--surface);border-top:1px solid var(--border);padding:24px;text-align:center}
-footer p{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--gray)}
+h1,h2,h3,h4,h5,h6{
+  font-family:var(--font-heading);
+  font-weight:700;
+  line-height:1.25;
+}
 
-@media(max-width:600px){
-  .article-title{font-size:1.5rem}
-  .related-grid{grid-template-columns:1fr}
+a{
+  color:var(--accent);
+  text-decoration:none;
+}
+
+a:hover{
+  color:var(--accent-dark);
+}
+
+img{
+  max-width:100%;
+  height:auto;
+  display:block;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HEADER
+   ══════════════════════════════════════════════════════════════ */
+.site-header{
+  background:var(--white);
+  border-bottom:1px solid var(--border-light);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.header-inner{
+  max-width:var(--max-width);
+  margin:0 auto;
+  padding:16px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.header-logo{
+  font-family:var(--font-heading);
+  font-size:1.3rem;
+  font-weight:800;
+  color:var(--text-primary);
+  text-decoration:none;
+  letter-spacing:1px;
+}
+
+.header-logo:hover{
+  color:var(--accent);
+}
+
+.header-tagline{
+  font-size:0.7rem;
+  color:var(--text-muted);
+  font-style:italic;
+  margin-left:8px;
+}
+
+.header-nav{
+  display:flex;
+  gap:20px;
+}
+
+.header-nav a{
+  font-size:0.78rem;
+  color:var(--text-secondary);
+  text-decoration:none;
+  font-weight:500;
+}
+
+.header-nav a:hover{
+  color:var(--accent);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ARTICLE CONTAINER
+   ══════════════════════════════════════════════════════════════ */
+.article-container{
+  max-width:var(--content-width);
+  margin:0 auto;
+  padding:48px 24px 60px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BREADCRUMB
+   ══════════════════════════════════════════════════════════════ */
+.breadcrumb{
+  font-family:var(--font-mono);
+  font-size:0.65rem;
+  color:var(--text-light);
+  margin-bottom:24px;
+}
+
+.breadcrumb a{
+  color:var(--accent);
+  text-decoration:none;
+}
+
+.breadcrumb a:hover{
+  text-decoration:underline;
+}
+
+.breadcrumb span{
+  margin:0 6px;
+  color:var(--border-medium);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ARTICLE HEADER
+   ══════════════════════════════════════════════════════════════ */
+.article-category{
+  font-family:var(--font-mono);
+  font-size:0.62rem;
+  font-weight:500;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  color:var(--accent);
+  margin-bottom:16px;
+}
+
+.article-title{
+  font-family:var(--font-heading);
+  font-size:2.4rem;
+  font-weight:800;
+  line-height:1.15;
+  color:var(--text-primary);
+  letter-spacing:-0.02em;
+  margin-bottom:20px;
+}
+
+.article-meta{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  font-family:var(--font-mono);
+  font-size:0.68rem;
+  color:var(--text-light);
+  margin-bottom:32px;
+  padding-bottom:24px;
+  border-bottom:1px solid var(--border-light);
+  flex-wrap:wrap;
+}
+
+.article-meta span{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.article-meta svg{
+  width:14px;
+  height:14px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FEATURED IMAGE
+   ══════════════════════════════════════════════════════════════ */
+.article-featured-image{
+  width:100%;
+  max-height:450px;
+  object-fit:cover;
+  border-radius:4px;
+  margin-bottom:36px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ARTICLE CONTENT
+   ══════════════════════════════════════════════════════════════ */
+.article-content{
+  font-size:1.05rem;
+  line-height:1.8;
+  color:var(--text-secondary);
+}
+
+.article-content h2{
+  font-family:var(--font-heading);
+  font-size:1.5rem;
+  font-weight:700;
+  color:var(--text-primary);
+  margin:36px 0 16px;
+}
+
+.article-content h3{
+  font-family:var(--font-heading);
+  font-size:1.2rem;
+  font-weight:600;
+  color:var(--text-primary);
+  margin:28px 0 12px;
+}
+
+.article-content p{
+  margin-bottom:18px;
+}
+
+.article-content blockquote{
+  border-left:3px solid var(--accent);
+  padding-left:20px;
+  margin:24px 0;
+  color:var(--text-muted);
+  font-style:italic;
+  font-size:1.1rem;
+}
+
+.article-content ul,
+.article-content ol{
+  margin:16px 0;
+  padding-left:24px;
+}
+
+.article-content li{
+  margin-bottom:8px;
+}
+
+.article-content a{
+  color:var(--accent);
+  text-decoration:underline;
+  text-decoration-color:rgba(0,105,148,0.3);
+  text-underline-offset:3px;
+}
+
+.article-content a:hover{
+  text-decoration-color:var(--accent);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SHARE BAR
+   ══════════════════════════════════════════════════════════════ */
+.share-bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:48px;
+  padding-top:24px;
+  border-top:1px solid var(--border-light);
+  flex-wrap:wrap;
+}
+
+.share-bar-label{
+  font-family:var(--font-mono);
+  font-size:0.62rem;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  color:var(--text-light);
+  margin-right:8px;
+}
+
+.share-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 16px;
+  border:1px solid var(--border-medium);
+  color:var(--text-secondary);
+  border-radius:20px;
+  font-size:0.75rem;
+  font-weight:500;
+  cursor:pointer;
+  text-decoration:none;
+  transition:all 0.15s ease;
+  background:var(--white);
+}
+
+.share-btn:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+  background:var(--accent-light);
+}
+
+.share-btn svg{
+  width:14px;
+  height:14px;
+}
+
+.share-btn-copy{
+  background:none;
+  border:1px solid var(--border-medium);
+  font-family:var(--font-body);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RELATED ARTICLES
+   ══════════════════════════════════════════════════════════════ */
+.related-section{
+  max-width:var(--content-width);
+  margin:0 auto;
+  padding:0 24px 60px;
+}
+
+.related-title{
+  font-family:var(--font-heading);
+  font-size:1.3rem;
+  font-weight:700;
+  margin-bottom:20px;
+  padding-bottom:10px;
+  border-bottom:2px solid var(--accent);
+  display:inline-block;
+}
+
+.related-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.related-card{
+  text-decoration:none;
+  color:var(--text-primary);
+  border:1px solid var(--border-light);
+  border-radius:4px;
+  overflow:hidden;
+  transition:all 0.2s ease;
+}
+
+.related-card:hover{
+  border-color:var(--accent);
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(0,0,0,0.06);
+}
+
+.related-card-image{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  background:var(--bg-warm);
+}
+
+.related-card-body{
+  padding:14px;
+}
+
+.related-card-title{
+  font-family:var(--font-heading);
+  font-size:0.9rem;
+  font-weight:700;
+  line-height:1.35;
+  margin-bottom:6px;
+}
+
+.related-card-author{
+  font-family:var(--font-mono);
+  font-size:0.62rem;
+  color:var(--text-light);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════════════════════════ */
+.site-footer{
+  background:var(--black);
+  color:rgba(255,255,255,0.5);
+  padding:40px 0;
+  text-align:center;
+  margin-top:40px;
+}
+
+.footer-inner{
+  max-width:var(--max-width);
+  margin:0 auto;
+  padding:0 24px;
+}
+
+.footer-logo{
+  font-family:var(--font-heading);
+  font-size:1.1rem;
+  font-weight:700;
+  color:var(--white);
+  margin-bottom:8px;
+  letter-spacing:1px;
+}
+
+.footer-tagline{
+  font-size:0.72rem;
+  color:rgba(255,255,255,0.35);
+  font-style:italic;
+  margin-bottom:16px;
+}
+
+.footer-links{
+  display:flex;
+  gap:20px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.footer-links a{
+  font-size:0.72rem;
+  color:rgba(255,255,255,0.4);
+  text-decoration:none;
+}
+
+.footer-links a:hover{
+  color:rgba(255,255,255,0.8);
+}
+
+.footer-copyright{
+  font-family:var(--font-mono);
+  font-size:0.62rem;
+  color:rgba(255,255,255,0.25);
+  margin-top:16px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LOADING / ERROR
+   ══════════════════════════════════════════════════════════════ */
+.loading-state{
+  text-align:center;
+  padding:80px 20px;
+  color:var(--text-muted);
+}
+
+.error-state{
+  text-align:center;
+  padding:80px 20px;
+}
+
+.error-state h2{
+  font-family:var(--font-heading);
+  font-size:1.5rem;
+  margin-bottom:12px;
+}
+
+.error-state p{
+  color:var(--text-muted);
+  margin-bottom:20px;
+}
+
+.btn-back{
+  display:inline-block;
+  padding:10px 24px;
+  background:var(--accent);
+  color:var(--white);
+  border-radius:4px;
+  font-weight:600;
+  text-decoration:none;
+  font-size:0.85rem;
+}
+
+.btn-back:hover{
+  background:var(--accent-dark);
+  color:var(--white);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width:768px){
+  .article-title{
+    font-size:1.7rem;
+  }
+  .article-content{
+    font-size:0.98rem;
+  }
+  .article-featured-image{
+    max-height:280px;
+  }
+  .related-grid{
+    grid-template-columns:1fr;
+  }
+  .header-tagline{
+    display:none;
+  }
+}
+
+@media (max-width:480px){
+  .article-title{
+    font-size:1.4rem;
+  }
+  .article-meta{
+    gap:10px;
+    font-size:0.62rem;
+  }
 }
 </style>
 </head>
 <body>
-<header>
-  <div class="hdr">
-    <a href="/" class="hdr-logo">The <em>Signal</em></a>
+
+<!-- ══════════════════════════════════════════════════════════════
+   HEADER
+   ══════════════════════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div>
+      <a href="/" class="header-logo">THE PACIFIC SIGNAL</a>
+      <span class="header-tagline">Beyond the Headlines</span>
+    </div>
+    <nav class="header-nav">
+      <a href="/">Home</a>
+      <a href="/category/united-states-canada.html">US &amp; Canada</a>
+      <a href="/category/china-east-asia.html">China</a>
+      <a href="/category/global-markets-trade.html">Markets</a>
+    </nav>
   </div>
 </header>
 
-<div class="article" id="articleContent">
-  <p style="color:var(--gray);text-align:center;padding:60px">Loading article...</p>
+<!-- ══════════════════════════════════════════════════════════════
+   ARTICLE CONTENT
+   ══════════════════════════════════════════════════════════════ -->
+<div class="article-container" id="articleContainer">
+  <div class="loading-state">
+    <p>Loading article...</p>
+  </div>
 </div>
 
-<footer><p>© 2024 The Signal · Smart Analysis & Insights</p></footer>
+<!-- ══════════════════════════════════════════════════════════════
+   RELATED ARTICLES
+   ══════════════════════════════════════════════════════════════ -->
+<section class="related-section" id="relatedSection" style="display:none">
+  <h2 class="related-title">Related Analysis</h2>
+  <div class="related-grid" id="relatedGrid"></div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo">THE PACIFIC SIGNAL</div>
+    <div class="footer-tagline">Beyond the Headlines</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+    </div>
+    <div class="footer-copyright">&copy; 2025 The Pacific Signal. All rights reserved.</div>
+  </div>
+</footer>
 
 <script>
-var slug = new URLSearchParams(location.search).get('slug');
-if (!slug) { window.location.href = '/'; }
+// ══════════════════════════════════════════════════════════════
+// GET ARTICLE SLUG FROM URL
+// ══════════════════════════════════════════════════════════════
+var urlParams = new URLSearchParams(window.location.search);
+var articleSlug = urlParams.get('slug');
 
-async function loadArticle() {
+if (!articleSlug) {
+  document.getElementById('articleContainer').innerHTML = 
+    '<div class="error-state">' +
+    '<h2>Article Not Found</h2>' +
+    '<p>No article slug was provided.</p>' +
+    '<a href="/" class="btn-back">Back to Home</a>' +
+    '</div>';
+} else {
+  loadArticle(articleSlug);
+}
+
+// ══════════════════════════════════════════════════════════════
+// LOAD ARTICLE FROM API
+// ══════════════════════════════════════════════════════════════
+async function loadArticle(slug) {
   try {
-    var res = await fetch('/api/article/' + slug);
-    var data = await res.json();
-    if (!res.ok) { document.getElementById('articleContent').innerHTML = '<p style="text-align:center;padding:60px;color:var(--gray)">Article not found</p>'; return; }
+    var response = await fetch('/api/article/' + slug);
 
-    var a = data.article;
-    document.title = a.title + ' — The Signal';
-
-    var html = '';
-    html += '<div class="breadcrumb"><a href="/">Home</a> › ' + (a.category_name || '') + (a.subcategory_name ? ' › ' + a.subcategory_name : '') + '</div>';
-    if (a.image_url) html += '<img src="' + a.image_url + '" class="article-img" alt="" onerror="this.style.display=\'none\'">';
-    html += '<div class="article-cat">' + (a.category_name || '') + (a.subcategory_name ? ' > ' + a.subcategory_name : '') + '</div>';
-    html += '<h1 class="article-title">' + a.title + '</h1>';
-    html += '<div class="article-meta"><span>✍️ ' + (a.author || 'The Signal') + '</span><span>🕐 ' + new Date(a.published_at || a.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) + '</span></div>';
-
-    // Convert markdown-like content to HTML
-    var content = a.content
-      .replace(/## (.+)/g, '<h2>$1</h2>')
-      .replace(/> (.+)/g, '<blockquote>$1</blockquote>')
-      .replace(/\n/g, '<br>');
-
-    html += '<div class="article-content">' + content + '</div>';
-
-    // Share buttons
-    var shareUrl = encodeURIComponent(window.location.href);
-    var shareTitle = encodeURIComponent(a.title);
-    html += '<div class="share-bar">';
-    html += '<a href="https://twitter.com/intent/tweet?url=' + shareUrl + '&text=' + shareTitle + '" target="_blank" class="share-btn">Twitter</a>';
-    html += '<a href="https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '" target="_blank" class="share-btn">Facebook</a>';
-    html += '<a href="https://www.linkedin.com/sharing/share-offsite/?url=' + shareUrl + '" target="_blank" class="share-btn">LinkedIn</a>';
-    html += '<button class="share-btn" onclick="navigator.clipboard.writeText(window.location.href);alert(\'Link copied!\')">Copy Link</button>';
-    html += '</div>';
-
-    // Related articles
-    if (data.related && data.related.length > 0) {
-      html += '<div class="related"><h3 class="related-title">Related Analysis</h3><div class="related-grid">';
-      data.related.forEach(function(r) {
-        html += '<a href="/article.html?slug=' + r.slug + '" class="related-card">';
-        html += '<h4>' + r.title + '</h4>';
-        html += '<p>✍️ ' + (r.author || 'The Signal') + '</p>';
-        html += '</a>';
-      });
-      html += '</div></div>';
+    if (!response.ok) {
+      throw new Error('Article not found');
     }
 
-    document.getElementById('articleContent').innerHTML = html;
-  } catch(e) {
-    document.getElementById('articleContent').innerHTML = '<p style="text-align:center;padding:60px;color:var(--gray)">Error loading article</p>';
+    var data = await response.json();
+    var article = data.article;
+    var related = data.related || [];
+
+    // Update page title
+    document.title = article.title + ' — The Pacific Signal';
+
+    // Update meta description
+    var metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc && article.excerpt) {
+      metaDesc.setAttribute('content', article.excerpt);
+    }
+
+    // Render article
+    renderArticle(article);
+
+    // Render related articles
+    if (related.length > 0) {
+      renderRelated(related);
+    }
+
+  } catch (error) {
+    console.error('Error loading article:', error);
+    document.getElementById('articleContainer').innerHTML = 
+      '<div class="error-state">' +
+      '<h2>Article Not Found</h2>' +
+      '<p>The article you are looking for does not exist or has been removed.</p>' +
+      '<a href="/" class="btn-back">Back to Home</a>' +
+      '</div>';
   }
 }
 
-loadArticle();
+// ══════════════════════════════════════════════════════════════
+// RENDER ARTICLE
+// ══════════════════════════════════════════════════════════════
+function renderArticle(article) {
+  var container = document.getElementById('articleContainer');
+
+  // Format content (convert markdown-like syntax to HTML)
+  var contentHTML = article.content
+    .replace(/## (.+)/g, '<h2>$1</h2>')
+    .replace(/### (.+)/g, '<h3>$1</h3>')
+    .replace(/^> (.+)/gm, '<blockquote>$1</blockquote>')
+    .replace(/^- (.+)/gm, '<li>$1</li>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>');
+
+  // Build HTML
+  var html = '';
+
+  // Breadcrumb
+  html += '<div class="breadcrumb">';
+  html += '<a href="/">Home</a>';
+  if (article.category_name) {
+    html += '<span>/</span>';
+    html += '<a href="/category/' + (article.category_slug || '') + '.html">' + article.category_name + '</a>';
+  }
+  html += '<span>/</span>';
+  html += '<span>' + truncateText(article.title, 40) + '</span>';
+  html += '</div>';
+
+  // Category
+  html += '<div class="article-category">' + (article.category_name || 'Analysis') + '</div>';
+
+  // Title
+  html += '<h1 class="article-title">' + article.title + '</h1>';
+
+  // Meta
+  html += '<div class="article-meta">';
+  html += '<span>' + svgAuthor() + ' ' + (article.author || 'The Pacific Signal') + '</span>';
+  html += '<span>' + svgCalendar() + ' ' + formatDate(article.published_at || article.created_at) + '</span>';
+  html += '</div>';
+
+  // Featured Image
+  if (article.image_url) {
+    html += '<img src="' + article.image_url + '" alt="' + article.title + '" class="article-featured-image" onerror="this.style.display=\'none\'">';
+  }
+
+  // Content
+  html += '<div class="article-content"><p>' + contentHTML + '</p></div>';
+
+  // Share Bar
+  html += '<div class="share-bar">';
+  html += '<span class="share-bar-label">Share</span>';
+  html += '<a href="https://twitter.com/intent/tweet?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent(article.title) + '" target="_blank" rel="noopener" class="share-btn">' + svgTwitter() + ' Twitter</a>';
+  html += '<a href="https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href) + '" target="_blank" rel="noopener" class="share-btn">' + svgFacebook() + ' Facebook</a>';
+  html += '<a href="https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href) + '" target="_blank" rel="noopener" class="share-btn">' + svgLinkedIn() + ' LinkedIn</a>';
+  html += '<button class="share-btn share-btn-copy" onclick="copyLink()">' + svgCopy() + ' Copy Link</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════════════
+// RENDER RELATED ARTICLES
+// ══════════════════════════════════════════════════════════════
+function renderRelated(related) {
+  var section = document.getElementById('relatedSection');
+  var grid = document.getElementById('relatedGrid');
+
+  section.style.display = 'block';
+
+  var html = '';
+  related.forEach(function(article) {
+    html += '<a href="/article.html?slug=' + article.slug + '" class="related-card">';
+    if (article.image_url) {
+      html += '<img src="' + article.image_url + '" alt="' + article.title + '" class="related-card-image" loading="lazy" onerror="this.style.display=\'none\'">';
+    } else {
+      html += '<div class="related-card-image" style="display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:1.5rem;color:var(--border-medium)">TPS</div>';
+    }
+    html += '<div class="related-card-body">';
+    html += '<div class="related-card-title">' + article.title + '</div>';
+    html += '<div class="related-card-author">' + (article.author || 'The Pacific Signal') + '</div>';
+    html += '</div>';
+    html += '</a>';
+  });
+
+  grid.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════════════
+// COPY LINK TO CLIPBOARD
+// ══════════════════════════════════════════════════════════════
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).then(function() {
+    alert('Link copied to clipboard!');
+  }).catch(function() {
+    prompt('Copy this link:', window.location.href);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════════
+function formatDate(dateString) {
+  if (!dateString) return '';
+  return new Date(dateString).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+
+function truncateText(text, maxLength) {
+  if (!text) return '';
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength) + '...';
+}
+
+// ══════════════════════════════════════════════════════════════
+// SVG ICONS
+// ══════════════════════════════════════════════════════════════
+function svgAuthor() {
+  return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+}
+
+function svgCalendar() {
+  return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+}
+
+function svgTwitter() {
+  return '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.852L1.745 2.25H8.2l4.259 5.63L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
+}
+
+function svgFacebook() {
+  return '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>';
+}
+
+function svgLinkedIn() {
+  return '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>';
+}
+
+function svgCopy() {
+  return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+}
 </script>
+
 </body>
 </html>
