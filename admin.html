@@ -5,990 +5,864 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Pacific Signal — Admin Panel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+:root {
+  --ink: #0E0E0C;
+  --ink-2: #2C2C28;
+  --ink-3: #5A5A52;
+  --ink-4: #8A8A80;
+  --paper: #F8F6F1;
+  --paper-2: #F0EDE4;
+  --paper-3: #E8E4D8;
+  --rule: #D8D4C8;
+  --rule-2: #C8C4B4;
+  --gold: #B8A878;
+  --gold-2: #A09060;
+  --crimson: #8B2020;
+  --crimson-2: #6B1818;
+  --green: #236B48;
+  --green-light: rgba(35,107,72,0.08);
+  --red: #8B2020;
+  --red-light: rgba(139,32,32,0.07);
+  --sidebar-bg: #13120F;
+  --sidebar-border: rgba(255,255,255,0.07);
+  --white: #FFFFFF;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Crimson Pro', Georgia, serif;
+  --font-mono: 'DM Mono', monospace;
+  --sidebar-w: 252px;
+  --radius: 4px;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font-body); background: var(--paper); color: var(--ink); min-height: 100vh; font-size: 15px; line-height: 1.6; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
 
-:root{
-  --bg:#FAFAF9;
-  --surface:#FFFFFF;
-  --surface2:#F5F5F0;
-  --border:rgba(0,0,0,0.06);
-  --border2:rgba(0,0,0,0.1);
-  --accent:#006994;
-  --accent-dark:#004D6B;
-  --accent-light:#E8F4F8;
-  --text:#1A1A1A;
-  --text-secondary:#4A4A4A;
-  --text-muted:#6B6B6B;
-  --white:#FFFFFF;
-  --red:#C44536;
-  --red-light:rgba(196,69,54,0.08);
-  --green:#2D8C6B;
-  --green-light:rgba(45,140,107,0.08);
-  --orange:#D4812B;
-  --orange-light:rgba(212,129,43,0.08);
-  --radius:6px;
-  --radius-lg:10px;
-  --font-heading:'Playfair Display', Georgia, serif;
-  --font-body:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono:'DM Mono', monospace;
+/* ── MOBILE TOPBAR ── */
+.topbar {
+  display: none;
+  background: var(--sidebar-bg);
+  padding: 13px 16px;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.topbar-brand { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); }
+.topbar-actions { display: flex; align-items: center; gap: 10px; }
+.topbar-view { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.6); border-radius: 20px; }
+.topbar-menu { background: none; border: none; color: var(--white); cursor: pointer; padding: 5px; display: flex; }
+.topbar-menu svg { width: 21px; height: 21px; }
+
+/* ── SIDEBAR ── */
+.sidebar-overlay { position: fixed; inset: 0; background: rgba(14,14,12,0.6); z-index: 200; display: none; }
+.sidebar-overlay.open { display: block; }
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--sidebar-bg);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  border-right: 1px solid var(--sidebar-border);
+  transform: translateX(0);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-
-body{
-  font-family:var(--font-body);
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  font-size:15px;
-  line-height:1.6;
+.sidebar-head {
+  padding: 22px 20px 18px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+.sidebar-logo-name {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.sidebar-logo-tag {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
 }
 
-/* ═══════════════ TOP BAR (Mobile Friendly) ═══════════════ */
-.topbar{
-  background:var(--text);
-  color:var(--white);
-  padding:14px 20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:100;
+.sidebar-section { padding: 6px 0; }
+.sidebar-section-title {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  padding: 14px 20px 5px;
 }
 
-.topbar-brand{
-  font-family:var(--font-heading);
-  font-size:1rem;
-  font-weight:700;
-  letter-spacing:0.5px;
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.sidebar-btn:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.03); }
+.sidebar-btn.active { color: var(--white); background: rgba(184,168,120,0.1); border-left-color: var(--gold); }
+.sidebar-btn svg { width: 15px; height: 15px; flex-shrink: 0; opacity: 0.5; }
+.sidebar-btn.active svg { opacity: 1; }
+
+.sidebar-foot {
+  margin-top: auto;
+  padding: 16px 20px;
+  border-top: 1px solid var(--sidebar-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sidebar-user { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.06em; color: rgba(255,255,255,0.3); }
+.btn-signout {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 7px 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.4);
+  background: none;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-signout:hover { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.8); }
+
+/* ── MAIN CONTENT ── */
+.main {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+  padding: 36px 32px;
+  max-width: calc(100% - var(--sidebar-w));
 }
 
-.topbar-actions{
-  display:flex;
-  align-items:center;
-  gap:12px;
+.view { display: none; }
+.view.active { display: block; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ── PAGE TITLE ── */
+.page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.page-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--ink);
 }
 
-.btn-menu{
-  background:none;
-  border:none;
-  color:var(--white);
-  cursor:pointer;
-  padding:6px;
-  display:flex;
-  align-items:center;
+/* ── STATS ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  padding: 18px 20px;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 8px;
+}
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--crimson);
+  line-height: 1;
 }
 
-.btn-menu svg{width:22px;height:22px;}
-
-.btn-view-site{
-  padding:6px 14px;
-  border:1px solid rgba(255,255,255,0.3);
-  color:var(--white);
-  border-radius:20px;
-  font-size:0.72rem;
-  text-decoration:none;
-  white-space:nowrap;
+/* ── CARD ── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.card-head {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-2);
+}
+.card-head-title {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
-.btn-signout{
-  background:none;
-  border:1px solid rgba(255,255,255,0.2);
-  color:rgba(255,255,255,0.7);
-  padding:6px 12px;
-  border-radius:var(--radius);
-  font-size:0.7rem;
-  cursor:pointer;
-  white-space:nowrap;
+/* ── BUTTONS ── */
+.btn {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 9px 18px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
 }
+.btn-primary { background: var(--ink); color: var(--white); }
+.btn-primary:hover { background: var(--ink-2); }
+.btn-ghost { background: transparent; color: var(--ink-3); border: 1px solid var(--rule-2); }
+.btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+.btn-danger { background: var(--red-light); color: var(--red); border: 1px solid rgba(139,32,32,0.18); }
+.btn-danger:hover { background: var(--red); color: var(--white); }
+.btn-sm { padding: 5px 12px; font-size: 0.56rem; }
 
-/* ═══════════════ SIDEBAR OVERLAY (Mobile) ═══════════════ */
-.sidebar-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.5);
-  z-index:200;
-  display:none;
+/* ── TABLE ── */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; min-width: 580px; }
+thead tr { border-bottom: 2px solid var(--rule); }
+th { padding: 10px 14px; text-align: left; font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-4); white-space: nowrap; }
+td { padding: 10px 14px; font-family: var(--font-body); font-size: 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink-3); }
+td.em { font-weight: 600; color: var(--ink); font-size: 0.88rem; }
+tr:last-child td { border-bottom: none; }
+.empty-row td { text-align: center; padding: 44px; font-style: italic; color: var(--ink-4); font-family: var(--font-body); }
+
+/* ── BADGES ── */
+.badge {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  display: inline-block;
 }
+.badge-live { background: var(--green-light); color: var(--green); border: 1px solid rgba(35,107,72,0.2); }
+.badge-draft { background: rgba(90,90,82,0.07); color: var(--ink-4); border: 1px solid rgba(90,90,82,0.15); }
+.badge-hero { background: rgba(139,32,32,0.07); color: var(--crimson); border: 1px solid rgba(139,32,32,0.18); }
+.badge-feed { background: rgba(35,107,72,0.07); color: var(--green); border: 1px solid rgba(35,107,72,0.18); }
+.badge-visual { background: rgba(160,144,96,0.1); color: var(--gold-2); border: 1px solid rgba(160,144,96,0.2); }
+.badge-spotlight { background: rgba(44,44,40,0.07); color: var(--ink-3); border: 1px solid rgba(44,44,40,0.15); }
 
-.sidebar-overlay.open{display:block;}
-
-.sidebar{
-  position:fixed;
-  top:0;
-  left:0;
-  bottom:0;
-  width:260px;
-  background:var(--text);
-  color:var(--white);
-  z-index:300;
-  transform:translateX(-100%);
-  transition:transform 0.25s ease;
-  display:flex;
-  flex-direction:column;
-  overflow-y:auto;
+/* ── FORMS ── */
+.form-group { margin-bottom: 16px; }
+.form-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 6px;
 }
-
-.sidebar.open{transform:translateX(0);}
-
-.sidebar-section{
-  padding:8px 0;
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--rule-2);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink);
+  outline: none;
+  transition: all 0.15s;
 }
-
-.sidebar-section-title{
-  font-family:var(--font-mono);
-  font-size:0.55rem;
-  text-transform:uppercase;
-  letter-spacing:0.12em;
-  color:rgba(255,255,255,0.25);
-  padding:14px 20px 6px;
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--ink-3);
+  border-bottom-color: var(--gold-2);
+  box-shadow: 0 1px 0 0 var(--gold-2);
 }
-
-.sidebar-link{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:11px 20px;
-  font-size:0.84rem;
-  font-weight:500;
-  color:rgba(255,255,255,0.55);
-  cursor:pointer;
-  border:none;
-  background:transparent;
-  width:100%;
-  text-align:left;
-  transition:all 0.15s ease;
-  border-left:2px solid transparent;
-  font-family:var(--font-body);
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%235A5A52'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
 }
+.form-textarea { resize: vertical; min-height: 200px; line-height: 1.65; font-family: var(--font-body); }
+.form-hint { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.06em; color: var(--ink-4); margin-top: 4px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.toggle-label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.toggle-label span { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--ink-3); }
+input[type=checkbox] { accent-color: var(--gold-2); width: 14px; height: 14px; cursor: pointer; }
 
-.sidebar-link:hover{color:var(--white);background:rgba(255,255,255,0.04);}
-.sidebar-link.active{color:var(--white);background:rgba(0,105,148,0.25);border-left-color:var(--accent);}
-
-.sidebar-link svg{width:16px;height:16px;flex-shrink:0;opacity:0.5;}
-.sidebar-link.active svg{opacity:1;}
-
-/* ═══════════════ MAIN CONTENT ═══════════════ */
-.main-content{
-  padding:20px;
-  max-width:1100px;
-  margin:0 auto;
+/* ── UPLOAD ── */
+.upload-zone {
+  border: 1.5px dashed var(--rule-2);
+  padding: 28px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--paper-2);
 }
+.upload-zone:hover { border-color: var(--gold-2); background: var(--paper-3); }
+.upload-zone-icon svg { width: 28px; height: 28px; color: var(--ink-4); margin: 0 auto 8px; }
+.upload-zone-text { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-4); }
+.upload-preview { width: 100%; max-height: 200px; object-fit: cover; margin-top: 10px; display: none; border: 1px solid var(--rule); }
+.upload-progress { height: 3px; background: var(--rule); margin-top: 8px; overflow: hidden; display: none; }
+.upload-progress-bar { height: 100%; background: var(--gold-2); width: 0%; transition: width 0.3s; }
+.btn-rm-img { display: none; margin-top: 7px; font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.08em; text-transform: uppercase; background: none; border: none; color: var(--crimson); cursor: pointer; }
 
-.view{display:none;}
-.view.active{display:block;animation:fadeIn 0.2s ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
-
-/* ═══════════════ STATS ═══════════════ */
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
-  gap:12px;
-  margin-bottom:24px;
+/* ── ALERTS ── */
+.inline-alert {
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+  display: none;
+  border-left: 3px solid var(--crimson);
+  background: var(--red-light);
+  color: var(--crimson);
 }
+.inline-alert.show { display: block; }
 
-.stat-card{
-  background:var(--white);
-  border:1px solid var(--border);
-  border-radius:var(--radius-lg);
-  padding:16px;
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 12px 20px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  z-index: 9000;
+  transform: translateY(16px);
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.34,1.3,0.64,1);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-left: 3px solid var(--green);
+  background: var(--white);
+  color: var(--ink-2);
+  box-shadow: 0 8px 32px rgba(14,14,12,0.12);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--green);
 }
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.err { border-left-color: var(--crimson); }
+.toast svg { width: 14px; height: 14px; }
 
-.stat-label{
-  font-family:var(--font-mono);
-  font-size:0.58rem;
-  text-transform:uppercase;
-  letter-spacing:0.06em;
-  color:var(--text-muted);
-  margin-bottom:6px;
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(14,14,12,0.5);
+  z-index: 500;
+  display: none;
+  place-items: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
 }
+.modal-overlay.open { display: grid; }
 
-.stat-value{
-  font-family:var(--font-heading);
-  font-size:1.8rem;
-  font-weight:700;
-  color:var(--accent);
-  line-height:1;
+.modal {
+  background: var(--paper);
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(14,14,12,0.25);
+  border: 1px solid var(--rule);
+  animation: modalIn 0.25s cubic-bezier(0.34,1.1,0.64,1);
 }
+@keyframes modalIn { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: none; } }
 
-/* ═══════════════ SECTION HEAD ═══════════════ */
-.sec-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:16px;
-  flex-wrap:wrap;
-  gap:10px;
+.modal-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--paper);
+  z-index: 1;
 }
-
-.sec-title{
-  font-family:var(--font-heading);
-  font-size:1.15rem;
-  font-weight:700;
+.modal-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 500; color: var(--ink); }
+.modal-close {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--ink-4);
+  font-size: 0.85rem;
+  transition: all 0.15s;
 }
+.modal-close:hover { background: var(--paper-3); color: var(--ink); }
+.modal-body { padding: 20px 22px; }
+.modal-foot { padding: 16px 22px; border-top: 1px solid var(--rule); display: flex; gap: 8px; flex-wrap: wrap; background: var(--paper-2); }
 
-/* ═══════════════ BUTTONS ═══════════════ */
-.btn{
-  font-family:var(--font-body);
-  font-size:0.75rem;
-  font-weight:600;
-  padding:9px 18px;
-  border-radius:var(--radius);
-  border:none;
-  cursor:pointer;
-  transition:all 0.15s ease;
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  white-space:nowrap;
+/* ── QUICK GUIDE ── */
+.guide-card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  padding: 22px;
 }
+.guide-title { font-family: var(--font-display); font-size: 1rem; font-weight: 500; margin-bottom: 14px; color: var(--ink); }
+.guide-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.guide-list li { font-family: var(--font-body); font-size: 0.9rem; color: var(--ink-3); padding-left: 16px; position: relative; line-height: 1.5; }
+.guide-list li::before { content: '&#x2014;'; position: absolute; left: 0; color: var(--gold-2); font-family: var(--font-mono); font-size: 0.7rem; }
 
-.btn-primary{background:var(--accent);color:var(--white);}
-.btn-primary:hover{background:var(--accent-dark);}
-.btn-ghost{background:transparent;color:var(--text-secondary);border:1.5px solid var(--border2);}
-.btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
-.btn-danger{background:var(--red-light);color:var(--red);border:1.5px solid rgba(196,69,54,0.2);}
-.btn-danger:hover{background:var(--red);color:var(--white);}
-.btn-xs{padding:4px 10px;font-size:0.65rem;border-radius:4px;}
-
-/* ═══════════════ TABLE ═══════════════ */
-.card{
-  background:var(--white);
-  border:1px solid var(--border);
-  border-radius:var(--radius-lg);
-  overflow:hidden;
-  margin-bottom:16px;
+/* ── RESPONSIVE ── */
+@media(max-width: 768px) {
+  .topbar { display: flex; }
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; max-width: 100%; padding: 20px 16px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-row { grid-template-columns: 1fr; }
+  .modal { max-height: 95vh; }
 }
-
-.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-
-table{width:100%;border-collapse:collapse;min-width:600px;}
-
-thead tr{background:var(--surface2);border-bottom:2px solid var(--border);}
-
-th{
-  padding:10px 12px;
-  text-align:left;
-  font-family:var(--font-mono);
-  font-size:0.56rem;
-  text-transform:uppercase;
-  letter-spacing:0.06em;
-  color:var(--text-muted);
-  white-space:nowrap;
-}
-
-td{
-  padding:10px 12px;
-  font-size:0.8rem;
-  border-bottom:1px solid var(--border);
-  color:var(--text-secondary);
-}
-
-td.strong{font-weight:600;color:var(--text);}
-tr:last-child td{border-bottom:none;}
-
-.empty-row td{text-align:center;padding:40px;color:var(--text-muted);font-style:italic;}
-
-/* ═══════════════ BADGES ═══════════════ */
-.badge{
-  font-family:var(--font-mono);
-  font-size:0.54rem;
-  text-transform:uppercase;
-  letter-spacing:0.05em;
-  padding:3px 8px;
-  border-radius:20px;
-  display:inline-block;
-}
-
-.badge-published{background:var(--green-light);color:var(--green);}
-.badge-draft{background:rgba(107,107,107,0.06);color:var(--text-muted);}
-.badge-pinned{background:var(--orange-light);color:var(--orange);}
-.badge-hero{background:rgba(0,105,148,0.1);color:var(--accent);}
-.badge-feed{background:var(--green-light);color:var(--green);}
-.badge-visual{background:var(--orange-light);color:var(--orange);}
-.badge-spotlight{background:var(--red-light);color:var(--red);}
-
-/* ═══════════════ FORMS ═══════════════ */
-.form-group{margin-bottom:14px;}
-.form-label{
-  display:block;
-  font-family:var(--font-mono);
-  font-size:0.58rem;
-  text-transform:uppercase;
-  letter-spacing:0.06em;
-  color:var(--text-muted);
-  margin-bottom:5px;
-}
-
-.form-input,.form-select,.form-textarea{
-  width:100%;
-  padding:10px 12px;
-  background:var(--white);
-  border:1.5px solid var(--border2);
-  border-radius:var(--radius);
-  font-family:var(--font-body);
-  font-size:0.84rem;
-  color:var(--text);
-  outline:none;
-  transition:border-color 0.15s ease;
-}
-
-.form-input:focus,.form-select:focus,.form-textarea:focus{
-  border-color:var(--accent);
-  box-shadow:0 0 0 3px rgba(0,105,148,0.06);
-}
-
-.form-select{
-  cursor:pointer;
-  appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%236B6B6B'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;
-  background-position:right 10px center;
-  padding-right:32px;
-}
-
-.form-textarea{resize:vertical;min-height:180px;line-height:1.6;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-
-.form-hint{
-  font-family:var(--font-mono);
-  font-size:0.58rem;
-  color:var(--text-muted);
-  margin-top:4px;
-}
-
-.toggle-row{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:0.82rem;
-  color:var(--text-secondary);
-  cursor:pointer;
-}
-
-input[type=checkbox]{accent-color:var(--accent);width:15px;height:15px;cursor:pointer;}
-
-/* ═══════════════ IMAGE UPLOAD ═══════════════ */
-.upload-area{
-  border:2px dashed var(--border2);
-  border-radius:var(--radius);
-  padding:24px;
-  text-align:center;
-  cursor:pointer;
-  transition:all 0.15s ease;
-  background:var(--surface2);
-}
-
-.upload-area:hover{border-color:var(--accent);background:var(--accent-light);}
-
-.upload-preview{
-  width:100%;
-  max-height:200px;
-  object-fit:cover;
-  border-radius:var(--radius);
-  margin-top:8px;
-  display:none;
-}
-
-.upload-progress{
-  height:4px;
-  background:var(--border);
-  border-radius:2px;
-  margin-top:8px;
-  overflow:hidden;
-  display:none;
-}
-
-.upload-progress-bar{
-  height:100%;
-  background:var(--accent);
-  width:0%;
-  transition:width 0.3s;
-}
-
-.btn-remove-image{
-  display:none;
-  margin-top:8px;
-  font-size:0.7rem;
-  color:var(--red);
-  cursor:pointer;
-  background:none;
-  border:none;
-}
-
-/* ═══════════════ ALERT / TOAST ═══════════════ */
-.alert{
-  padding:10px 14px;
-  border-radius:var(--radius);
-  font-size:0.78rem;
-  margin-bottom:12px;
-  display:none;
-}
-
-.alert.show{display:block;}
-.alert-error{background:var(--red-light);border:1px solid rgba(196,69,54,0.25);color:var(--red);}
-
-.toast{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  padding:12px 20px;
-  border-radius:var(--radius);
-  font-size:0.82rem;
-  font-weight:600;
-  z-index:999;
-  transform:translateY(20px);
-  opacity:0;
-  transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-  pointer-events:none;
-}
-
-.toast.show{transform:translateY(0);opacity:1;}
-.toast-success{background:var(--green-light);border:1px solid rgba(45,140,107,0.3);color:var(--green);}
-.toast-error{background:var(--red-light);border:1px solid rgba(196,69,54,0.3);color:var(--red);}
-
-/* ═══════════════ MODAL ═══════════════ */
-.modal-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.5);
-  z-index:400;
-  display:none;
-  place-items:center;
-  padding:16px;
-}
-
-.modal-overlay.open{display:grid;}
-
-.modal{
-  background:var(--white);
-  border-radius:var(--radius-lg);
-  max-width:750px;
-  width:100%;
-  max-height:85vh;
-  overflow-y:auto;
-  box-shadow:0 20px 60px rgba(0,0,0,0.15);
-}
-
-.modal-head{
-  padding:16px 20px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  background:var(--white);
-  z-index:1;
-}
-
-.modal-head h3{font-family:var(--font-heading);font-size:1rem;font-weight:700;}
-
-.modal-close{
-  background:var(--surface2);
-  border:none;
-  width:28px;
-  height:28px;
-  border-radius:50%;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--text-muted);
-  font-size:1rem;
-}
-
-.modal-body{padding:16px 20px;}
-.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;}
-
-/* ═══════════════ RESPONSIVE ═══════════════ */
-@media(min-width:768px){
-  .topbar{display:none;}
-  .sidebar{transform:translateX(0);position:fixed;}
-  .sidebar-overlay{display:none !important;}
-  .main-content{margin-left:260px;padding:28px;}
-  .form-row{grid-template-columns:1fr 1fr;}
-}
-
-@media(max-width:767px){
-  .main-content{padding:14px;}
-  .stats-grid{grid-template-columns:1fr 1fr;}
-  .form-row{grid-template-columns:1fr;}
-  .modal{padding:0;max-height:90vh;}
-  .modal-body{padding:12px 14px;}
-  .modal-head{padding:12px 14px;}
-  .modal-footer{padding:12px 14px;}
+@media(max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .modal-body { padding: 14px 16px; }
+  .modal-head { padding: 14px 16px; }
+  .modal-foot { padding: 12px 16px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════ MOBILE TOP BAR ═══════════════ -->
+<!-- MOBILE TOPBAR -->
 <div class="topbar">
   <span class="topbar-brand">The Pacific Signal</span>
   <div class="topbar-actions">
-    <a href="/" target="_blank" class="btn-view-site">View Site</a>
-    <button class="btn-menu" onclick="toggleSidebar()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <a href="/" target="_blank" class="topbar-view">View Site</a>
+    <button class="topbar-menu" onclick="openSidebar()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
     </button>
   </div>
 </div>
 
-<!-- ═══════════════ SIDEBAR OVERLAY ═══════════════ -->
+<!-- SIDEBAR OVERLAY -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
-  <div style="padding:20px;border-bottom:1px solid rgba(255,255,255,0.08)">
-    <div style="font-family:var(--font-heading);font-size:1.1rem;font-weight:700">The Pacific Signal</div>
-    <div style="font-family:var(--font-mono);font-size:0.5rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-top:2px">Admin Panel</div>
+  <div class="sidebar-head">
+    <div class="sidebar-logo-name">The Pacific Signal</div>
+    <div class="sidebar-logo-tag">Editorial Administration</div>
   </div>
 
   <div class="sidebar-section">
-    <button class="sidebar-link active" data-view="dashboard" onclick="showView('dashboard')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    <button class="sidebar-btn active" data-view="dashboard" onclick="showView('dashboard')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
       Dashboard
     </button>
   </div>
 
   <div class="sidebar-section">
     <div class="sidebar-section-title">Content</div>
-    <button class="sidebar-link" data-view="articles" onclick="showView('articles')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    <button class="sidebar-btn" data-view="articles" onclick="showView('articles')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
       Articles
     </button>
-    <button class="sidebar-link" data-view="categories" onclick="showView('categories')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+    <button class="sidebar-btn" data-view="categories" onclick="showView('categories')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       Categories
     </button>
   </div>
 
   <div class="sidebar-section">
-    <div class="sidebar-section-title">Settings</div>
-    <button class="sidebar-link" data-view="settings" onclick="showView('settings')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    <div class="sidebar-section-title">Site</div>
+    <button class="sidebar-btn" data-view="settings" onclick="showView('settings')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       Settings
     </button>
+    <a href="/" target="_blank" class="sidebar-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      View Site
+    </a>
   </div>
 
-  <div style="padding:14px 20px;margin-top:auto;border-top:1px solid rgba(255,255,255,0.08)">
-    <button class="btn-signout" onclick="logout()" style="width:100%">Sign Out</button>
+  <div class="sidebar-foot">
+    <span class="sidebar-user" id="sidebarUser">Editor</span>
+    <button class="btn-signout" onclick="logout()">Sign Out</button>
   </div>
 </aside>
 
-<!-- ═══════════════ MAIN CONTENT ═══════════════ -->
-<div class="main-content" id="mainContent">
+<!-- MAIN -->
+<div class="main">
   <div class="view active" id="view-dashboard"></div>
   <div class="view" id="view-articles"></div>
   <div class="view" id="view-categories"></div>
   <div class="view" id="view-settings"></div>
 </div>
 
-<!-- ═══════════════ MODAL ═══════════════ -->
+<!-- MODAL -->
 <div class="modal-overlay" id="gModal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-head">
-      <h3 id="gModalTitle"></h3>
+      <h3 class="modal-title" id="gModalTitle"></h3>
       <button class="modal-close" onclick="closeModal()">&#10005;</button>
     </div>
     <div class="modal-body" id="gModalBody"></div>
-    <div class="modal-footer" id="gModalFooter"></div>
+    <div class="modal-foot" id="gModalFoot"></div>
   </div>
 </div>
 
-<!-- ═══════════════ TOAST ═══════════════ -->
-<div class="toast" id="toast"></div>
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg"></span>
+</div>
 
 <script>
-// ═══════════════ AUTH ═══════════════
+// ── AUTH ──
 var token = localStorage.getItem('pacific_signal_token');
 var admin = JSON.parse(localStorage.getItem('pacific_signal_admin') || 'null');
-if (!token) { window.location.href = '/signin.html'; }
+if(!token){ window.location.href='/signin.html'; }
+if(admin && document.getElementById('sidebarUser')) document.getElementById('sidebarUser').textContent = admin.display_name || admin.username || 'Editor';
 
-var allArticles = [];
-var allCategories = [];
-var IMGBB_API_KEY = '4a780b9806217405482ea7632dac862b';
-var currentUploadedImageUrl = '';
+var allArticles = [], allCategories = [];
+var IMGBB_KEY = '4a780b9806217405482ea7632dac862b';
+var curImgUrl = '';
 
-// ═══════════════ HELPERS ═══════════════
-function logout() { localStorage.clear(); window.location.href = '/signin.html'; }
+// ── HELPERS ──
+function logout(){ localStorage.clear(); window.location.href='/signin.html'; }
 
-function showToast(msg, type) {
-  type = type || 'success';
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast toast-' + type + ' show';
-  setTimeout(function() { t.classList.remove('show'); }, 3000);
+function showToast(msg, isErr){
+  var t=document.getElementById('toast'), m=document.getElementById('toastMsg');
+  m.textContent=msg;
+  t.className='toast'+(isErr?' err':'')+' show';
+  setTimeout(function(){ t.classList.remove('show'); }, 3200);
 }
 
-function escapeHTML(s) {
-  var d = document.createElement('div');
-  d.textContent = String(s || '');
-  return d.innerHTML;
+function escH(s){ var d=document.createElement('div'); d.textContent=String(s||''); return d.innerHTML; }
+function fmtDate(d){ if(!d) return '---'; return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+
+async function api(method, path, body){
+  try{
+    var opts={ method, headers:{'Content-Type':'application/json','Authorization':'Bearer '+token} };
+    if(body) opts.body=JSON.stringify(body);
+    var r=await fetch('/api'+path, opts);
+    var d=await r.json();
+    return {ok:r.ok, data:d};
+  }catch(e){ return {ok:false, data:{error:'Network error'}}; }
 }
 
-function formatDate(d) {
-  if (!d) return '---';
-  return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-}
+// ── SIDEBAR ──
+function openSidebar(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('open'); }
+function closeSidebar(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
 
-async function api(method, path, body) {
-  try {
-    var opts = {
-      method: method,
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
-    };
-    if (body) opts.body = JSON.stringify(body);
-    var res = await fetch('/api' + path, opts);
-    var data = await res.json();
-    return { ok: res.ok, data: data };
-  } catch (e) {
-    console.error('API Error:', e);
-    return { ok: false, data: { error: 'Network error' } };
-  }
-}
-
-// ═══════════════ SIDEBAR ═══════════════
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebarOverlay').classList.toggle('open');
-}
-
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('open');
-}
-
-// ═══════════════ NAVIGATION ═══════════════
-function showView(id) {
-  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
-  document.querySelectorAll('.sidebar-link').forEach(function(b) { b.classList.remove('active'); });
-  var viewEl = document.getElementById('view-' + id);
-  if (viewEl) viewEl.classList.add('active');
-  var navBtn = document.querySelector('.sidebar-link[data-view="' + id + '"]');
-  if (navBtn) navBtn.classList.add('active');
+// ── NAV ──
+function showView(id){
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+  document.querySelectorAll('.sidebar-btn[data-view]').forEach(function(b){ b.classList.remove('active'); });
+  var vEl=document.getElementById('view-'+id);
+  if(vEl) vEl.classList.add('active');
+  var bEl=document.querySelector('.sidebar-btn[data-view="'+id+'"]');
+  if(bEl) bEl.classList.add('active');
   closeSidebar();
-  var loaders = { dashboard: loadDashboard, articles: loadArticles, categories: loadCategories, settings: loadSettings };
-  if (loaders[id]) loaders[id]();
+  var loaders={dashboard:loadDashboard, articles:loadArticles, categories:loadCategories, settings:loadSettings};
+  if(loaders[id]) loaders[id]();
 }
 
-// ═══════════════ MODAL ═══════════════
-function openModal(title, bodyHTML, footerHTML) {
-  document.getElementById('gModalTitle').textContent = title;
-  document.getElementById('gModalBody').innerHTML = bodyHTML;
-  document.getElementById('gModalFooter').innerHTML = footerHTML || '';
+// ── MODAL ──
+function openModal(title, body, foot){
+  document.getElementById('gModalTitle').textContent=title;
+  document.getElementById('gModalBody').innerHTML=body;
+  document.getElementById('gModalFoot').innerHTML=foot||'';
   document.getElementById('gModal').classList.add('open');
+  document.body.style.overflow='hidden';
 }
-
-function closeModal() {
+function closeModal(){
   document.getElementById('gModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function showAlert(msg){ var el=document.getElementById('_alert'); if(el){ el.className='inline-alert show'; el.textContent=msg; }}
+
+// ── DASHBOARD ──
+async function loadDashboard(){
+  var r=await api('GET','/admin/stats');
+  var s=r.ok?r.data:{total_articles:0,published_articles:0,categories:0,pinned_articles:0,total_subscribers:0};
+  var html='<div class="page-head"><h2 class="page-title">Dashboard</h2></div>';
+  html+='<div class="stats-grid">';
+  html+='<div class="stat-card"><div class="stat-label">Total Articles</div><div class="stat-value">'+s.total_articles+'</div></div>';
+  html+='<div class="stat-card"><div class="stat-label">Published</div><div class="stat-value">'+s.published_articles+'</div></div>';
+  html+='<div class="stat-card"><div class="stat-label">Categories</div><div class="stat-value">'+s.categories+'</div></div>';
+  html+='<div class="stat-card"><div class="stat-label">Pinned</div><div class="stat-value">'+s.pinned_articles+'</div></div>';
+  html+='<div class="stat-card"><div class="stat-label">Subscribers</div><div class="stat-value">'+s.total_subscribers+'</div></div>';
+  html+='</div>';
+  html+='<div class="guide-card"><div class="guide-title">Editorial Quick Guide</div>';
+  html+='<ul class="guide-list">';
+  html+='<li>Navigate to <strong>Articles</strong> to create or manage editorial content.</li>';
+  html+='<li>Assign a <strong>Display Block</strong> to each article to control its placement on the front page.</li>';
+  html+='<li>Block A (Hero) is the large featured story. Block B (Feed) populates the intelligence list.</li>';
+  html+='<li>Block C (Visual) showcases a full-width image article. Block D (Spotlight) creates thematic groupings.</li>';
+  html+='<li>Pin up to two articles to highlight them in the hero fallback position.</li>';
+  html+='</ul></div>';
+  document.getElementById('view-dashboard').innerHTML=html;
 }
 
-function showAlert(msg) {
-  var el = document.getElementById('_alert');
-  if (el) {
-    el.className = 'alert alert-error show';
-    el.textContent = msg;
-  }
-}
-
-// ═══════════════ DASHBOARD ═══════════════
-async function loadDashboard() {
-  var result = await api('GET', '/admin/stats');
-  var stats = result.ok ? result.data : { total_articles: 0, published_articles: 0, categories: 0, pinned_articles: 0, total_subscribers: 0 };
-
-  var html = '<div class="stats-grid">';
-  html += '<div class="stat-card"><div class="stat-label">Total Articles</div><div class="stat-value">' + stats.total_articles + '</div></div>';
-  html += '<div class="stat-card"><div class="stat-label">Published</div><div class="stat-value">' + stats.published_articles + '</div></div>';
-  html += '<div class="stat-card"><div class="stat-label">Categories</div><div class="stat-value">' + stats.categories + '</div></div>';
-  html += '<div class="stat-card"><div class="stat-label">Pinned</div><div class="stat-value">' + stats.pinned_articles + '</div></div>';
-  html += '<div class="stat-card"><div class="stat-label">Subscribers</div><div class="stat-value">' + stats.total_subscribers + '</div></div>';
-  html += '</div>';
-
-  // Quick guide
-  html += '<div class="card" style="padding:20px">';
-  html += '<h3 style="font-family:var(--font-heading);font-size:1rem;margin-bottom:8px">Quick Guide</h3>';
-  html += '<p style="color:var(--text-secondary);font-size:0.82rem;line-height:1.6">';
-  html += '1. Go to <strong>Articles</strong> to create your first article.<br>';
-  html += '2. Set the <strong>Display Block</strong> to choose where it appears on the homepage.<br>';
-  html += '3. Use <strong>ImgBB upload</strong> to add images directly.<br>';
-  html += '4. <strong>Pin</strong> important articles (max 2).<br>';
-  html += '5. Check <strong>Categories</strong> to manage topics.';
-  html += '</p></div>';
-
-  document.getElementById('view-dashboard').innerHTML = html;
-}
-
-// ═══════════════ ARTICLES ═══════════════
-async function loadArticles() {
-  // Load categories FIRST
-  var catResult = await api('GET', '/admin/categories');
-  allCategories = catResult.ok ? catResult.data : [];
-  console.log('Categories loaded:', allCategories.length);
-
-  // Then load articles
-  var result = await api('GET', '/admin/articles');
-  allArticles = result.ok ? result.data : [];
-
-  var html = '<div class="sec-head"><h2 class="sec-title">Articles (' + allArticles.length + ')</h2><button class="btn btn-primary" onclick="openArticleModal()">+ New Article</button></div>';
-  html += '<div class="card"><div class="table-wrap"><table>';
-  html += '<thead><tr><th>Title</th><th>Category</th><th>Block</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
-
-  if (allArticles.length > 0) {
-    allArticles.forEach(function(a) {
-      var blockLabel = '---';
-      var blockClass = '';
-      if (a.display_block === 'hero') { blockLabel = 'Hero'; blockClass = 'badge-hero'; }
-      else if (a.display_block === 'feed') { blockLabel = 'Feed'; blockClass = 'badge-feed'; }
-      else if (a.display_block === 'visual') { blockLabel = 'Visual'; blockClass = 'badge-visual'; }
-      else if (a.display_block === 'spotlight') { blockLabel = 'Spot'; blockClass = 'badge-spotlight'; }
-
-      html += '<tr>';
-      html += '<td class="strong">' + (a.is_pinned ? '[PIN] ' : '') + escapeHTML(a.title) + '</td>';
-      html += '<td>' + escapeHTML(a.category_name || '---') + '</td>';
-      html += '<td>' + (blockLabel !== '---' ? '<span class="badge ' + blockClass + '">' + blockLabel + '</span>' : '---') + '</td>';
-      html += '<td><span class="badge ' + (a.is_published ? 'badge-published' : 'badge-draft') + '">' + (a.is_published ? 'Live' : 'Draft') + '</span></td>';
-      html += '<td>';
-      html += '<button class="btn btn-ghost btn-xs" onclick="openArticleModal(' + a.id + ')">Edit</button> ';
-      html += '<button class="btn btn-danger btn-xs" onclick="deleteArticle(' + a.id + ')">Del</button>';
-      html += '</td>';
-      html += '</tr>';
+// ── ARTICLES ──
+async function loadArticles(){
+  var cr=await api('GET','/admin/categories'); allCategories=cr.ok?cr.data:[];
+  var r=await api('GET','/admin/articles'); allArticles=r.ok?r.data:[];
+  var html='<div class="page-head"><h2 class="page-title">Articles <span style="font-family:var(--font-mono);font-size:1rem;font-weight:300;color:var(--ink-4)">('+allArticles.length+')</span></h2><button class="btn btn-primary" onclick="openArticleModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Article</button></div>';
+  html+='<div class="card"><div class="table-scroll"><table>';
+  html+='<thead><tr><th>Title</th><th>Category</th><th>Block</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
+  if(allArticles.length){
+    allArticles.forEach(function(a){
+      var bl='&mdash;', bc='';
+      if(a.display_block==='hero'){bl='Hero';bc='badge-hero';}
+      else if(a.display_block==='feed'){bl='Feed';bc='badge-feed';}
+      else if(a.display_block==='visual'){bl='Visual';bc='badge-visual';}
+      else if(a.display_block==='spotlight'){bl='Spotlight';bc='badge-spotlight';}
+      html+='<tr>';
+      html+='<td class="em">'+(a.is_pinned?'<span style="color:var(--gold-2);font-family:var(--font-mono);font-size:0.56rem;letter-spacing:0.1em;text-transform:uppercase;margin-right:6px">Pinned</span>':'')+escH(a.title)+'</td>';
+      html+='<td>'+escH(a.category_name||'&mdash;')+'</td>';
+      html+='<td>'+(bc?'<span class="badge '+bc+'">'+bl+'</span>':'<span style="color:var(--ink-4)">&mdash;</span>')+'</td>';
+      html+='<td><span class="badge '+(a.is_published?'badge-live':'badge-draft')+'">'+(a.is_published?'Live':'Draft')+'</span></td>';
+      html+='<td style="font-family:var(--font-mono);font-size:0.6rem;color:var(--ink-4)">'+fmtDate(a.published_at||a.created_at)+'</td>';
+      html+='<td><button class="btn btn-ghost btn-sm" onclick="openArticleModal('+a.id+')">Edit</button> <button class="btn btn-danger btn-sm" onclick="deleteArticle('+a.id+')">Delete</button></td>';
+      html+='</tr>';
     });
-  } else {
-    html += '<tr class="empty-row"><td colspan="5">No articles yet. Click "+ New Article" to start.</td></tr>';
+  }else{
+    html+='<tr class="empty-row"><td colspan="6">No articles yet. Create your first article to get started.</td></tr>';
   }
-
-  html += '</tbody></table></div></div>';
-  document.getElementById('view-articles').innerHTML = html;
+  html+='</tbody></table></div></div>';
+  document.getElementById('view-articles').innerHTML=html;
 }
 
-// ═══════════════ ARTICLE MODAL ═══════════════
-function openArticleModal(id) {
-  var article = id ? allArticles.find(function(x) { return x.id === id; }) : null;
-  currentUploadedImageUrl = article ? (article.image_url || '') : '';
+// ── ARTICLE MODAL ──
+function openArticleModal(id){
+  var a=id?allArticles.find(function(x){return x.id===id;}):null;
+  curImgUrl=a?(a.image_url||''):'';
 
-  var categoryOptions = '<option value="">-- Select Category --</option>';
-  if (allCategories && allCategories.length > 0) {
-    allCategories.forEach(function(c) {
-      var selected = (article && article.category_id === c.id) ? ' selected' : '';
-      categoryOptions += '<option value="' + c.id + '"' + selected + '>' + escapeHTML(c.name) + '</option>';
-    });
-  }
+  var catOpts='<option value="">— Select Category —</option>';
+  (allCategories||[]).forEach(function(c){
+    catOpts+='<option value="'+c.id+'"'+(a&&a.category_id===c.id?' selected':'')+'>'+escH(c.name)+'</option>';
+  });
 
-  var html = '';
-  html += '<div class="alert" id="_alert"></div>';
-  html += '<input type="hidden" id="_id" value="' + (article ? article.id : '') + '">';
+  var html='<div class="inline-alert" id="_alert"></div>';
+  html+='<input type="hidden" id="_id" value="'+(a?a.id:'')+'">';
 
-  html += '<div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="_title" value="' + escapeHTML(article ? article.title : '') + '" placeholder="Article title" oninput="autoSlug()"></div>';
+  html+='<div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="_title" value="'+escH(a?a.title:'')+'" placeholder="Article headline" oninput="autoSlug()"></div>';
+  html+='<div class="form-group"><label class="form-label">Slug</label><input class="form-input" id="_slug" value="'+escH(a?a.slug:'')+'" placeholder="Auto-generated from title"><div class="form-hint">Leave blank to auto-generate from title</div></div>';
 
-  html += '<div class="form-group"><label class="form-label">Slug (auto if empty)</label><input class="form-input" id="_slug" value="' + escapeHTML(article ? article.slug : '') + '" placeholder="Auto-generated"><span class="form-hint">Leave empty to auto-generate</span></div>';
+  html+='<div class="form-row">';
+  html+='<div class="form-group"><label class="form-label">Author</label><input class="form-input" id="_author" value="'+escH(a?a.author:'The Pacific Signal')+'"></div>';
+  html+='<div class="form-group"><label class="form-label">Category</label><select class="form-select" id="_cat">'+catOpts+'</select></div>';
+  html+='</div>';
 
-  html += '<div class="form-row">';
-  html += '<div class="form-group"><label class="form-label">Author</label><input class="form-input" id="_author" value="' + escapeHTML(article ? article.author : 'The Pacific Signal') + '"></div>';
-  html += '<div class="form-group"><label class="form-label">Category</label><select class="form-select" id="_category">' + categoryOptions + '</select></div>';
-  html += '</div>';
+  html+='<div class="form-group"><label class="form-label">Excerpt</label><textarea class="form-textarea" id="_excerpt" style="min-height:60px" placeholder="Short summary for card previews (max 200 characters)" maxlength="200">'+escH(a?a.excerpt:'')+' </textarea></div>';
 
-  html += '<div class="form-group"><label class="form-label">Excerpt (card preview)</label><textarea class="form-textarea" id="_excerpt" style="min-height:50px" placeholder="Short summary (max 200 chars)" maxlength="200">' + escapeHTML(article ? article.excerpt : '') + '</textarea></div>';
+  html+='<div class="form-group"><label class="form-label">Featured Image</label>';
+  html+='<div class="upload-zone" onclick="document.getElementById(\'fileIn\').click()">';
+  html+='<div class="upload-zone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>';
+  html+='<div class="upload-zone-text">Click to upload via ImgBB</div>';
+  html+='</div>';
+  html+='<input type="file" id="fileIn" accept="image/*" style="display:none" onchange="uploadImg()">';
+  html+='<div class="upload-progress" id="upProg"><div class="upload-progress-bar" id="upBar"></div></div>';
+  html+='<img id="imgPreview" class="upload-preview" src="'+(a&&a.image_url?a.image_url:'')+'" style="'+(a&&a.image_url?'display:block':'display:none')+'">';
+  html+='<button class="btn-rm-img" id="rmImgBtn" style="'+(a&&a.image_url?'display:block':'display:none')+'" onclick="removeImg()">Remove Image</button>';
+  html+='<input type="hidden" id="imgUrl" value="'+(a?a.image_url||'':'')+'">';
+  html+='</div>';
 
-  html += '<div class="form-group"><label class="form-label">Featured Image</label>';
-  html += '<div class="upload-area" onclick="document.getElementById(\'fileInput\').click()"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px">Click to upload (ImgBB)</div></div>';
-  html += '<input type="file" id="fileInput" accept="image/*" style="display:none" onchange="uploadToImgBB()">';
-  html += '<div class="upload-progress" id="uploadProgress"><div class="upload-progress-bar" id="uploadBar"></div></div>';
-  html += '<img id="imagePreview" class="upload-preview" src="' + (article ? article.image_url || '' : '') + '" style="' + (article && article.image_url ? 'display:block' : 'display:none') + '">';
-  html += '<button class="btn-remove-image" id="removeImageBtn" style="' + (article && article.image_url ? 'display:block' : 'display:none') + '" onclick="removeUploadedImage()">Remove Image</button>';
-  html += '<input type="hidden" id="imageUrlInput" value="' + (article ? article.image_url || '' : '') + '">';
-  html += '</div>';
+  html+='<div class="form-group"><label class="form-label">Content *</label><textarea class="form-textarea" id="_content" placeholder="Full article content. Use ## for headings, > for blockquotes, - for lists...">'+escH(a?a.content:'')+' </textarea></div>';
 
-  html += '<div class="form-group"><label class="form-label">Content *</label><textarea class="form-textarea" id="_content" placeholder="Write your article...">' + escapeHTML(article ? article.content : '') + '</textarea></div>';
+  html+='<div class="form-row">';
+  html+='<div class="form-group"><label class="form-label">Display Block</label><select class="form-select" id="_block" onchange="toggleSpotlightLabel()"><option value="">— None / Latest —</option><option value="hero"'+(a&&a.display_block==='hero'?' selected':'')+'>Block A — Hero Feature</option><option value="feed"'+(a&&a.display_block==='feed'?' selected':'')+'>Block B — Intelligence Feed</option><option value="visual"'+(a&&a.display_block==='visual'?' selected':'')+'>Block C — Visual Showcase</option><option value="spotlight"'+(a&&a.display_block==='spotlight'?' selected':'')+'>Block D — Spotlight Analysis</option></select></div>';
+  html+='<div class="form-group" id="_spotWrap" style="display:'+(a&&a.display_block==='spotlight'?'block':'none')+'"><label class="form-label">Spotlight Label</label><input class="form-input" id="_spotLabel" value="'+escH(a?a.spotlight_label:'')+'" placeholder="e.g. Geopolitics Focus"></div>';
+  html+='</div>';
 
-  html += '<div class="form-group"><label class="form-label">Display Block</label><select class="form-select" id="_block"><option value="">-- None --</option><option value="hero"' + (article && article.display_block === 'hero' ? ' selected' : '') + '>Block A: Hero</option><option value="feed"' + (article && article.display_block === 'feed' ? ' selected' : '') + '>Block B: Feed</option><option value="visual"' + (article && article.display_block === 'visual' ? ' selected' : '') + '>Block C: Visual</option><option value="spotlight"' + (article && article.display_block === 'spotlight' ? ' selected' : '') + '>Block D: Spotlight</option></select></div>';
+  html+='<div style="display:flex;gap:24px;flex-wrap:wrap;padding-top:4px">';
+  html+='<label class="toggle-label"><input type="checkbox" id="_pinned"'+(a&&a.is_pinned?' checked':'')+'><span>Pin to front (max 2)</span></label>';
+  html+='<label class="toggle-label"><input type="checkbox" id="_published"'+(a===null||a.is_published?' checked':'')+'><span>Published / Live</span></label>';
+  html+='</div>';
 
-  html += '<div class="form-group" id="_spotlightLabelWrap" style="display:' + (article && article.display_block === 'spotlight' ? 'block' : 'none') + '"><label class="form-label">Spotlight Label</label><input class="form-input" id="_spotlightLabel" value="' + escapeHTML(article ? article.spotlight_label : '') + '" placeholder="e.g. Geopolitics Focus"></div>';
-
-  html += '<div style="display:flex;gap:20px;flex-wrap:wrap">';
-  html += '<label class="toggle-row"><input type="checkbox" id="_pinned"' + (article && article.is_pinned ? ' checked' : '') + '>Pin (max 2)</label>';
-  html += '<label class="toggle-row"><input type="checkbox" id="_published"' + (!article || article.is_published ? ' checked' : '') + '>Published</label>';
-  html += '</div>';
-
-  openModal(article ? 'Edit Article' : 'New Article', html,
+  openModal(a?'Edit Article':'New Article', html,
     '<button class="btn btn-primary" onclick="saveArticle()">Save Article</button><button class="btn btn-ghost" onclick="closeModal()">Cancel</button>'
   );
-
-  setTimeout(function() {
-    var blockSelect = document.getElementById('_block');
-    if (blockSelect) {
-      blockSelect.addEventListener('change', function() {
-        document.getElementById('_spotlightLabelWrap').style.display = this.value === 'spotlight' ? 'block' : 'none';
-      });
-    }
-  }, 100);
 }
 
-function autoSlug() {
-  var title = document.getElementById('_title').value;
-  var slug = title.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').substring(0, 80);
-  var slugEl = document.getElementById('_slug');
-  if (slugEl && !slugEl.value) slugEl.placeholder = slug;
+function toggleSpotlightLabel(){
+  var el=document.getElementById('_spotWrap');
+  if(el) el.style.display=document.getElementById('_block').value==='spotlight'?'block':'none';
 }
 
-async function saveArticle() {
-  var id = document.getElementById('_id').value;
-  var payload = {
-    title: document.getElementById('_title').value.trim(),
-    slug: document.getElementById('_slug').value.trim() || null,
-    excerpt: document.getElementById('_excerpt').value.trim(),
-    content: document.getElementById('_content').value.trim(),
-    image_url: document.getElementById('imageUrlInput') ? document.getElementById('imageUrlInput').value : currentUploadedImageUrl,
-    category_id: parseInt(document.getElementById('_category').value) || null,
-    author: document.getElementById('_author').value.trim() || 'The Pacific Signal',
-    display_block: document.getElementById('_block').value || null,
-    spotlight_label: document.getElementById('_spotlightLabel') ? document.getElementById('_spotlightLabel').value.trim() : null,
-    is_pinned: document.getElementById('_pinned').checked ? 1 : 0,
-    is_published: document.getElementById('_published').checked ? 1 : 0
+function autoSlug(){
+  var t=document.getElementById('_title').value;
+  var s=t.toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'').substring(0,80);
+  var el=document.getElementById('_slug');
+  if(el&&!el.value) el.placeholder=s||'auto-generated';
+}
+
+async function saveArticle(){
+  var id=document.getElementById('_id').value;
+  var p={
+    title:document.getElementById('_title').value.trim(),
+    slug:document.getElementById('_slug').value.trim()||null,
+    excerpt:document.getElementById('_excerpt').value.trim(),
+    content:document.getElementById('_content').value.trim(),
+    image_url:document.getElementById('imgUrl').value||curImgUrl,
+    category_id:parseInt(document.getElementById('_cat').value)||null,
+    author:document.getElementById('_author').value.trim()||'The Pacific Signal',
+    display_block:document.getElementById('_block').value||null,
+    spotlight_label:document.getElementById('_spotLabel')?document.getElementById('_spotLabel').value.trim():null,
+    is_pinned:document.getElementById('_pinned').checked?1:0,
+    is_published:document.getElementById('_published').checked?1:0
   };
-
-  if (!payload.title) { showAlert('Title is required'); return; }
-  if (!payload.content) { showAlert('Content is required'); return; }
-
-  var url = '/admin/articles' + (id ? '/' + id : '');
-  var result = await api(id ? 'PUT' : 'POST', url, payload);
-  if (!result.ok) { showAlert(result.data.error || 'Error saving'); return; }
-  closeModal();
-  loadArticles();
-  loadDashboard();
-  showToast(id ? 'Article updated' : 'Article created!');
+  if(!p.title){showAlert('Title is required.');return;}
+  if(!p.content){showAlert('Content is required.');return;}
+  var url='/admin/articles'+(id?'/'+id:'');
+  var r=await api(id?'PUT':'POST',url,p);
+  if(!r.ok){showAlert(r.data.error||'Error saving article.');return;}
+  closeModal(); loadArticles(); loadDashboard();
+  showToast(id?'Article updated successfully.':'Article created successfully.');
 }
 
-async function deleteArticle(id) {
-  if (!confirm('Delete permanently?')) return;
-  await api('DELETE', '/admin/articles/' + id);
-  loadArticles();
-  loadDashboard();
-  showToast('Deleted');
+async function deleteArticle(id){
+  if(!confirm('Delete this article permanently? This cannot be undone.')) return;
+  await api('DELETE','/admin/articles/'+id);
+  loadArticles(); loadDashboard();
+  showToast('Article deleted.');
 }
 
-// ═══════════════ IMGBB UPLOAD ═══════════════
-async function uploadToImgBB() {
-  var fileInput = document.getElementById('fileInput');
-  var file = fileInput.files[0];
-  if (!file) return;
-  if (file.size > 32 * 1024 * 1024) { alert('File too large. Max 32MB.'); return; }
-
-  document.getElementById('uploadProgress').style.display = 'block';
-  document.getElementById('uploadBar').style.width = '30%';
-
-  var formData = new FormData();
-  formData.append('image', file);
-
-  try {
-    document.getElementById('uploadBar').style.width = '60%';
-    var response = await fetch('https://api.imgbb.com/1/upload?key=' + IMGBB_API_KEY, { method: 'POST', body: formData });
-    var data = await response.json();
-
-    if (data.success) {
-      currentUploadedImageUrl = data.data.url;
-      document.getElementById('imageUrlInput').value = data.data.url;
-      document.getElementById('imagePreview').src = data.data.url;
-      document.getElementById('imagePreview').style.display = 'block';
-      document.getElementById('removeImageBtn').style.display = 'block';
-      document.getElementById('fileInput').value = '';
-      document.getElementById('uploadBar').style.width = '100%';
-      showToast('Image uploaded');
-    } else {
-      alert('Upload failed');
-    }
-  } catch (e) {
-    alert('Network error');
-  } finally {
-    setTimeout(function() {
-      document.getElementById('uploadProgress').style.display = 'none';
-      document.getElementById('uploadBar').style.width = '0%';
-    }, 1500);
-  }
+// ── IMGBB UPLOAD ──
+async function uploadImg(){
+  var fi=document.getElementById('fileIn');
+  var file=fi.files[0];
+  if(!file) return;
+  if(file.size>32*1024*1024){alert('File too large. Maximum 32MB.');return;}
+  document.getElementById('upProg').style.display='block';
+  document.getElementById('upBar').style.width='35%';
+  var fd=new FormData(); fd.append('image',file);
+  try{
+    document.getElementById('upBar').style.width='65%';
+    var r=await fetch('https://api.imgbb.com/1/upload?key='+IMGBB_KEY,{method:'POST',body:fd});
+    var d=await r.json();
+    if(d.success){
+      curImgUrl=d.data.url;
+      document.getElementById('imgUrl').value=d.data.url;
+      document.getElementById('imgPreview').src=d.data.url;
+      document.getElementById('imgPreview').style.display='block';
+      document.getElementById('rmImgBtn').style.display='block';
+      document.getElementById('fileIn').value='';
+      document.getElementById('upBar').style.width='100%';
+      showToast('Image uploaded.');
+    }else{alert('Upload failed. Please try again.');}
+  }catch(e){alert('Network error during upload.');}
+  finally{ setTimeout(function(){ document.getElementById('upProg').style.display='none'; document.getElementById('upBar').style.width='0%'; },1500); }
 }
 
-function removeUploadedImage() {
-  currentUploadedImageUrl = '';
-  document.getElementById('imageUrlInput').value = '';
-  document.getElementById('imagePreview').style.display = 'none';
-  document.getElementById('removeImageBtn').style.display = 'none';
-  document.getElementById('fileInput').value = '';
+function removeImg(){
+  curImgUrl='';
+  document.getElementById('imgUrl').value='';
+  document.getElementById('imgPreview').style.display='none';
+  document.getElementById('rmImgBtn').style.display='none';
+  document.getElementById('fileIn').value='';
 }
 
-// ═══════════════ CATEGORIES ═══════════════
-async function loadCategories() {
-  var result = await api('GET', '/admin/categories');
-  allCategories = result.ok ? result.data : [];
-
-  var html = '<div class="sec-head"><h2 class="sec-title">Categories (' + allCategories.length + ')</h2><button class="btn btn-primary" onclick="openCategoryModal()">+ New</button></div>';
-  html += '<div class="card"><div class="table-wrap"><table>';
-  html += '<thead><tr><th>Name</th><th>Slug</th><th>Actions</th></tr></thead><tbody>';
-
-  if (allCategories.length > 0) {
-    allCategories.forEach(function(c) {
-      html += '<tr><td class="strong">' + escapeHTML(c.name) + '</td><td style="font-family:var(--font-mono);font-size:0.68rem">' + escapeHTML(c.slug) + '</td>';
-      html += '<td><button class="btn btn-ghost btn-xs" onclick="openCategoryModal(' + c.id + ')">Edit</button> <button class="btn btn-danger btn-xs" onclick="deleteCategory(' + c.id + ')">Del</button></td></tr>';
+// ── CATEGORIES ──
+async function loadCategories(){
+  var r=await api('GET','/admin/categories'); allCategories=r.ok?r.data:[];
+  var html='<div class="page-head"><h2 class="page-title">Categories <span style="font-family:var(--font-mono);font-size:1rem;font-weight:300;color:var(--ink-4)">('+allCategories.length+')</span></h2><button class="btn btn-primary" onclick="openCatModal()">+ New Category</button></div>';
+  html+='<div class="card"><div class="table-scroll"><table>';
+  html+='<thead><tr><th>Name</th><th>Slug</th><th>Actions</th></tr></thead><tbody>';
+  if(allCategories.length){
+    allCategories.forEach(function(c){
+      html+='<tr><td class="em">'+escH(c.name)+'</td><td style="font-family:var(--font-mono);font-size:0.65rem;color:var(--ink-4)">'+escH(c.slug)+'</td>';
+      html+='<td><button class="btn btn-ghost btn-sm" onclick="openCatModal('+c.id+')">Edit</button> <button class="btn btn-danger btn-sm" onclick="deleteCat('+c.id+')">Delete</button></td></tr>';
     });
-  } else {
-    html += '<tr class="empty-row"><td colspan="3">No categories</td></tr>';
+  }else{
+    html+='<tr class="empty-row"><td colspan="3">No categories found.</td></tr>';
   }
-
-  html += '</tbody></table></div></div>';
-  document.getElementById('view-categories').innerHTML = html;
+  html+='</tbody></table></div></div>';
+  document.getElementById('view-categories').innerHTML=html;
 }
 
-function openCategoryModal(id) {
-  var c = id ? allCategories.find(function(x) { return x.id === id; }) : null;
-  var html = '<div class="alert" id="_alert"></div><input type="hidden" id="_id" value="' + (c ? c.id : '') + '">';
-  html += '<div class="form-group"><label class="form-label">Name *</label><input class="form-input" id="_name" value="' + escapeHTML(c ? c.name : '') + '"></div>';
-  openModal(c ? 'Edit Category' : 'New Category', html,
-    '<button class="btn btn-primary" onclick="saveCategory()">Save</button><button class="btn btn-ghost" onclick="closeModal()">Cancel</button>');
+function openCatModal(id){
+  var c=id?allCategories.find(function(x){return x.id===id;}):null;
+  var html='<div class="inline-alert" id="_alert"></div><input type="hidden" id="_id" value="'+(c?c.id:'')+'">';
+  html+='<div class="form-group"><label class="form-label">Category Name *</label><input class="form-input" id="_name" value="'+escH(c?c.name:'')+'" placeholder="e.g. South Asia"></div>';
+  openModal(c?'Edit Category':'New Category',html,
+    '<button class="btn btn-primary" onclick="saveCat()">Save Category</button><button class="btn btn-ghost" onclick="closeModal()">Cancel</button>');
 }
 
-async function saveCategory() {
-  var id = document.getElementById('_id').value;
-  var name = document.getElementById('_name').value.trim();
-  if (!name) { showAlert('Name required'); return; }
-  var url = '/admin/categories' + (id ? '/' + id : '');
-  var result = await api(id ? 'PUT' : 'POST', url, { name: name });
-  if (!result.ok) { showAlert(result.data.error); return; }
-  closeModal();
+async function saveCat(){
+  var id=document.getElementById('_id').value;
+  var name=document.getElementById('_name').value.trim();
+  if(!name){showAlert('Name is required.');return;}
+  var r=await api(id?'PUT':'POST','/admin/categories'+(id?'/'+id:''),{name:name});
+  if(!r.ok){showAlert(r.data.error||'Error saving.');return;}
+  closeModal(); loadCategories();
+  showToast('Category saved.');
+}
+
+async function deleteCat(id){
+  if(!confirm('Delete this category? Articles will have their category cleared.')) return;
+  await api('DELETE','/admin/categories/'+id);
   loadCategories();
-  showToast('Category saved');
+  showToast('Category deleted.');
 }
 
-async function deleteCategory(id) {
-  if (!confirm('Delete?')) return;
-  await api('DELETE', '/admin/categories/' + id);
-  loadCategories();
-  showToast('Deleted');
+// ── SETTINGS ──
+async function loadSettings(){
+  var r=await api('GET','/admin/settings');
+  var s=r.ok?r.data:{site_title:'The Pacific Signal',site_tagline:'Beyond the Headlines'};
+  var html='<div class="page-head"><h2 class="page-title">Site Settings</h2></div>';
+  html+='<div class="card"><div class="card-head"><div class="card-head-title">General Settings</div></div><div style="padding:20px">';
+  html+='<div class="inline-alert" id="_alert"></div>';
+  html+='<div class="form-group"><label class="form-label">Site Title</label><input class="form-input" id="_siteTitle" value="'+escH(s.site_title)+'"></div>';
+  html+='<div class="form-group"><label class="form-label">Tagline</label><input class="form-input" id="_tagline" value="'+escH(s.site_tagline)+'"></div>';
+  html+='<button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>';
+  html+='</div></div>';
+  document.getElementById('view-settings').innerHTML=html;
 }
 
-// ═══════════════ SETTINGS ═══════════════
-async function loadSettings() {
-  var result = await api('GET', '/admin/settings');
-  var s = result.ok ? result.data : { site_title: 'The Pacific Signal', site_tagline: 'Beyond the Headlines' };
-  var html = '<div class="sec-head"><h2 class="sec-title">Settings</h2></div>';
-  html += '<div class="card"><div style="padding:20px"><div class="alert" id="_alert"></div>';
-  html += '<div class="form-group"><label class="form-label">Site Title</label><input class="form-input" id="_siteTitle" value="' + escapeHTML(s.site_title) + '"></div>';
-  html += '<div class="form-group"><label class="form-label">Tagline</label><input class="form-input" id="_tagline" value="' + escapeHTML(s.site_tagline) + '"></div>';
-  html += '<button class="btn btn-primary" onclick="saveSettings()">Save</button>';
-  html += '</div></div>';
-  document.getElementById('view-settings').innerHTML = html;
-}
-
-async function saveSettings() {
-  var result = await api('PUT', '/admin/settings', {
-    site_title: document.getElementById('_siteTitle').value.trim(),
-    site_tagline: document.getElementById('_tagline').value.trim()
+async function saveSettings(){
+  var r=await api('PUT','/admin/settings',{
+    site_title:document.getElementById('_siteTitle').value.trim(),
+    site_tagline:document.getElementById('_tagline').value.trim()
   });
-  if (!result.ok) { showAlert(result.data.error); return; }
-  showToast('Settings saved');
+  if(!r.ok){showAlert(r.data.error||'Error.');return;}
+  showToast('Settings saved successfully.');
 }
 
-// ═══════════════ INIT ═══════════════
+// ── INIT ──
 loadDashboard();
 </script>
 </body>
