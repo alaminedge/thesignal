@@ -3,68 +3,221 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Signal — Admin Login</title>
+<title>The Pacific Signal — Admin Sign In</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cabinet+Grotesk:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+
 :root{
-  --bg:#05080f;--surface:#0b0f1a;--surface2:#111827;
-  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
-  --teal:#00d4aa;--teal2:#00b894;--teal-dim:rgba(0,212,170,0.08);
-  --white:#f0f4f8;--gray:#7a8899;--red:#f0566a;--red-dim:rgba(240,86,106,0.1);
-  --radius:10px;
+  --bg:#FAFAF9;
+  --surface:#FFFFFF;
+  --border:rgba(0,0,0,0.06);
+  --border2:rgba(0,0,0,0.1);
+  --accent:#006994;
+  --accent-dark:#004D6B;
+  --text:#1A1A1A;
+  --text-secondary:#4A4A4A;
+  --text-muted:#6B6B6B;
+  --white:#FFFFFF;
+  --red:#C44536;
+  --red-light:rgba(196,69,54,0.08);
+  --radius:8px;
+  --font-heading:'Playfair Display', Georgia, serif;
+  --font-body:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:'DM Mono', monospace;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--white);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:56px 56px;pointer-events:none}
 
-.card{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:48px 44px;box-shadow:0 40px 100px rgba(0,0,0,0.7);animation:up .5s ease;position:relative;z-index:1}
-@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+*,*::before,*::after{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-.logo{text-align:center;margin-bottom:32px}
-.logo-text{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;letter-spacing:-0.02em}
-.logo-text em{font-style:italic;color:var(--teal)}
-.logo-sub{font-size:0.72rem;color:var(--gray);letter-spacing:0.06em}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
 
-.alert{padding:11px 14px;border-radius:var(--radius);font-size:0.77rem;margin-bottom:16px;display:none;line-height:1.4}
-.alert.show{display:block}
-.alert-error{background:var(--red-dim);border:1px solid rgba(240,86,106,0.22);color:var(--red)}
+.login-card{
+  width:100%;
+  max-width:400px;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:44px 40px;
+  box-shadow:0 4px 24px rgba(0,0,0,0.04);
+}
 
-.fg{margin-bottom:14px}
-.fl{display:block;font-size:0.63rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray);margin-bottom:6px;font-family:'DM Mono',monospace}
-.fi{width:100%;padding:11px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--white);font-size:0.87rem;font-family:'Cabinet Grotesk',sans-serif;outline:none;transition:all .2s}
-.fi:focus{border-color:var(--teal);background:rgba(0,212,170,0.03);box-shadow:0 0 0 3px var(--teal-dim)}
-.fi::placeholder{color:rgba(122,136,153,0.45)}
+.login-logo{
+  text-align:center;
+  margin-bottom:8px;
+}
 
-.btn-sub{width:100%;padding:13px;background:var(--teal);color:#000;border:none;border-radius:var(--radius);font-family:'Cabinet Grotesk',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all .2s;margin-top:4px}
-.btn-sub:hover{background:var(--teal2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,212,170,0.28)}
-.btn-sub:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.login-logo h1{
+  font-family:var(--font-heading);
+  font-size:1.5rem;
+  font-weight:700;
+  color:var(--text);
+  letter-spacing:0.5px;
+}
 
-.spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(0,0,0,.2);border-top-color:#000;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px}
-@keyframes spin{to{transform:rotate(360deg)}}
+.login-tagline{
+  text-align:center;
+  font-size:0.72rem;
+  color:var(--text-muted);
+  font-style:italic;
+  margin-bottom:32px;
+}
 
-@media(max-width:480px){.card{padding:36px 28px}}
+.login-subtitle{
+  text-align:center;
+  font-family:var(--font-mono);
+  font-size:0.58rem;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  color:var(--text-muted);
+  margin-bottom:24px;
+}
+
+.alert{
+  padding:10px 14px;
+  border-radius:var(--radius);
+  font-size:0.78rem;
+  margin-bottom:16px;
+  display:none;
+  line-height:1.4;
+}
+
+.alert.show{
+  display:block;
+}
+
+.alert-error{
+  background:var(--red-light);
+  border:1px solid rgba(196,69,54,0.25);
+  color:var(--red);
+}
+
+.form-group{
+  margin-bottom:16px;
+}
+
+.form-label{
+  display:block;
+  font-family:var(--font-mono);
+  font-size:0.6rem;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  color:var(--text-muted);
+  margin-bottom:6px;
+  font-weight:500;
+}
+
+.form-input{
+  width:100%;
+  padding:11px 14px;
+  background:var(--white);
+  border:1.5px solid var(--border2);
+  border-radius:var(--radius);
+  font-family:var(--font-body);
+  font-size:0.86rem;
+  color:var(--text);
+  outline:none;
+  transition:border-color 0.2s ease;
+}
+
+.form-input:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(0,105,148,0.06);
+}
+
+.form-input::placeholder{
+  color:var(--text-muted);
+  opacity:0.5;
+}
+
+.btn-signin{
+  width:100%;
+  padding:12px;
+  background:var(--accent);
+  color:var(--white);
+  border:none;
+  border-radius:var(--radius);
+  font-family:var(--font-body);
+  font-size:0.85rem;
+  font-weight:600;
+  cursor:pointer;
+  letter-spacing:0.02em;
+  transition:background 0.2s ease;
+  margin-top:4px;
+}
+
+.btn-signin:hover{
+  background:var(--accent-dark);
+}
+
+.btn-signin:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+}
+
+.spinner{
+  display:inline-block;
+  width:14px;
+  height:14px;
+  border:2px solid rgba(255,255,255,0.3);
+  border-top-color:var(--white);
+  border-radius:50%;
+  animation:spin 0.6s linear infinite;
+  vertical-align:middle;
+  margin-right:6px;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="logo">
-    <div class="logo-text">The <em>Signal</em></div>
-    <div class="logo-sub">Admin Panel</div>
+
+<div class="login-card">
+  <div class="login-logo">
+    <h1>The Pacific Signal</h1>
   </div>
+  <div class="login-tagline">Beyond the Headlines</div>
+  <div class="login-subtitle">Admin Panel</div>
+
   <div class="alert" id="alert"></div>
-  <form onsubmit="return doLogin(event)">
-    <div class="fg"><label class="fl">Username</label><input class="fi" type="text" id="username" placeholder="admin" required></div>
-    <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="password" placeholder="Your password" required></div>
-    <button type="submit" class="btn-sub" id="loginBtn">Sign In</button>
+
+  <form onsubmit="return handleLogin(event)">
+    <div class="form-group">
+      <label class="form-label">Username</label>
+      <input class="form-input" type="text" id="username" placeholder="admin" required autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" type="password" id="password" placeholder="Your password" required autocomplete="current-password">
+    </div>
+    <button type="submit" class="btn-signin" id="loginBtn">Sign In</button>
   </form>
 </div>
-<script>
-var savedToken = localStorage.getItem('signal_token');
-if (savedToken) { window.location.href = '/admin.html'; }
 
-async function doLogin(e) {
-  e.preventDefault();
+<script>
+// Check if already logged in
+var savedToken = localStorage.getItem('pacific_signal_token');
+if (savedToken) {
+  window.location.href = '/admin.html';
+}
+
+async function handleLogin(event) {
+  event.preventDefault();
+
   var username = document.getElementById('username').value.trim();
   var password = document.getElementById('password').value;
   var alertEl = document.getElementById('alert');
@@ -80,25 +233,34 @@ async function doLogin(e) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: username, password: password })
     });
+
     var data = await response.json();
+
     if (!response.ok) {
       alertEl.className = 'alert alert-error show';
-      alertEl.textContent = data.error || 'Login failed';
+      alertEl.textContent = data.error || 'Invalid credentials. Please try again.';
       btn.disabled = false;
       btn.textContent = 'Sign In';
       return false;
     }
-    localStorage.setItem('signal_token', data.token);
-    localStorage.setItem('signal_admin', JSON.stringify(data.admin));
+
+    // Save token and admin info
+    localStorage.setItem('pacific_signal_token', data.token);
+    localStorage.setItem('pacific_signal_admin', JSON.stringify(data.admin));
+
+    // Redirect to admin panel
     window.location.href = '/admin.html';
-  } catch(e) {
+
+  } catch (error) {
     alertEl.className = 'alert alert-error show';
-    alertEl.textContent = 'Network error';
+    alertEl.textContent = 'Network error. Please check your connection.';
     btn.disabled = false;
     btn.textContent = 'Sign In';
   }
+
   return false;
 }
 </script>
+
 </body>
 </html>
