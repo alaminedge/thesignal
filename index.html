@@ -10,15 +10,6 @@
 <style>
 
 /* ══════════════════════════════════════════════════════════════
-   CSS RESET
-   ══════════════════════════════════════════════════════════════ */
-*,*::before,*::after{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-/* ══════════════════════════════════════════════════════════════
    DESIGN TOKENS
    ══════════════════════════════════════════════════════════════ */
 :root{
@@ -36,8 +27,6 @@
   --border-medium:#D5D5D0;
   --white:#FFFFFF;
   --black:#111111;
-  --red-accent:#C44536;
-  --gold-accent:#B8860B;
   --shadow-sm:0 1px 3px rgba(0,0,0,0.04);
   --shadow-md:0 4px 12px rgba(0,0,0,0.06);
   --shadow-lg:0 8px 30px rgba(0,0,0,0.08);
@@ -66,9 +55,6 @@ body{
   min-height:100vh;
 }
 
-/* ══════════════════════════════════════════════════════════════
-   TYPOGRAPHY
-   ══════════════════════════════════════════════════════════════ */
 h1,h2,h3,h4,h5,h6{
   font-family:var(--font-heading);
   font-weight:700;
@@ -93,7 +79,7 @@ img{
 }
 
 /* ══════════════════════════════════════════════════════════════
-   SKELETON LOADERS (Prevent layout shift)
+   SKELETON LOADERS
    ══════════════════════════════════════════════════════════════ */
 .skeleton{
   background:var(--border-light);
@@ -109,12 +95,7 @@ img{
   left:0;
   width:100%;
   height:100%;
-  background:linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255,255,255,0.6) 50%,
-    transparent 100%
-  );
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.6) 50%,transparent 100%);
   animation:skeletonShimmer 1.6s infinite;
 }
 
@@ -123,30 +104,11 @@ img{
   100%{transform:translateX(100%);}
 }
 
-.skeleton-text{
-  height:16px;
-  margin-bottom:8px;
-}
-
-.skeleton-text.short{
-  width:60%;
-}
-
-.skeleton-text.medium{
-  width:80%;
-}
-
-.skeleton-title{
-  height:28px;
-  margin-bottom:12px;
-  width:90%;
-}
-
-.skeleton-image{
-  width:100%;
-  height:220px;
-  border-radius:4px;
-}
+.skeleton-text{height:16px;margin-bottom:8px;}
+.skeleton-text.short{width:60%;}
+.skeleton-text.medium{width:80%;}
+.skeleton-title{height:28px;margin-bottom:12px;width:90%;}
+.skeleton-image{width:100%;height:220px;border-radius:4px;}
 
 /* ══════════════════════════════════════════════════════════════
    HEADER
@@ -160,9 +122,7 @@ img{
   transition:box-shadow var(--transition-smooth);
 }
 
-.site-header.scrolled{
-  box-shadow:var(--shadow-md);
-}
+.site-header.scrolled{box-shadow:var(--shadow-md);}
 
 .header-inner{
   max-width:var(--max-width);
@@ -194,9 +154,7 @@ img{
   transition:font-size var(--transition-smooth);
 }
 
-.header-logo:hover{
-  color:var(--accent);
-}
+.header-logo:hover{color:var(--accent);}
 
 .header-tagline{
   font-family:var(--font-body);
@@ -211,27 +169,6 @@ img{
   display:flex;
   align-items:center;
   gap:16px;
-}
-
-.header-search-btn{
-  background:none;
-  border:none;
-  cursor:pointer;
-  padding:8px;
-  color:var(--text-secondary);
-  transition:color var(--transition-fast);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.header-search-btn:hover{
-  color:var(--accent);
-}
-
-.header-search-btn svg{
-  width:18px;
-  height:18px;
 }
 
 .header-subscribe-btn{
@@ -269,9 +206,7 @@ img{
   -webkit-overflow-scrolling:touch;
 }
 
-.header-nav::-webkit-scrollbar{
-  display:none;
-}
+.header-nav::-webkit-scrollbar{display:none;}
 
 .nav-link{
   padding:14px 18px;
@@ -307,6 +242,42 @@ img{
 }
 
 /* ══════════════════════════════════════════════════════════════
+   CATEGORY PAGE HEADER
+   ══════════════════════════════════════════════════════════════ */
+.category-header{
+  padding:32px 0 20px;
+  border-bottom:1px solid var(--border-light);
+  margin-bottom:32px;
+  display:none;
+}
+
+.category-header.show{display:block;}
+
+.category-header-title{
+  font-family:var(--font-heading);
+  font-size:1.8rem;
+  font-weight:700;
+  color:var(--text-primary);
+}
+
+.category-header-count{
+  font-family:var(--font-mono);
+  font-size:0.7rem;
+  color:var(--text-muted);
+  margin-top:4px;
+}
+
+.category-back-link{
+  display:inline-block;
+  margin-top:12px;
+  font-size:0.8rem;
+  color:var(--accent);
+  text-decoration:none;
+}
+
+.category-back-link:hover{text-decoration:underline;}
+
+/* ══════════════════════════════════════════════════════════════
    BLOCK A: HERO SECTION
    ══════════════════════════════════════════════════════════════ */
 .hero-section{
@@ -339,15 +310,9 @@ img{
   min-height:300px;
 }
 
-.hero-card:hover .hero-image{
-  transform:scale(1.03);
-}
+.hero-card:hover .hero-image{transform:scale(1.03);}
 
-.hero-content{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-}
+.hero-content{display:flex;flex-direction:column;gap:14px;}
 
 .hero-category{
   font-family:var(--font-mono);
@@ -367,9 +332,7 @@ img{
   letter-spacing:-0.02em;
 }
 
-.hero-card:hover .hero-title{
-  color:var(--accent);
-}
+.hero-card:hover .hero-title{color:var(--accent);}
 
 .hero-excerpt{
   font-size:0.95rem;
@@ -446,10 +409,7 @@ img{
   width:24px;
 }
 
-.feed-item-content{
-  flex:1;
-  min-width:0;
-}
+.feed-item-content{flex:1;min-width:0;}
 
 .feed-item-category{
   font-family:var(--font-mono);
@@ -468,9 +428,7 @@ img{
   color:var(--text-primary);
 }
 
-.feed-item:hover .feed-item-title{
-  color:var(--accent);
-}
+.feed-item:hover .feed-item-title{color:var(--accent);}
 
 .feed-item-author{
   font-family:var(--font-mono);
@@ -506,9 +464,7 @@ img{
   transition:transform var(--transition-slow);
 }
 
-.visual-card:hover .visual-image{
-  transform:scale(1.02);
-}
+.visual-card:hover .visual-image{transform:scale(1.02);}
 
 .visual-overlay{
   position:absolute;
@@ -516,7 +472,7 @@ img{
   left:0;
   right:0;
   padding:40px;
-  background:linear-gradient(transparent, rgba(0,0,0,0.75));
+  background:linear-gradient(transparent,rgba(0,0,0,0.75));
   color:var(--white);
 }
 
@@ -589,9 +545,7 @@ img{
   margin-bottom:8px;
 }
 
-.spotlight-card:hover .spotlight-title{
-  color:var(--accent);
-}
+.spotlight-card:hover .spotlight-title{color:var(--accent);}
 
 .spotlight-author{
   font-family:var(--font-mono);
@@ -631,9 +585,7 @@ img{
   display:block;
 }
 
-.article-card:hover{
-  transform:translateY(-3px);
-}
+.article-card:hover{transform:translateY(-3px);}
 
 .article-card-image{
   width:100%;
@@ -662,9 +614,7 @@ img{
   color:var(--text-primary);
 }
 
-.article-card:hover .article-card-title{
-  color:var(--accent);
-}
+.article-card:hover .article-card-title{color:var(--accent);}
 
 .article-card-excerpt{
   font-size:0.8rem;
@@ -684,7 +634,7 @@ img{
 }
 
 /* ══════════════════════════════════════════════════════════════
-   LOAD MORE BUTTON
+   LOAD MORE
    ══════════════════════════════════════════════════════════════ */
 .load-more-wrap{
   text-align:center;
@@ -710,10 +660,7 @@ img{
   color:var(--white);
 }
 
-.load-more-btn:disabled{
-  opacity:0.5;
-  cursor:not-allowed;
-}
+.load-more-btn:disabled{opacity:0.5;cursor:not-allowed;}
 
 /* ══════════════════════════════════════════════════════════════
    FOOTER
@@ -779,9 +726,7 @@ img{
   transition:color var(--transition-fast);
 }
 
-.footer-links a:hover{
-  color:var(--white);
-}
+.footer-links a:hover{color:var(--white);}
 
 .footer-subscribe-text{
   font-size:0.78rem;
@@ -808,13 +753,8 @@ img{
   transition:border-color var(--transition-fast);
 }
 
-.footer-subscribe-input:focus{
-  border-color:var(--accent);
-}
-
-.footer-subscribe-input::placeholder{
-  color:rgba(255,255,255,0.3);
-}
+.footer-subscribe-input:focus{border-color:var(--accent);}
+.footer-subscribe-input::placeholder{color:rgba(255,255,255,0.3);}
 
 .footer-subscribe-btn{
   padding:10px 18px;
@@ -830,9 +770,7 @@ img{
   transition:background var(--transition-fast);
 }
 
-.footer-subscribe-btn:hover{
-  background:var(--accent-dark);
-}
+.footer-subscribe-btn:hover{background:var(--accent-dark);}
 
 .footer-bottom{
   max-width:var(--max-width);
@@ -864,9 +802,7 @@ img{
   transition:color var(--transition-fast);
 }
 
-.footer-bottom-links a:hover{
-  color:rgba(255,255,255,0.8);
-}
+.footer-bottom-links a:hover{color:rgba(255,255,255,0.8);}
 
 /* ══════════════════════════════════════════════════════════════
    FADE IN ANIMATION
@@ -876,102 +812,44 @@ img{
 }
 
 @keyframes fadeIn{
-  from{
-    opacity:0;
-    transform:translateY(12px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+  from{opacity:0;transform:translateY(12px);}
+  to{opacity:1;transform:translateY(0);}
 }
 
 /* ══════════════════════════════════════════════════════════════
-   RESPONSIVE DESIGN
+   RESPONSIVE
    ══════════════════════════════════════════════════════════════ */
-@media (max-width:1024px){
-  .hero-card{
-    grid-template-columns:1fr 1fr;
-    gap:24px;
-  }
-  .hero-title{
-    font-size:1.7rem;
-  }
-  .spotlights-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-  .latest-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-  .footer-grid{
-    grid-template-columns:1fr 1fr;
-  }
+@media(max-width:1024px){
+  .hero-card{grid-template-columns:1fr 1fr;gap:24px;}
+  .hero-title{font-size:1.7rem;}
+  .spotlights-grid{grid-template-columns:repeat(2,1fr);}
+  .latest-grid{grid-template-columns:repeat(2,1fr);}
+  .footer-grid{grid-template-columns:1fr 1fr;}
 }
 
-@media (max-width:768px){
-  .hero-card{
-    grid-template-columns:1fr;
-  }
-  .hero-image-wrapper{
-    min-height:220px;
-  }
-  .hero-image{
-    min-height:220px;
-  }
-  .hero-title{
-    font-size:1.5rem;
-  }
-  .feed-grid{
-    grid-template-columns:1fr;
-  }
-  .spotlights-grid{
-    grid-template-columns:1fr;
-  }
-  .latest-grid{
-    grid-template-columns:1fr;
-  }
-  .footer-grid{
-    grid-template-columns:1fr;
-    gap:28px;
-  }
-  .header-nav{
-    gap:0;
-  }
-  .nav-link{
-    padding:12px 14px;
-    font-size:0.75rem;
-  }
-  .header-logo{
-    font-size:1.3rem;
-  }
-  .header-tagline{
-    font-size:0.7rem;
-  }
+@media(max-width:768px){
+  .hero-card{grid-template-columns:1fr;}
+  .hero-image-wrapper{min-height:220px;}
+  .hero-image{min-height:220px;}
+  .hero-title{font-size:1.5rem;}
+  .feed-grid{grid-template-columns:1fr;}
+  .spotlights-grid{grid-template-columns:1fr;}
+  .latest-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr;gap:28px;}
+  .header-nav{gap:0;}
+  .nav-link{padding:12px 14px;font-size:0.75rem;}
+  .header-logo{font-size:1.3rem;}
+  .header-tagline{font-size:0.7rem;}
 }
 
-@media (max-width:480px){
-  .header-top{
-    padding:14px 0;
-  }
-  .hero-section{
-    padding:28px 0 28px;
-  }
-  .hero-title{
-    font-size:1.3rem;
-  }
-  .visual-overlay{
-    padding:20px;
-  }
-  .visual-title{
-    font-size:1.2rem;
-  }
-  .footer-bottom{
-    flex-direction:column;
-    text-align:center;
-  }
-  .footer-bottom-links{
-    justify-content:center;
-  }
+@media(max-width:480px){
+  .header-top{padding:14px 0;}
+  .hero-section{padding:28px 0 28px;}
+  .hero-title{font-size:1.3rem;}
+  .visual-overlay{padding:20px;}
+  .visual-title{font-size:1.2rem;}
+  .footer-bottom{flex-direction:column;text-align:center;}
+  .footer-bottom-links{justify-content:center;}
 }
 </style>
 </head>
@@ -988,33 +866,38 @@ img{
         <span class="header-tagline">Beyond the Headlines</span>
       </div>
       <div class="header-actions">
-        <button class="header-search-btn" aria-label="Search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-        </button>
         <a href="#subscribe" class="header-subscribe-btn">Subscribe</a>
       </div>
     </div>
     <div class="header-divider"></div>
     <nav class="header-nav">
-      <a href="/" class="nav-link active">Home</a>
-      <a href="/category/united-states-canada.html" class="nav-link">US &amp; Canada</a>
-      <a href="/category/china-east-asia.html" class="nav-link">China &amp; East Asia</a>
-      <a href="/category/europe-uk.html" class="nav-link">Europe</a>
-      <a href="/category/middle-east-north-africa.html" class="nav-link">Middle East</a>
-      <a href="/category/south-asia.html" class="nav-link">South Asia</a>
-      <a href="/category/global-markets-trade.html" class="nav-link">Markets</a>
-      <a href="/category/geopolitics-strategy.html" class="nav-link">Geopolitics</a>
+      <a href="/" class="nav-link active" id="navHome">Home</a>
+      <a href="/?category=united-states-canada" class="nav-link">US &amp; Canada</a>
+      <a href="/?category=china-east-asia" class="nav-link">China &amp; East Asia</a>
+      <a href="/?category=europe-uk" class="nav-link">Europe</a>
+      <a href="/?category=middle-east-north-africa" class="nav-link">Middle East</a>
+      <a href="/?category=south-asia" class="nav-link">South Asia</a>
+      <a href="/?category=global-markets-trade" class="nav-link">Markets</a>
+      <a href="/?category=geopolitics-strategy" class="nav-link">Geopolitics</a>
     </nav>
   </div>
 </header>
 
 <!-- ══════════════════════════════════════════════════════════════
+   CATEGORY HEADER (shown when filtering by category)
+   ══════════════════════════════════════════════════════════════ -->
+<div class="category-header" id="categoryHeader">
+  <div class="main-content">
+    <h1 class="category-header-title" id="categoryHeaderTitle"></h1>
+    <p class="category-header-count" id="categoryHeaderCount"></p>
+    <a href="/" class="category-back-link">&#8592; Back to Home</a>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
    MAIN CONTENT
    ══════════════════════════════════════════════════════════════ -->
-<main class="main-content">
+<main class="main-content" id="mainContent">
 
   <!-- BLOCK A: HERO -->
   <section class="hero-section" id="heroSection">
@@ -1055,7 +938,7 @@ img{
 
   <!-- LATEST ARTICLES -->
   <section class="latest-section" id="latestSection">
-    <h2 class="latest-section-title">Latest Analysis</h2>
+    <h2 class="latest-section-title" id="latestSectionTitle">Latest Analysis</h2>
     <div class="latest-grid" id="latestGrid">
       <div class="skeleton skeleton-image" style="height:180px"></div>
       <div class="skeleton skeleton-image" style="height:180px"></div>
@@ -1087,25 +970,26 @@ img{
       <div class="footer-col">
         <h4 class="footer-col-title">Regions</h4>
         <ul class="footer-links">
-          <li><a href="#">United States &amp; Canada</a></li>
-          <li><a href="#">China &amp; East Asia</a></li>
-          <li><a href="#">Europe &amp; UK</a></li>
-          <li><a href="#">Middle East</a></li>
-          <li><a href="#">South Asia</a></li>
-          <li><a href="#">Africa</a></li>
-          <li><a href="#">Latin America</a></li>
+          <li><a href="/?category=united-states-canada">United States &amp; Canada</a></li>
+          <li><a href="/?category=china-east-asia">China &amp; East Asia</a></li>
+          <li><a href="/?category=europe-uk">Europe &amp; UK</a></li>
+          <li><a href="/?category=middle-east-north-africa">Middle East</a></li>
+          <li><a href="/?category=south-asia">South Asia</a></li>
+          <li><a href="/?category=southeast-asia-oceania">Southeast Asia</a></li>
+          <li><a href="/?category=africa">Africa</a></li>
+          <li><a href="/?category=latin-america-caribbean">Latin America</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4 class="footer-col-title">Topics</h4>
         <ul class="footer-links">
-          <li><a href="#">Global Markets</a></li>
-          <li><a href="#">Science &amp; Health</a></li>
-          <li><a href="#">Climate &amp; Environment</a></li>
-          <li><a href="#">Democracy &amp; Rights</a></li>
-          <li><a href="#">Arts &amp; Culture</a></li>
-          <li><a href="#">Geopolitics</a></li>
-          <li><a href="#">Explainers</a></li>
+          <li><a href="/?category=global-markets-trade">Global Markets</a></li>
+          <li><a href="/?category=science-health">Science &amp; Health</a></li>
+          <li><a href="/?category=climate-environment">Climate &amp; Environment</a></li>
+          <li><a href="/?category=democracy-rights">Democracy &amp; Rights</a></li>
+          <li><a href="/?category=arts-media-sports">Arts &amp; Culture</a></li>
+          <li><a href="/?category=geopolitics-strategy">Geopolitics</a></li>
+          <li><a href="/?category=technology-business">Technology</a></li>
         </ul>
       </div>
       <div class="footer-col" id="subscribe">
@@ -1113,7 +997,7 @@ img{
         <p class="footer-subscribe-text">
           The best analysis, delivered free to your inbox every week.
         </p>
-        <form class="footer-subscribe-form" onsubmit="handleSubscribe(event)">
+        <form class="footer-subscribe-form" onsubmit="return handleSubscribe(event)">
           <input type="email" placeholder="Your email address" class="footer-subscribe-input" id="subscribeEmail" required>
           <button type="submit" class="footer-subscribe-btn">Subscribe</button>
         </form>
@@ -1128,9 +1012,6 @@ img{
       <a href="/contact.html">Contact</a>
       <a href="/privacy.html">Privacy</a>
       <a href="/terms.html">Terms</a>
-      <a href="#">Twitter</a>
-      <a href="#">LinkedIn</a>
-      <a href="#">RSS</a>
     </div>
   </div>
 </footer>
@@ -1144,16 +1025,46 @@ img{
 // ══════════════════════════════════════════════════════════════
 var currentPage = 1;
 var hasMoreArticles = false;
+var isCategoryView = false;
+var currentCategorySlug = '';
 
 // ══════════════════════════════════════════════════════════════
-// INITIALIZE — Load homepage data immediately
+// CHECK URL FOR CATEGORY PARAMETER
 // ══════════════════════════════════════════════════════════════
-(function init() {
+var urlParams = new URLSearchParams(window.location.search);
+var filterCategory = urlParams.get('category');
+
+if (filterCategory) {
+  isCategoryView = true;
+  currentCategorySlug = filterCategory;
+  
+  // Show category header
+  var categoryName = filterCategory.replace(/-/g, ' ').replace(/\b\w/g, function(l) { return l.toUpperCase(); });
+  document.getElementById('categoryHeader').classList.add('show');
+  document.getElementById('categoryHeaderTitle').textContent = categoryName;
+  
+  // Hide all blocks
+  document.getElementById('heroSection').style.display = 'none';
+  document.getElementById('feedSection').style.display = 'none';
+  document.getElementById('visualSection').style.display = 'none';
+  document.getElementById('spotlightsSection').style.display = 'none';
+  
+  // Change latest section title
+  document.getElementById('latestSectionTitle').textContent = 'Articles in ' + categoryName;
+  
+  // Update active nav link
+  document.querySelectorAll('.nav-link').forEach(function(link) { link.classList.remove('active'); });
+  document.getElementById('navHome').classList.remove('active');
+  
+  // Load category articles
+  loadCategoryArticles(filterCategory);
+} else {
+  // Normal homepage load
   loadHomepage(1);
-})();
+}
 
 // ══════════════════════════════════════════════════════════════
-// LOAD HOMEPAGE DATA FROM API
+// LOAD HOMEPAGE (Rhythm of Scroll)
 // ══════════════════════════════════════════════════════════════
 async function loadHomepage(page) {
   try {
@@ -1171,146 +1082,105 @@ async function loadHomepage(page) {
     hasMoreArticles = data.latest && data.latest.length === 9;
     currentPage = data.page || page;
 
-    if (hasMoreArticles) {
-      document.getElementById('loadMoreWrap').style.display = 'block';
-    } else {
-      document.getElementById('loadMoreWrap').style.display = 'none';
-    }
+    document.getElementById('loadMoreWrap').style.display = hasMoreArticles ? 'block' : 'none';
 
   } catch (error) {
     console.error('Error loading homepage:', error);
-    document.getElementById('heroSection').innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-muted)">Unable to load content. Please refresh the page.</p>';
+    document.getElementById('heroSection').innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-muted)">Unable to load content. Please refresh.</p>';
   }
 }
 
 // ══════════════════════════════════════════════════════════════
-// RENDER BLOCK A: HERO
+// LOAD CATEGORY ARTICLES
+// ══════════════════════════════════════════════════════════════
+async function loadCategoryArticles(categorySlug, page) {
+  try {
+    var response = await fetch('/api/category/' + categorySlug + '?page=' + (page || 1));
+    var data = await response.json();
+    
+    if (data.category) {
+      document.getElementById('categoryHeaderCount').textContent = data.articles.length + ' articles';
+    }
+    
+    if (data.articles && data.articles.length > 0) {
+      renderLatest(data.articles, page > 1);
+      document.getElementById('loadMoreWrap').style.display = data.hasMore ? 'block' : 'none';
+    } else {
+      document.getElementById('latestGrid').innerHTML = '<p style="color:var(--text-muted);font-style:italic;grid-column:1/-1;text-align:center;padding:40px">No articles in this category yet.</p>';
+    }
+    
+  } catch (error) {
+    console.error('Error loading category:', error);
+    document.getElementById('latestGrid').innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:40px">Unable to load articles.</p>';
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// RENDER FUNCTIONS
 // ══════════════════════════════════════════════════════════════
 function renderHero(hero) {
   var container = document.getElementById('heroSection');
-
   if (!hero) {
-    container.innerHTML = '<p style="text-align:center;padding:60px;color:var(--text-muted);font-style:italic">No featured article yet. Check back soon.</p>';
+    container.innerHTML = '<p style="text-align:center;padding:60px;color:var(--text-muted);font-style:italic">No featured article yet.</p>';
     return;
   }
-
-  var html = '';
-  html += '<a href="/article.html?slug=' + hero.slug + '" class="hero-card fade-in">';
-
+  var html = '<a href="/article.html?slug=' + hero.slug + '" class="hero-card fade-in">';
   html += '<div class="hero-image-wrapper">';
   if (hero.image_url) {
     html += '<img src="' + hero.image_url + '" alt="' + hero.title + '" class="hero-image" loading="eager" onerror="this.parentElement.style.background=\'var(--bg-warm)\';this.style.display=\'none\'">';
   } else {
     html += '<div style="width:100%;height:100%;min-height:300px;background:var(--bg-warm);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:3rem;color:var(--border-medium)">TPS</div>';
   }
-  html += '</div>';
-
-  html += '<div class="hero-content">';
+  html += '</div><div class="hero-content">';
   html += '<div class="hero-category">' + (hero.category_name || 'Analysis') + '</div>';
   html += '<h1 class="hero-title">' + hero.title + '</h1>';
-  if (hero.excerpt) {
-    html += '<p class="hero-excerpt">' + hero.excerpt + '</p>';
-  }
-  html += '<div class="hero-meta">';
-  html += '<span>' + svgAuthor() + ' ' + (hero.author || 'The Pacific Signal') + '</span>';
-  html += '<span>' + svgCalendar() + ' ' + formatDate(hero.published_at || hero.created_at) + '</span>';
-  html += '</div>';
-  html += '</div>';
-
-  html += '</a>';
-
+  if (hero.excerpt) html += '<p class="hero-excerpt">' + hero.excerpt + '</p>';
+  html += '<div class="hero-meta"><span>' + svgAuthor() + ' ' + (hero.author || 'The Pacific Signal') + '</span><span>' + svgCalendar() + ' ' + formatDate(hero.published_at || hero.created_at) + '</span></div>';
+  html += '</div></a>';
   container.innerHTML = html;
 }
 
-// ══════════════════════════════════════════════════════════════
-// RENDER BLOCK B: INTELLIGENCE FEED
-// ══════════════════════════════════════════════════════════════
 function renderFeed(feed) {
   var container = document.getElementById('feedGrid');
-
-  if (feed.length === 0) {
-    container.innerHTML = '<p style="color:var(--text-muted);font-style:italic;grid-column:1/-1">No feed articles yet.</p>';
-    return;
-  }
-
+  if (feed.length === 0) { container.innerHTML = '<p style="color:var(--text-muted);font-style:italic;grid-column:1/-1">No feed articles yet.</p>'; return; }
   var html = '';
   feed.forEach(function(article, index) {
     html += '<a href="/article.html?slug=' + article.slug + '" class="feed-item fade-in" style="animation-delay:' + (index * 0.05) + 's">';
     html += '<span class="feed-item-number">' + String(index + 1).padStart(2, '0') + '</span>';
-    html += '<div class="feed-item-content">';
-    html += '<div class="feed-item-category">' + (article.category_name || '') + '</div>';
+    html += '<div class="feed-item-content"><div class="feed-item-category">' + (article.category_name || '') + '</div>';
     html += '<div class="feed-item-title">' + article.title + '</div>';
-    html += '<div class="feed-item-author">' + (article.author || 'The Pacific Signal') + '</div>';
-    html += '</div>';
-    html += '</a>';
+    html += '<div class="feed-item-author">' + (article.author || 'The Pacific Signal') + '</div></div></a>';
   });
-
   container.innerHTML = html;
 }
 
-// ══════════════════════════════════════════════════════════════
-// RENDER BLOCK C: VISUAL BREAK
-// ══════════════════════════════════════════════════════════════
 function renderVisual(visual) {
   var container = document.getElementById('visualSection');
-
-  if (!visual) {
-    container.style.display = 'none';
-    return;
-  }
-
+  if (!visual) { container.style.display = 'none'; return; }
   container.style.display = 'block';
-
-  var html = '';
-  html += '<a href="/article.html?slug=' + visual.slug + '" class="visual-card fade-in">';
+  var html = '<a href="/article.html?slug=' + visual.slug + '" class="visual-card fade-in">';
   html += '<img src="' + visual.image_url + '" alt="' + visual.title + '" class="visual-image" loading="lazy" onerror="this.parentElement.style.display=\'none\'">';
-  html += '<div class="visual-overlay">';
-  html += '<div class="visual-category">' + (visual.category_name || '') + '</div>';
-  html += '<div class="visual-title">' + visual.title + '</div>';
-  html += '</div>';
-  html += '</a>';
-
+  html += '<div class="visual-overlay"><div class="visual-category">' + (visual.category_name || '') + '</div><div class="visual-title">' + visual.title + '</div></div></a>';
   container.innerHTML = html;
 }
 
-// ══════════════════════════════════════════════════════════════
-// RENDER BLOCK D: CATEGORY SPOTLIGHTS
-// ══════════════════════════════════════════════════════════════
 function renderSpotlights(spotlights) {
   var container = document.getElementById('spotlightsGrid');
-
-  if (spotlights.length === 0) {
-    container.innerHTML = '<p style="color:var(--text-muted);font-style:italic;grid-column:1/-1">No spotlight articles yet.</p>';
-    return;
-  }
-
+  if (spotlights.length === 0) { container.innerHTML = '<p style="color:var(--text-muted);font-style:italic;grid-column:1/-1">No spotlight articles yet.</p>'; return; }
   var html = '';
   spotlights.forEach(function(article, index) {
     html += '<a href="/article.html?slug=' + article.slug + '" class="spotlight-card fade-in" style="animation-delay:' + (index * 0.08) + 's">';
     html += '<div class="spotlight-label">' + (article.spotlight_label || article.category_name || 'Spotlight') + '</div>';
     html += '<div class="spotlight-title">' + article.title + '</div>';
-    html += '<div class="spotlight-author">' + (article.author || 'The Pacific Signal') + '</div>';
-    html += '</a>';
+    html += '<div class="spotlight-author">' + (article.author || 'The Pacific Signal') + '</div></a>';
   });
-
   container.innerHTML = html;
 }
 
-// ══════════════════════════════════════════════════════════════
-// RENDER LATEST ARTICLES
-// ══════════════════════════════════════════════════════════════
 function renderLatest(articles, append) {
   var container = document.getElementById('latestGrid');
-
-  if (!append) {
-    container.innerHTML = '';
-  }
-
-  if (articles.length === 0 && !append) {
-    container.innerHTML = '<p style="color:var(--text-muted);font-style:italic;grid-column:1/-1">No articles yet.</p>';
-    return;
-  }
-
+  if (!append) container.innerHTML = '';
+  if (articles.length === 0 && !append) { container.innerHTML = '<p style="color:var(--text-muted);font-style:italic;grid-column:1/-1">No articles yet.</p>'; return; }
   var html = append ? container.innerHTML : '';
   articles.forEach(function(article, index) {
     html += '<a href="/article.html?slug=' + article.slug + '" class="article-card fade-in" style="animation-delay:' + (index * 0.06) + 's">';
@@ -1321,40 +1191,38 @@ function renderLatest(articles, append) {
     }
     html += '<div class="article-card-category">' + (article.category_name || '') + '</div>';
     html += '<div class="article-card-title">' + article.title + '</div>';
-    if (article.excerpt) {
-      html += '<div class="article-card-excerpt">' + article.excerpt + '</div>';
-    }
-    html += '<div class="article-card-meta">' + (article.author || 'The Pacific Signal') + ' &middot; ' + formatDate(article.published_at || article.created_at) + '</div>';
-    html += '</a>';
+    if (article.excerpt) html += '<div class="article-card-excerpt">' + article.excerpt + '</div>';
+    html += '<div class="article-card-meta">' + (article.author || 'The Pacific Signal') + ' &middot; ' + formatDate(article.published_at || article.created_at) + '</div></a>';
   });
-
   container.innerHTML = html;
 }
 
-// ══════════════════════════════════════════════════════════════
-// LOAD MORE BUTTON
-// ══════════════════════════════════════════════════════════════
 function loadMore() {
   var btn = document.getElementById('loadMoreBtn');
   btn.textContent = 'Loading...';
   btn.disabled = true;
-
-  loadHomepage(currentPage + 1).then(function() {
+  
+  var loadPromise;
+  if (isCategoryView) {
+    loadPromise = loadCategoryArticles(currentCategorySlug, currentPage + 1);
+  } else {
+    loadPromise = loadHomepage(currentPage + 1);
+  }
+  
+  loadPromise.then(function() {
     btn.textContent = 'Load More Articles';
     btn.disabled = false;
   });
 }
 
 // ══════════════════════════════════════════════════════════════
-// NEWSLETTER SUBSCRIPTION
+// NEWSLETTER
 // ══════════════════════════════════════════════════════════════
 async function handleSubscribe(event) {
   event.preventDefault();
   var email = document.getElementById('subscribeEmail').value.trim();
   var messageEl = document.getElementById('subscribeMessage');
-
   if (!email) return;
-
   try {
     var response = await fetch('/api/subscribe', {
       method: 'POST',
@@ -1362,7 +1230,6 @@ async function handleSubscribe(event) {
       body: JSON.stringify({ email: email })
     });
     var data = await response.json();
-
     if (response.ok) {
       messageEl.textContent = 'Thank you! You are now subscribed.';
       messageEl.style.color = '#10d48e';
@@ -1375,10 +1242,8 @@ async function handleSubscribe(event) {
     messageEl.textContent = 'Network error. Please try again.';
     messageEl.style.color = '#f0566a';
   }
-
-  setTimeout(function() {
-    messageEl.textContent = '';
-  }, 5000);
+  setTimeout(function() { messageEl.textContent = ''; }, 5000);
+  return false;
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1386,28 +1251,18 @@ async function handleSubscribe(event) {
 // ══════════════════════════════════════════════════════════════
 window.addEventListener('scroll', function() {
   var header = document.getElementById('siteHeader');
-  if (window.scrollY > 10) {
-    header.classList.add('scrolled');
-  } else {
-    header.classList.remove('scrolled');
-  }
+  if (window.scrollY > 10) { header.classList.add('scrolled'); }
+  else { header.classList.remove('scrolled'); }
 });
 
 // ══════════════════════════════════════════════════════════════
-// HELPER: FORMAT DATE
+// HELPERS
 // ══════════════════════════════════════════════════════════════
 function formatDate(dateString) {
   if (!dateString) return '';
-  return new Date(dateString).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  });
+  return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-// ══════════════════════════════════════════════════════════════
-// HELPER: SVG ICONS (No emojis)
-// ══════════════════════════════════════════════════════════════
 function svgAuthor() {
   return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
 }
