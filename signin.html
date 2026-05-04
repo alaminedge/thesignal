@@ -3,346 +3,234 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Pacific Signal — Admin Sign In</title>
+<title>The Pacific Signal — Sign In</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --ink: #0E0E0C;
-  --ink-2: #2C2C28;
-  --ink-3: #5A5A52;
-  --ink-4: #8A8A80;
-  --paper: #F8F6F1;
-  --paper-2: #F0EDE4;
-  --rule: #D8D4C8;
-  --rule-2: #C8C4B4;
-  --gold: #B8A878;
-  --gold-2: #A09060;
-  --crimson: #8B2020;
-  --white: #FFFFFF;
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Crimson Pro', Georgia, serif;
-  --font-mono: 'DM Mono', monospace;
+:root{
+  --paper:#F7F4EE;--paper-w:#F0ECE2;--paper-d:#E8E2D4;
+  --ink:#1A1814;--ink2:#2E2B24;--ink3:#5C5849;--ink4:#8C8878;--ink5:#B0AB9E;
+  --rule:#DDD9CE;--rule2:#CAC5B8;
+  --gold:#B49A5E;--gold-l:#D4BA82;
+  --red:#7A1E1E;--red2:#5C1616;
+  --white:#FFFFFF;
+  --fd:'Cormorant Garamond',Georgia,serif;
+  --fb:'Source Serif 4',Georgia,serif;
+  --fm:'DM Mono',monospace;
 }
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { -webkit-font-smoothing: antialiased; }
-
-body {
-  font-family: var(--font-body);
-  background: var(--ink);
-  color: var(--ink);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  position: relative;
-  overflow: hidden;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--fb);
+  background:var(--ink2);
+  color:var(--ink);
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  position:relative;overflow:hidden;
 }
 
-/* Background pattern */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: 
-    repeating-linear-gradient(0deg, transparent, transparent 80px, rgba(255,255,255,0.015) 80px, rgba(255,255,255,0.015) 81px),
-    repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(255,255,255,0.015) 80px, rgba(255,255,255,0.015) 81px);
-  pointer-events: none;
+/* Subtle background texture */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 60px,rgba(255,255,255,.012) 60px,rgba(255,255,255,.012) 61px),
+    repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(255,255,255,.012) 60px,rgba(255,255,255,.012) 61px);
+  pointer-events:none;
 }
 
-/* Atmospheric glow */
-body::after {
-  content: '';
-  position: fixed;
-  top: -20%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60vw;
-  height: 60vw;
-  max-width: 600px;
-  max-height: 600px;
-  background: radial-gradient(circle, rgba(184,168,120,0.06) 0%, transparent 65%);
-  pointer-events: none;
+/* Warm glow */
+body::after{
+  content:'';position:fixed;
+  top:-10%;left:50%;transform:translateX(-50%);
+  width:70vw;height:60vw;max-width:700px;max-height:600px;
+  background:radial-gradient(ellipse,rgba(180,154,94,.07) 0%,transparent 65%);
+  pointer-events:none;
 }
 
-.sign-in-card {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 400px;
-  background: var(--paper);
-  padding: 0;
-  overflow: hidden;
-  box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+/* CARD */
+.card{
+  position:relative;z-index:1;
+  width:100%;max-width:400px;
+  background:var(--paper);
+  box-shadow:0 40px 100px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.04);
+  animation:cardIn .5s cubic-bezier(.34,1.1,.64,1) both;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+/* Gold top rule */
+.card-top-rule{height:3px;background:linear-gradient(90deg,var(--red),var(--gold),var(--red))}
+
+.card-body{padding:40px 40px 34px}
+
+/* Logo area */
+.card-logo{text-align:center;margin-bottom:28px}
+.logo-img-wrap{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;text-decoration:none}
+.logo-img-wrap img{height:36px;width:auto}
+.logo-name{font-family:var(--fd);font-size:1.3rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);line-height:1}
+.logo-orn{display:flex;align-items:center;justify-content:center;gap:8px;margin:7px 0 6px}
+.logo-orn-line{width:36px;height:1px;background:var(--rule2)}
+.logo-orn-dia{width:4px;height:4px;background:var(--gold);transform:rotate(45deg)}
+.logo-tag{font-family:var(--fb);font-size:.78rem;font-style:italic;color:var(--ink5)}
+
+.card-divider{height:1px;background:var(--rule);margin-bottom:22px}
+
+.card-subtitle{
+  font-family:var(--fm);font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink5);text-align:center;margin-bottom:24px;
 }
 
-/* Gold top accent */
-.card-accent { height: 3px; background: linear-gradient(90deg, var(--crimson) 0%, var(--gold) 50%, var(--crimson) 100%); }
-
-.card-body { padding: 44px 44px 40px; }
-
-.card-logo {
-  text-align: center;
-  margin-bottom: 32px;
+/* ALERT */
+.alert{
+  padding:10px 12px;margin-bottom:14px;display:none;
+  font-family:var(--fm);font-size:.6rem;letter-spacing:.04em;
+  border-left:3px solid var(--red);background:rgba(122,30,30,.07);color:var(--red);
 }
+.alert.on{display:block}
 
-.logo-name {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink);
-  line-height: 1;
-  margin-bottom: 8px;
+/* FORM */
+.fg{margin-bottom:16px}
+.flbl{
+  display:block;font-family:var(--fm);font-size:.54rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink4);margin-bottom:6px;
 }
+.finp{
+  width:100%;padding:11px 13px;
+  background:var(--white);
+  border:1px solid var(--rule);border-bottom:2px solid var(--rule2);
+  font-family:var(--fb);font-size:.95rem;color:var(--ink);
+  outline:none;transition:all .2s;
+}
+.finp:focus{border-color:var(--ink3);border-bottom-color:var(--gold);box-shadow:0 1px 0 0 var(--gold)}
+.finp::placeholder{color:var(--ink5);opacity:.6}
 
-.logo-ornament {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 8px;
+/* BUTTON */
+.btn-signin{
+  width:100%;margin-top:6px;padding:13px;
+  background:var(--ink);color:var(--white);border:none;cursor:pointer;
+  font-family:var(--fm);font-size:.6rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  transition:background .2s;
 }
-.logo-ornament-line { width: 44px; height: 1px; background: var(--rule-2); }
-.logo-ornament-diamond { width: 5px; height: 5px; background: var(--gold); transform: rotate(45deg); }
+.btn-signin:hover:not(:disabled){background:var(--ink2)}
+.btn-signin:disabled{opacity:.5;cursor:not-allowed}
+.spinner{
+  width:13px;height:13px;border:1.5px solid rgba(255,255,255,.25);
+  border-top-color:var(--white);border-radius:50%;
+  animation:spin .65s linear infinite;display:none;flex-shrink:0;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-.logo-tag {
-  font-family: var(--font-body);
-  font-size: 0.78rem;
-  font-style: italic;
-  color: var(--ink-4);
+/* CARD BOTTOM */
+.card-foot{
+  padding:13px 40px 16px;
+  background:var(--paper-w);border-top:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
 }
+.card-foot-link{
+  font-family:var(--fm);font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink5);text-decoration:none;display:inline-flex;align-items:center;gap:5px;
+  transition:color .2s;
+}
+.card-foot-link:hover{color:var(--red)}
+.card-secure{
+  display:flex;align-items:center;gap:5px;
+  font-family:var(--fm);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink5);
+}
+.card-secure svg{width:11px;height:11px;color:var(--ink5)}
 
-.card-divider {
-  height: 1px;
-  background: var(--rule);
-  margin-bottom: 28px;
-}
-
-.card-title {
-  font-family: var(--font-mono);
-  font-size: 0.56rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink-4);
-  text-align: center;
-  margin-bottom: 28px;
-}
-
-.alert {
-  padding: 10px 14px;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.04em;
-  margin-bottom: 16px;
-  display: none;
-  border-left: 3px solid var(--crimson);
-  background: rgba(139,32,32,0.06);
-  color: var(--crimson);
-}
-.alert.show { display: block; }
-
-.form-group { margin-bottom: 18px; }
-
-.form-label {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.56rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-4);
-  margin-bottom: 7px;
-}
-
-.form-input {
-  width: 100%;
-  padding: 12px 14px;
-  background: var(--white);
-  border: 1px solid var(--rule);
-  border-bottom: 2px solid var(--rule);
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  color: var(--ink);
-  outline: none;
-  transition: all 0.2s;
-}
-.form-input:focus {
-  border-color: var(--ink);
-  border-bottom-color: var(--gold-2);
-  box-shadow: 0 1px 0 0 var(--gold-2);
-}
-.form-input::placeholder { color: var(--ink-4); opacity: 0.5; }
-
-.btn-signin {
-  width: 100%;
-  padding: 14px;
-  background: var(--ink);
-  color: var(--white);
-  border: none;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  cursor: pointer;
-  margin-top: 8px;
-  transition: background 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-.btn-signin:hover { background: var(--ink-2); }
-.btn-signin:disabled { opacity: 0.5; cursor: not-allowed; }
-
-.btn-signin-spinner {
-  width: 14px; height: 14px;
-  border: 1.5px solid rgba(255,255,255,0.3);
-  border-top-color: var(--white);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  display: none;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.card-foot {
-  margin-top: 24px;
-  text-align: center;
-}
-.card-foot-link {
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-4);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.card-foot-link:hover { color: var(--crimson); }
-
-.card-bottom-strip {
-  background: var(--paper-2);
-  border-top: 1px solid var(--rule);
-  padding: 12px 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.card-bottom-strip svg { width: 12px; height: 12px; color: var(--ink-4); }
-.card-bottom-strip span {
-  font-family: var(--font-mono);
-  font-size: 0.55rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-4);
-}
-
-/* Fade in animation */
-.sign-in-card {
-  animation: cardIn 0.5s cubic-bezier(0.34,1.1,0.64,1) both;
-}
-@keyframes cardIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
-
-@media (max-width: 480px) {
-  .card-body { padding: 32px 24px 28px; }
-  .card-bottom-strip { padding: 10px 24px; }
+@media(max-width:480px){
+  .card-body{padding:30px 22px 26px}
+  .card-foot{padding:11px 22px 13px;flex-direction:column;align-items:flex-start;gap:8px}
 }
 </style>
 </head>
 <body>
 
-<div class="sign-in-card">
-  <div class="card-accent"></div>
+<div class="card">
+  <div class="card-top-rule"></div>
   <div class="card-body">
+
     <div class="card-logo">
-      <div class="logo-name">The Pacific Signal</div>
-      <div class="logo-ornament">
-        <div class="logo-ornament-line"></div>
-        <div class="logo-ornament-diamond"></div>
-        <div class="logo-ornament-line"></div>
+      <a href="/" class="logo-img-wrap">
+        <img src="/images/tps.png" alt="The Pacific Signal">
+        <span class="logo-name">The Pacific Signal</span>
+      </a>
+      <div class="logo-orn">
+        <div class="logo-orn-line"></div>
+        <div class="logo-orn-dia"></div>
+        <div class="logo-orn-line"></div>
       </div>
       <div class="logo-tag">Beyond the Headlines</div>
     </div>
 
     <div class="card-divider"></div>
-    <div class="card-title">Editorial Administration</div>
+    <div class="card-subtitle">Editorial Administration</div>
 
-    <div class="alert" id="loginAlert"></div>
+    <div class="alert" id="alert"></div>
 
-    <form onsubmit="return handleLogin(event)">
-      <div class="form-group">
-        <label class="form-label">Username</label>
-        <input class="form-input" type="text" id="username" placeholder="Enter username" required autocomplete="username">
+    <form onsubmit="return doLogin(event)">
+      <div class="fg">
+        <label class="flbl">Username</label>
+        <input class="finp" type="text" id="uname" placeholder="Enter username" required autocomplete="username">
       </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input class="form-input" type="password" id="password" placeholder="Enter password" required autocomplete="current-password">
+      <div class="fg">
+        <label class="flbl">Password</label>
+        <input class="finp" type="password" id="pw" placeholder="Enter password" required autocomplete="current-password">
       </div>
       <button type="submit" class="btn-signin" id="loginBtn">
-        <span class="btn-signin-spinner" id="spinner"></span>
-        <span id="btnText">Sign In to Panel</span>
+        <span class="spinner" id="spinner"></span>
+        <span id="btnTxt">Sign In</span>
       </button>
     </form>
 
-    <div class="card-foot">
-      <a href="/" class="card-foot-link">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:middle;margin-right:4px"><path d="M19 12H5m0 0l7 7m-7-7l7-7"/></svg>
-        Return to front page
-      </a>
-    </div>
   </div>
-  <div class="card-bottom-strip">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-    <span>Secure access &mdash; authorized personnel only</span>
+
+  <div class="card-foot">
+    <a href="/" class="card-foot-link">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5m0 0l7 7m-7-7l7-7"/></svg>
+      Back to site
+    </a>
+    <div class="card-secure">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Secure access
+    </div>
   </div>
 </div>
 
 <script>
-// If already logged in
-if(localStorage.getItem('pacific_signal_token')) { window.location.href='/admin.html'; }
+if(localStorage.getItem('pacific_signal_token')){window.location.href='/admin.html'}
 
-async function handleLogin(e){
+async function doLogin(e){
   e.preventDefault();
-  var username = document.getElementById('username').value.trim();
-  var password = document.getElementById('password').value;
-  var alert = document.getElementById('loginAlert');
-  var btn = document.getElementById('loginBtn');
-  var spinner = document.getElementById('spinner');
-  var btnText = document.getElementById('btnText');
+  var u=document.getElementById('uname').value.trim();
+  var p=document.getElementById('pw').value;
+  var al=document.getElementById('alert');
+  var btn=document.getElementById('loginBtn');
+  var sp=document.getElementById('spinner');
+  var bt=document.getElementById('btnTxt');
 
-  alert.className = 'alert';
-  btn.disabled = true;
-  spinner.style.display = 'block';
-  btnText.textContent = 'Authenticating...';
+  al.className='alert';
+  btn.disabled=true;sp.style.display='block';bt.textContent='Authenticating\u2026';
 
-  try {
-    var r = await fetch('/api/admin/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+  try{
+    var r=await fetch('/api/admin/login',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({username:u,password:p})
     });
-    var d = await r.json();
+    var d=await r.json();
     if(!r.ok){
-      alert.className = 'alert show';
-      alert.textContent = d.error || 'Invalid credentials. Please try again.';
-      btn.disabled = false;
-      spinner.style.display = 'none';
-      btnText.textContent = 'Sign In to Panel';
+      al.className='alert on';al.textContent=d.error||'Invalid credentials. Please try again.';
+      btn.disabled=false;sp.style.display='none';bt.textContent='Sign In';
       return false;
     }
-    localStorage.setItem('pacific_signal_token', d.token);
-    localStorage.setItem('pacific_signal_admin', JSON.stringify(d.admin));
-    btnText.textContent = 'Access Granted';
-    setTimeout(function(){ window.location.href = '/admin.html'; }, 400);
-  } catch(err) {
-    alert.className = 'alert show';
-    alert.textContent = 'Network error. Please check your connection.';
-    btn.disabled = false;
-    spinner.style.display = 'none';
-    btnText.textContent = 'Sign In to Panel';
+    localStorage.setItem('pacific_signal_token',d.token);
+    localStorage.setItem('pacific_signal_admin',JSON.stringify(d.admin));
+    bt.textContent='Access Granted\u2026';
+    setTimeout(function(){window.location.href='/admin.html'},380);
+  }catch(err){
+    al.className='alert on';al.textContent='Network error. Please check your connection.';
+    btn.disabled=false;sp.style.display='none';bt.textContent='Sign In';
   }
   return false;
 }
