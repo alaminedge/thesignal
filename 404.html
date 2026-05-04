@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Page not found — The Pacific Signal</title>
+  <meta name="description" content="The page you are looking for does not exist.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,300;1,8..60,400;1,8..60,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F7F4EE;
+      --paper-w: #F0ECE2;
+      --paper-d: #E8E2D4;
+      --ink: #1A1814;
+      --ink2: #2E2B24;
+      --ink3: #5C5849;
+      --ink4: #8C8878;
+      --ink5: #B0AB9E;
+      --rule: #DDD9CE;
+      --rule2: #CAC5B8;
+      --gold: #B49A5E;
+      --gold-l: #D4BA82;
+      --red: #7A1E1E;
+      --red2: #5C1616;
+      --white: #FFFFFF;
+      --max: 1280px;
+      --g: clamp(16px, 3vw, 32px);
+      --fd: 'Cormorant Garamond', Georgia, serif;
+      --fb: 'Source Serif 4', Georgia, serif;
+      --fm: 'DM Mono', monospace;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--fb);
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* ─── HEADER (consistent with site) ─── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 300;
+      background: var(--paper);
+      border-bottom: 1px solid var(--rule);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .h-bar {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--g);
+      height: 56px;
+      display: flex;
+      align-items: center;
+    }
+
+    .h-logo {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-shrink: 0;
+      text-decoration: none;
+      color: inherit;
+      margin-right: auto;
+    }
+
+    .h-logo img {
+      height: 32px;
+      width: auto;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .h-logo-div {
+      width: 1px;
+      height: 20px;
+      background: var(--rule2);
+      margin: 0 12px;
+      flex-shrink: 0;
+    }
+
+    .h-logo-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .h-logo-name {
+      font-family: var(--fd);
+      font-size: 1.02rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .h-logo-tag {
+      font-family: var(--fm);
+      font-size: 0.46rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink5);
+    }
+
+    .h-nav {
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0 14px;
+    }
+
+    .h-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-a {
+      font-family: var(--fm);
+      font-size: 0.57rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      white-space: nowrap;
+      padding: 0 12px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .nav-a:hover {
+      color: var(--ink);
+      border-bottom-color: var(--gold-l);
+    }
+
+    .h-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-sub {
+      font-family: var(--fm);
+      font-size: 0.54rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 7px 16px;
+      background: var(--ink);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-sub:hover {
+      background: var(--ink2);
+      color: var(--white);
+    }
+
+    /* ─── 404 MAIN ─── */
+    .not-found-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px var(--g);
+      width: 100%;
+    }
+
+    .not-found-card {
+      max-width: 620px;
+      width: 100%;
+      text-align: center;
+      background: var(--white);
+      border: 1px solid var(--rule);
+      padding: clamp(40px, 8vw, 72px) clamp(24px, 6vw, 52px);
+      box-shadow: 0 12px 38px rgba(26, 24, 20, 0.04);
+    }
+
+    .nf-rule {
+      width: 55px;
+      height: 2px;
+      background: var(--gold);
+      margin: 0 auto 28px;
+    }
+
+    .nf-code {
+      font-family: var(--fm);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink5);
+      margin-bottom: 12px;
+    }
+
+    .nf-title {
+      font-family: var(--fd);
+      font-size: clamp(2.4rem, 7vw, 3.8rem);
+      font-weight: 600;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+
+    .nf-sub {
+      font-family: var(--fb);
+      font-size: 1.12rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ink4);
+      line-height: 1.65;
+      margin-bottom: 32px;
+      padding: 0 8px;
+    }
+
+    .nf-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .btn-primary {
+      font-family: var(--fm);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 12px 28px;
+      background: var(--ink);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      background: var(--ink2);
+    }
+
+    .btn-secondary {
+      font-family: var(--fm);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 12px 24px;
+      background: transparent;
+      color: var(--ink3);
+      border: 1px solid var(--rule2);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+      background: var(--paper-w);
+    }
+
+    .nf-footer-note {
+      margin-top: 38px;
+      font-family: var(--fm);
+      font-size: 0.54rem;
+      letter-spacing: 0.07em;
+      color: var(--ink5);
+    }
+
+    .nf-footer-note a {
+      color: var(--red);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: color 0.2s;
+    }
+
+    .nf-footer-note a:hover {
+      color: var(--red2);
+    }
+
+    /* ─── FOOTER (compact) ─── */
+    .site-footer {
+      background: var(--paper-w);
+      border-top: 1px solid var(--rule2);
+      padding: 20px var(--g);
+      text-align: center;
+    }
+
+    .ft-copy {
+      font-family: var(--fm);
+      font-size: 0.52rem;
+      letter-spacing: 0.06em;
+      color: var(--ink5);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .h-nav {
+        display: none;
+      }
+      .btn-sub {
+        display: none;
+      }
+      .not-found-card {
+        padding: 44px 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nf-actions {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .btn-primary, .btn-secondary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER (same structure as main site) -->
+  <header class="site-header">
+    <div class="h-bar">
+      <a href="/" class="h-logo">
+        <!-- Replace with your actual logo path if needed -->
+        <img src="/images/tps.png" alt="The Pacific Signal">
+        <div class="h-logo-div"></div>
+        <div class="h-logo-text">
+          <span class="h-logo-name">The Pacific Signal</span>
+          <span class="h-logo-tag">Beyond the Headlines</span>
+        </div>
+      </a>
+      <nav class="h-nav">
+        <a href="/" class="nav-a">Home</a>
+        <a href="/?category=united-states-canada" class="nav-a">US &amp; Canada</a>
+        <a href="/?category=china-east-asia" class="nav-a">China &amp; East Asia</a>
+        <a href="/?category=europe-uk" class="nav-a">Europe</a>
+        <a href="/?category=middle-east-north-africa" class="nav-a">Middle East</a>
+        <a href="/?category=geopolitics-strategy" class="nav-a">Geopolitics</a>
+      </nav>
+      <div class="h-right">
+        <a href="/#subscribe" class="btn-sub">Subscribe</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 404 CONTENT -->
+  <main class="not-found-wrap">
+    <div class="not-found-card">
+      <div class="nf-rule"></div>
+      <div class="nf-code">Error 404</div>
+      <h1 class="nf-title">Signal lost<span style="color:var(--red);">.</span></h1>
+      <p class="nf-sub">
+        The page you are looking for has been moved,<br>removed, or never existed.
+      </p>
+
+      <div class="nf-actions">
+        <a href="/" class="btn-primary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M19 12H5m0 0l7 7m-7-7l7-7"/>
+          </svg>
+          Return to front page
+        </a>
+        <a href="/#subscribe" class="btn-secondary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M22 12h-6l-2 3H10l-2-3H2"/>
+            <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+          </svg>
+          Get our newsletter
+        </a>
+      </div>
+
+      <p class="nf-footer-note">
+        If you believe this is a mistake, <a href="/contact.html">contact our editors</a>.
+      </p>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <span class="ft-copy">&copy; 2025 The Pacific Signal — Independent analysis and explained journalism.</span>
+  </footer>
+</body>
+</html>
