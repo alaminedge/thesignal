@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Privacy Policy — The Pacific Signal</title>
+  <meta name="description" content="The Pacific Signal privacy policy — how we collect, use, and protect your data.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,300;1,8..60,400;1,8..60,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F7F4EE;
+      --paper-w: #F0ECE2;
+      --paper-d: #E8E2D4;
+      --ink: #1A1814;
+      --ink2: #2E2B24;
+      --ink3: #5C5849;
+      --ink4: #8C8878;
+      --ink5: #B0AB9E;
+      --rule: #DDD9CE;
+      --rule2: #CAC5B8;
+      --gold: #B49A5E;
+      --gold-l: #D4BA82;
+      --red: #7A1E1E;
+      --red2: #5C1616;
+      --white: #FFFFFF;
+      --max: 1280px;
+      --g: clamp(16px, 3vw, 32px);
+      --fd: 'Cormorant Garamond', Georgia, serif;
+      --fb: 'Source Serif 4', Georgia, serif;
+      --fm: 'DM Mono', monospace;
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--fb);
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* ─── HEADER ─── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 300;
+      background: var(--paper);
+      border-bottom: 1px solid var(--rule);
+      transition: box-shadow 0.3s ease, transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .site-header.scrolled {
+      box-shadow: 0 2px 28px rgba(26, 24, 20, 0.08);
+    }
+
+    .site-header.hide {
+      transform: translateY(-100%);
+    }
+
+    .h-bar {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--g);
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .h-logo {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-shrink: 0;
+      text-decoration: none;
+      color: inherit;
+      margin-right: auto;
+    }
+
+    .h-logo img {
+      height: 32px;
+      width: auto;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .h-logo-div {
+      width: 1px;
+      height: 20px;
+      background: var(--rule2);
+      margin: 0 12px;
+      flex-shrink: 0;
+    }
+
+    .h-logo-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .h-logo-name {
+      font-family: var(--fd);
+      font-size: 1.02rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .h-logo-tag {
+      font-family: var(--fm);
+      font-size: 0.46rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink5);
+    }
+
+    .h-nav {
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0 14px;
+    }
+
+    .h-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-a {
+      font-family: var(--fm);
+      font-size: 0.57rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      white-space: nowrap;
+      padding: 0 12px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .nav-a:hover {
+      color: var(--ink);
+      border-bottom-color: var(--gold-l);
+    }
+
+    .h-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-sub {
+      font-family: var(--fm);
+      font-size: 0.54rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 7px 16px;
+      background: var(--ink);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+      display: inline-block;
+    }
+
+    .btn-sub:hover {
+      background: var(--ink2);
+      color: var(--white);
+    }
+
+    .btn-ham {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--ink);
+      padding: 5px;
+      align-items: center;
+    }
+
+    .btn-ham svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* MOBILE NAV */
+    .m-ov {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 24, 20, 0.55);
+      z-index: 400;
+      backdrop-filter: blur(3px);
+    }
+
+    .m-ov.on {
+      display: block;
+    }
+
+    .m-nav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(300px, 88vw);
+      background: var(--ink);
+      z-index: 500;
+      transform: translateX(110%);
+      transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .m-nav.on {
+      transform: translateX(0);
+    }
+
+    .m-head {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .m-head img {
+      height: 26px;
+      filter: brightness(0) invert(1);
+    }
+
+    .m-close {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+    }
+
+    .m-links {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 0;
+    }
+
+    .m-link {
+      display: block;
+      padding: 11px 20px;
+      font-family: var(--fm);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      border-left: 2px solid transparent;
+      transition: all 0.18s;
+    }
+
+    .m-link:hover {
+      color: var(--white);
+      border-left-color: var(--gold);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .m-foot {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .m-sub-btn {
+      display: block;
+      text-align: center;
+      padding: 11px;
+      font-family: var(--fm);
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: var(--white);
+      transition: background 0.2s;
+    }
+
+    .m-sub-btn:hover {
+      background: var(--gold-l);
+      color: var(--ink);
+    }
+
+    /* ─── PAGE LAYOUT ─── */
+    .page-wrap {
+      flex: 1;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 56px var(--g) 72px;
+      width: 100%;
+    }
+
+    .page-eyebrow {
+      font-family: var(--fm);
+      font-size: 0.56rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+    }
+
+    .page-title {
+      font-family: var(--fd);
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-weight: 600;
+      line-height: 1.14;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+
+    .page-updated {
+      font-family: var(--fm);
+      font-size: 0.54rem;
+      letter-spacing: 0.08em;
+      color: var(--ink5);
+      margin-bottom: 38px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .page-updated svg {
+      width: 12px;
+      height: 12px;
+      stroke: var(--ink5);
+    }
+
+    .page-body {
+      font-family: var(--fb);
+      font-size: 1.05rem;
+      line-height: 1.82;
+      color: var(--ink2);
+    }
+
+    .page-body p {
+      margin-bottom: 22px;
+    }
+
+    .page-body h2 {
+      font-family: var(--fd);
+      font-size: 1.55rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 42px 0 14px;
+      line-height: 1.2;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .page-body h3 {
+      font-family: var(--fd);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 28px 0 10px;
+    }
+
+    .page-body strong {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .page-body a {
+      color: var(--red);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: color 0.2s;
+    }
+
+    .page-body a:hover {
+      color: var(--red2);
+    }
+
+    .page-body ul {
+      margin: 12px 0 22px 24px;
+    }
+
+    .page-body li {
+      margin-bottom: 8px;
+    }
+
+    /* info card */
+    .info-card {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      padding: 22px 26px;
+      margin: 28px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .info-card svg {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      stroke: var(--gold);
+    }
+
+    .info-card p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--ink3);
+      font-weight: 300;
+    }
+
+    /* contact link */
+    .contact-block {
+      background: var(--paper-w);
+      border: 1px solid var(--rule);
+      padding: 22px 26px;
+      margin: 32px 0;
+      text-align: center;
+    }
+
+    .contact-block p {
+      font-family: var(--fb);
+      font-size: 0.95rem;
+      color: var(--ink3);
+      margin-bottom: 6px;
+      font-weight: 300;
+    }
+
+    .contact-block a {
+      font-family: var(--fm);
+      font-size: 0.56rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--red);
+      font-weight: 500;
+    }
+
+    /* ─── FOOTER ─── */
+    .site-footer {
+      background: var(--paper-w);
+      border-top: 2px solid var(--rule2);
+      padding: 56px 0 0;
+    }
+
+    .ft-in {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--g);
+    }
+
+    .ft-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1.4fr;
+      gap: 44px;
+      padding-bottom: 44px;
+    }
+
+    .ft-logo-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 10px;
+      text-decoration: none;
+      color: var(--ink);
+      width: fit-content;
+    }
+
+    .ft-logo-row img {
+      height: 26px;
+      opacity: 0.7;
+    }
+
+    .ft-brand-name {
+      font-family: var(--fd);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .ft-brand-desc {
+      font-family: var(--fb);
+      font-size: 0.88rem;
+      color: var(--ink4);
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: 260px;
+    }
+
+    .ft-col-ttl {
+      font-family: var(--fm);
+      font-size: 0.5rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink5);
+      margin-bottom: 13px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .ft-links {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .ft-links a {
+      font-family: var(--fb);
+      font-size: 0.86rem;
+      color: var(--ink4);
+      font-weight: 300;
+      transition: color 0.2s;
+    }
+
+    .ft-links a:hover {
+      color: var(--red);
+    }
+
+    .ft-nl-txt {
+      font-family: var(--fb);
+      font-size: 0.86rem;
+      color: var(--ink4);
+      font-weight: 300;
+      margin-bottom: 11px;
+      line-height: 1.6;
+    }
+
+    .ft-form {
+      display: flex;
+    }
+
+    .ft-email {
+      flex: 1;
+      padding: 9px 12px;
+      background: var(--white);
+      border: 1px solid var(--rule);
+      border-right: none;
+      font-family: var(--fb);
+      font-size: 0.88rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .ft-email:focus {
+      border-color: var(--gold);
+    }
+
+    .ft-email::placeholder {
+      color: var(--ink5);
+    }
+
+    .ft-btn {
+      padding: 9px 13px;
+      background: var(--ink);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+      font-family: var(--fm);
+      font-size: 0.52rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .ft-btn:hover {
+      background: var(--red);
+    }
+
+    .ft-msg {
+      font-family: var(--fm);
+      font-size: 0.54rem;
+      margin-top: 6px;
+      min-height: 16px;
+    }
+
+    .ft-bot {
+      border-top: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .ft-copy {
+      font-family: var(--fm);
+      font-size: 0.52rem;
+      letter-spacing: 0.06em;
+      color: var(--ink5);
+    }
+
+    .ft-legal {
+      display: flex;
+      gap: 16px;
+    }
+
+    .ft-legal a {
+      font-family: var(--fm);
+      font-size: 0.52rem;
+      letter-spacing: 0.06em;
+      color: var(--ink5);
+      transition: color 0.2s;
+    }
+
+    .ft-legal a:hover {
+      color: var(--red);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .h-nav {
+        display: none;
+      }
+      .btn-sub {
+        display: none;
+      }
+      .btn-ham {
+        display: flex;
+      }
+      .ft-top {
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .page-title {
+        font-size: 1.8rem;
+      }
+      .ft-top {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .ft-bot {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="site-header" id="siteHeader">
+    <div class="h-bar">
+      <a href="/" class="h-logo">
+        <img src="/images/tps.png" alt="The Pacific Signal">
+        <div class="h-logo-div"></div>
+        <div class="h-logo-text">
+          <span class="h-logo-name">The Pacific Signal</span>
+          <span class="h-logo-tag">Beyond the Headlines</span>
+        </div>
+      </a>
+      <nav class="h-nav">
+        <a href="/" class="nav-a">Home</a>
+        <a href="/?category=united-states-canada" class="nav-a">US &amp; Canada</a>
+        <a href="/?category=china-east-asia" class="nav-a">China &amp; East Asia</a>
+        <a href="/?category=europe-uk" class="nav-a">Europe</a>
+        <a href="/?category=middle-east-north-africa" class="nav-a">Middle East</a>
+        <a href="/?category=south-asia" class="nav-a">South Asia</a>
+        <a href="/?category=global-markets-trade" class="nav-a">Markets</a>
+        <a href="/?category=geopolitics-strategy" class="nav-a">Geopolitics</a>
+      </nav>
+      <div class="h-right">
+        <a href="/#subscribe" class="btn-sub">Subscribe</a>
+        <button class="btn-ham" onclick="openMob()" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV -->
+  <div class="m-ov" id="mOv" onclick="closeMob()"></div>
+  <nav class="m-nav" id="mNav">
+    <div class="m-head">
+      <img src="/images/tps.png" alt="The Pacific Signal">
+      <button class="m-close" onclick="closeMob()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="m-links">
+      <a href="/" class="m-link" onclick="closeMob()">Home</a>
+      <a href="/?category=united-states-canada" class="m-link" onclick="closeMob()">US &amp; Canada</a>
+      <a href="/?category=china-east-asia" class="m-link" onclick="closeMob()">China &amp; East Asia</a>
+      <a href="/?category=europe-uk" class="m-link" onclick="closeMob()">Europe &amp; UK</a>
+      <a href="/?category=middle-east-north-africa" class="m-link" onclick="closeMob()">Middle East</a>
+      <a href="/?category=south-asia" class="m-link" onclick="closeMob()">South Asia</a>
+      <a href="/?category=africa" class="m-link" onclick="closeMob()">Africa</a>
+      <a href="/?category=latin-america-caribbean" class="m-link" onclick="closeMob()">Latin America</a>
+      <a href="/?category=global-markets-trade" class="m-link" onclick="closeMob()">Markets</a>
+      <a href="/?category=geopolitics-strategy" class="m-link" onclick="closeMob()">Geopolitics</a>
+    </div>
+    <div class="m-foot">
+      <a href="/#subscribe" class="m-sub-btn" onclick="closeMob()">Subscribe Free</a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="page-wrap">
+    <div class="page-eyebrow">Legal</div>
+    <h1 class="page-title">Privacy Policy</h1>
+    <div class="page-updated">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      Effective date: 3 May 2026
+    </div>
+
+    <div class="page-body">
+      <p>
+        The Pacific Signal is committed to protecting your privacy and the security of your data. This policy explains how we collect, use, and safeguard information when you visit our website or subscribe to our newsletter. We operate with the same rigour and discretion that defines our journalism.
+      </p>
+
+      <!-- info card -->
+      <div class="info-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        <p><strong>Key principle:</strong> We collect only what is necessary, we never sell your data, and we protect it with the same operational security standards we apply to our intelligence work.</p>
+      </div>
+
+      <h2>1. Information we collect</h2>
+      <p>We collect minimal information, and only when you voluntarily provide it:</p>
+      <ul>
+        <li><strong>Email address</strong> — when you subscribe to our free newsletter.</li>
+        <li><strong>Anonymous usage data</strong> — basic, privacy-respecting analytics (page views, approximate geography by country, referral sources). We do not track you across the web.</li>
+        <li><strong>Contact information</strong> — if you choose to email us or submit a tip through our secure channels.</li>
+      </ul>
+      <p>We do <strong>not</strong> collect: passwords, payment information, precise location data, device fingerprints, or any personal data beyond what you explicitly provide.</p>
+
+      <h2>2. How we use your information</h2>
+      <p>Your information is used solely for the following purposes:</p>
+      <ul>
+        <li>To deliver our free newsletter to your inbox.</li>
+        <li>To understand which articles and topics resonate with our readers, helping us improve our editorial output.</li>
+        <li>To respond to enquiries or editorial tips you send us.</li>
+      </ul>
+      <p>We will <strong>never</strong> sell, rent, lease, or trade your personal data to third parties. We do not serve targeted advertising, and we do not build user profiles for commercial purposes.</p>
+
+      <h2>3. Newsletter &amp; email communications</h2>
+      <p>When you subscribe to The Pacific Signal newsletter, your email address is stored securely and used exclusively to send you our editorial content. Every email includes a clear unsubscribe link. If you unsubscribe, your email is permanently removed from our mailing list within 48 hours.</p>
+      <p>We use a privacy-focused email delivery provider. We do not track whether you open individual emails or click specific links within them.</p>
+
+      <h2>4. Cookies &amp; tracking</h2>
+      <p>Our website uses <strong>no third-party cookies</strong> for advertising or cross-site tracking. We may set a minimal, first-party session cookie to maintain basic site functionality (such as remembering your mobile menu preference). These cookies contain no personal data and expire when you close your browser.</p>
+      <p>Our anonymous analytics are self-hosted or provided by a privacy-compliant service. We do not use Google Analytics, Facebook Pixel, or any platform that shares data with advertising networks.</p>
+
+      <h2>5. Data security</h2>
+      <p>We protect your data with the same operational security protocols that safeguard our editorial work:</p>
+      <ul>
+        <li>All data transmission is encrypted via HTTPS.</li>
+        <li>Subscriber data is stored on secure, access-controlled servers.</li>
+        <li>Access to personal data is restricted to authorised personnel only.</li>
+        <li>We regularly audit our systems for vulnerabilities.</li>
+      </ul>
+      <p>In the event of a data breach, we will notify affected users within 72 hours and take immediate corrective action.</p>
+
+      <h2>6. Third-party services</h2>
+      <p>We use a limited number of trusted third-party services to operate our website and newsletter. These may include:</p>
+      <ul>
+        <li>A secure email delivery platform for newsletter distribution.</li>
+        <li>A self-hosted or privacy-respecting analytics tool.</li>
+        <li>Font delivery from Google Fonts (which may log your IP address briefly; you can block this via browser settings).</li>
+      </ul>
+      <p>Each provider is vetted for privacy compliance. We do not allow any third party to use your data for their own purposes.</p>
+
+      <h2>7. Your rights</h2>
+      <p>Depending on your jurisdiction, you may have the right to:</p>
+      <ul>
+        <li>Access the personal data we hold about you.</li>
+        <li>Request correction of inaccurate data.</li>
+        <li>Request deletion of your data.</li>
+        <li>Withdraw consent for newsletter communications at any time.</li>
+        <li>Lodge a complaint with your local data protection authority.</li>
+      </ul>
+      <p>To exercise any of these rights, contact us using the details below. We will respond within 30 days.</p>
+
+      <h2>8. Children's privacy</h2>
+      <p>The Pacific Signal is intended for a general audience. We do not knowingly collect personal data from individuals under the age of 16. If you believe a minor has provided us with personal information, please contact us and we will delete it immediately.</p>
+
+      <h2>9. Changes to this policy</h2>
+      <p>We may update this privacy policy from time to time. Material changes will be communicated via our website and, where appropriate, through our newsletter. The effective date at the top of this page reflects the most recent revision.</p>
+
+      <h2>10. Contact</h2>
+      <p>For questions about this privacy policy, to exercise your data rights, or to report a security concern, please contact our editorial team:</p>
+
+      <div class="contact-block">
+        <p>The Pacific Signal — Privacy Office</p>
+        <a href="/contact.html">Contact our editors</a>
+      </div>
+
+      <p style="margin-top: 28px; font-style: italic; color: var(--ink4);">
+        This policy was last reviewed on 3 May 2026. We remain committed to transparency, security, and the trust our readers place in us.
+      </p>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" id="subscribe">
+    <div class="ft-in">
+      <div class="ft-top">
+        <div>
+          <a href="/" class="ft-logo-row">
+            <img src="/images/tps.png" alt="">
+            <span class="ft-brand-name">The Pacific Signal</span>
+          </a>
+          <p class="ft-brand-desc">Independent analysis and explained journalism for the curious mind. We illuminate the forces shaping our world.</p>
+        </div>
+        <div>
+          <div class="ft-col-ttl">Regions</div>
+          <div class="ft-links">
+            <a href="/?category=united-states-canada">United States &amp; Canada</a>
+            <a href="/?category=china-east-asia">China &amp; East Asia</a>
+            <a href="/?category=europe-uk">Europe &amp; UK</a>
+            <a href="/?category=middle-east-north-africa">Middle East</a>
+            <a href="/?category=south-asia">South Asia</a>
+            <a href="/?category=africa">Africa</a>
+            <a href="/?category=latin-america-caribbean">Latin America</a>
+          </div>
+        </div>
+        <div>
+          <div class="ft-col-ttl">Topics</div>
+          <div class="ft-links">
+            <a href="/?category=global-markets-trade">Global Markets</a>
+            <a href="/?category=geopolitics-strategy">Geopolitics</a>
+            <a href="/?category=climate-environment">Climate</a>
+            <a href="/?category=democracy-rights">Democracy</a>
+            <a href="/?category=science-health">Science &amp; Health</a>
+            <a href="/?category=technology-business">Technology</a>
+          </div>
+        </div>
+        <div>
+          <div class="ft-col-ttl">Newsletter</div>
+          <p class="ft-nl-txt">The best analysis, delivered free to your inbox each week.</p>
+          <form onsubmit="return handleSub(event)">
+            <div class="ft-form">
+              <input type="email" placeholder="Your email" class="ft-email" id="subEmail" required>
+              <button type="submit" class="ft-btn">Subscribe</button>
+            </div>
+          </form>
+          <p class="ft-msg" id="subMsg"></p>
+        </div>
+      </div>
+      <div class="ft-bot">
+        <span class="ft-copy">&copy; 2026 The Pacific Signal. All rights reserved.</span>
+        <div class="ft-legal">
+          <a href="/about.html">About</a>
+          <a href="/contact.html">Contact</a>
+          <a href="/privacy.html">Privacy</a>
+          <a href="/terms.html">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ─── HEADER SCROLL ─── */
+    const hdr = document.getElementById('siteHeader');
+    let lastY = 0;
+    window.addEventListener('scroll', function () {
+      const y = window.scrollY;
+      if (y < 80) {
+        hdr.classList.remove('hide', 'scrolled');
+      } else if (y > lastY + 5) {
+        hdr.classList.add('hide');
+      } else if (y < lastY - 3) {
+        hdr.classList.remove('hide');
+        hdr.classList.add('scrolled');
+      }
+      lastY = y;
+    }, { passive: true });
+
+    /* ─── MOBILE NAV ─── */
+    function openMob() {
+      document.getElementById('mNav').classList.add('on');
+      document.getElementById('mOv').classList.add('on');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMob() {
+      document.getElementById('mNav').classList.remove('on');
+      document.getElementById('mOv').classList.remove('on');
+      document.body.style.overflow = '';
+    }
+
+    /* ─── NEWSLETTER ─── */
+    async function handleSub(e) {
+      e.preventDefault();
+      const email = document.getElementById('subEmail').value.trim();
+      const msg = document.getElementById('subMsg');
+      if (!email) return false;
+      try {
+        const r = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const d = await r.json();
+        msg.textContent = r.ok ? 'Thank you — you are now subscribed.' : (d.error || 'Something went wrong.');
+        msg.style.color = r.ok ? 'var(--gold)' : 'var(--red)';
+        if (r.ok) document.getElementById('subEmail').value = '';
+      } catch (er) {
+        msg.textContent = 'Network error. Please try again.';
+        msg.style.color = 'var(--red)';
+      }
+      setTimeout(function () { msg.textContent = ''; }, 5000);
+      return false;
+    }
+  </script>
+</body>
+</html>
