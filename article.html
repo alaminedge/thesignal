@@ -3,292 +3,324 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Pacific Signal — Article</title>
+<title>The Pacific Signal</title>
 <meta name="description" content="The Pacific Signal — Independent analysis and explained journalism.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,300;1,8..60,400;1,8..60,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --ink: #0E0E0C;
-  --ink-2: #2C2C28;
-  --ink-3: #5A5A52;
-  --ink-4: #8A8A80;
-  --paper: #F8F6F1;
-  --paper-2: #F0EDE4;
-  --paper-3: #E8E4D8;
-  --rule: #D8D4C8;
-  --rule-2: #C8C4B4;
-  --gold: #B8A878;
-  --gold-2: #A09060;
-  --crimson: #8B2020;
-  --crimson-2: #6B1818;
-  --white: #FFFFFF;
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Crimson Pro', Georgia, serif;
-  --font-mono: 'DM Mono', monospace;
-  --max: 1320px;
-  --col: 24px;
+:root{
+  --paper:#F7F4EE;--paper-w:#F0ECE2;--paper-d:#E8E2D4;
+  --ink:#1A1814;--ink2:#2E2B24;--ink3:#5C5849;--ink4:#8C8878;--ink5:#B0AB9E;
+  --rule:#DDD9CE;--rule2:#CAC5B8;
+  --gold:#B49A5E;--gold-l:#D4BA82;
+  --red:#7A1E1E;--red2:#5C1616;
+  --white:#FFFFFF;
+  --max:1280px;--g:clamp(16px,3vw,32px);
+  --fd:'Cormorant Garamond',Georgia,serif;
+  --fb:'Source Serif 4',Georgia,serif;
+  --fm:'DM Mono',monospace;
 }
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-body { font-family: var(--font-body); background: var(--paper); color: var(--ink); font-size: 17px; line-height: 1.65; }
-a { color: inherit; text-decoration: none; }
-img { display: block; max-width: 100%; height: auto; }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;min-height:100vh}
+a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:auto}
 
-/* TOP STRIP */
-.top-strip { background: var(--ink); color: rgba(255,255,255,0.4); font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 7px var(--col); display: flex; justify-content: space-between; gap: 16px; }
-.top-strip-links { display: flex; gap: 18px; }
-.top-strip-links a { color: rgba(255,255,255,0.4); transition: color 0.2s; }
-.top-strip-links a:hover { color: var(--white); }
+/* PROGRESS */
+.prog{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--gold),var(--red));z-index:9999;transition:width .1s linear;pointer-events:none}
 
 /* HEADER */
-.site-header { background: var(--paper); border-bottom: 1px solid var(--rule); position: sticky; top: 0; z-index: 200; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s ease; }
-.site-header.hidden { transform: translateY(-100%); }
-.site-header.scrolled { box-shadow: 0 2px 40px rgba(14,14,12,0.08); }
-.header-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--col); }
-.header-main { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 18px 0 14px; gap: 16px; }
-.header-left { display: flex; align-items: center; }
-.header-right { display: flex; align-items: center; justify-content: flex-end; gap: 14px; }
-.header-masthead { text-align: center; text-decoration: none; color: var(--ink); }
-.masthead-name { font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; line-height: 1; }
-.masthead-rule { display: flex; align-items: center; gap: 8px; margin: 5px auto; justify-content: center; }
-.masthead-rule-line { flex: 1; max-width: 50px; height: 1px; background: var(--ink-3); }
-.masthead-rule-diamond { width: 5px; height: 5px; background: var(--gold); transform: rotate(45deg); flex-shrink: 0; }
-.masthead-tagline { font-family: var(--font-body); font-size: 0.75rem; font-style: italic; color: var(--ink-4); }
-.btn-subscribe { font-family: var(--font-mono); font-size: 0.56rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 18px; background: var(--ink); color: var(--white); border: none; cursor: pointer; transition: background 0.2s; display: inline-block; }
-.btn-subscribe:hover { background: var(--ink-2); color: var(--white); }
-.btn-menu-mobile { display: none; background: none; border: none; cursor: pointer; color: var(--ink); padding: 6px; }
-.btn-menu-mobile svg { width: 22px; height: 22px; }
-.header-nav-wrap { border-top: 1px solid var(--rule); overflow-x: auto; }
-.header-nav-wrap::-webkit-scrollbar { display: none; }
-.header-nav { display: flex; white-space: nowrap; }
-.nav-link { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); padding: 11px 15px; border-bottom: 2px solid transparent; transition: all 0.2s; }
-.nav-link:hover { color: var(--ink); border-bottom-color: var(--gold); }
+.site-header{position:sticky;top:0;z-index:300;background:var(--paper);border-bottom:1px solid var(--rule);transition:box-shadow .3s,transform .38s cubic-bezier(.4,0,.2,1)}
+.site-header.scrolled{box-shadow:0 2px 28px rgba(26,24,20,.08)}
+.site-header.hide{transform:translateY(-100%)}
+.h-bar{max-width:var(--max);margin:0 auto;padding:0 var(--g);height:56px;display:flex;align-items:center}
+.h-logo{display:flex;align-items:center;gap:0;flex-shrink:0;text-decoration:none;color:inherit;margin-right:auto}
+.h-logo img{height:32px;width:auto;display:block;flex-shrink:0}
+.h-logo-div{width:1px;height:20px;background:var(--rule2);margin:0 12px;flex-shrink:0}
+.h-logo-text{display:flex;flex-direction:column;gap:1px}
+.h-logo-name{font-family:var(--fd);font-size:1.02rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink);line-height:1}
+.h-logo-tag{font-family:var(--fm);font-size:.46rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink5)}
+.h-nav{display:flex;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 14px}
+.h-nav::-webkit-scrollbar{display:none}
+.nav-a{font-family:var(--fm);font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);white-space:nowrap;padding:0 12px;height:56px;display:flex;align-items:center;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
+.nav-a:hover{color:var(--ink);border-bottom-color:var(--gold-l)}
+.h-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.btn-sub{font-family:var(--fm);font-size:.54rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:7px 16px;background:var(--ink);color:var(--white);border:none;cursor:pointer;transition:background .2s;display:inline-block}
+.btn-sub:hover{background:var(--ink2);color:var(--white)}
+.btn-ham{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:5px;align-items:center}
+.btn-ham svg{width:20px;height:20px}
 
 /* MOBILE NAV */
-.mobile-overlay { position: fixed; inset: 0; background: rgba(14,14,12,0.6); z-index: 300; display: none; backdrop-filter: blur(4px); }
-.mobile-overlay.open { display: block; }
-.mobile-nav { position: fixed; top: 0; right: 0; bottom: 0; width: min(300px, 90vw); background: var(--ink); z-index: 400; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; overflow-y: auto; }
-.mobile-nav.open { transform: translateX(0); }
-.mobile-nav-head { padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between; }
-.mobile-nav-title { font-family: var(--font-display); font-size: 0.95rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white); }
-.mobile-nav-close { background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 1.1rem; }
-.mobile-nav-links { padding: 10px 0; flex: 1; }
-.mobile-nav-link { display: block; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); padding: 12px 22px; border-left: 2px solid transparent; transition: all 0.2s; }
-.mobile-nav-link:hover { color: var(--white); border-left-color: var(--gold); background: rgba(255,255,255,0.03); }
-.mobile-nav-foot { padding: 18px 20px; border-top: 1px solid rgba(255,255,255,0.08); }
-.mobile-nav-subscribe { display: block; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; text-align: center; padding: 11px; background: var(--gold-2); color: var(--white); font-weight: 500; }
+.m-ov{display:none;position:fixed;inset:0;background:rgba(26,24,20,.55);z-index:400;backdrop-filter:blur(3px)}
+.m-ov.on{display:block}
+.m-nav{position:fixed;top:0;right:0;bottom:0;width:min(300px,88vw);background:var(--ink);z-index:500;transform:translateX(110%);transition:transform .32s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.m-nav.on{transform:translateX(0)}
+.m-head{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between}
+.m-head img{height:26px;filter:brightness(0) invert(1)}
+.m-close{background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:1.1rem}
+.m-links{flex:1;overflow-y:auto;padding:6px 0}
+.m-link{display:block;padding:11px 20px;font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);border-left:2px solid transparent;transition:all .18s}
+.m-link:hover{color:var(--white);border-left-color:var(--gold);background:rgba(255,255,255,.03)}
+.m-foot{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08)}
+.m-sub-btn{display:block;text-align:center;padding:11px;font-family:var(--fm);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;background:var(--gold);color:var(--white);transition:background .2s}
+.m-sub-btn:hover{background:var(--gold-l);color:var(--ink)}
 
-/* ARTICLE */
-.article-wrap { max-width: 760px; margin: 0 auto; padding: 52px var(--col) 80px; }
+/* ARTICLE PAGE — hidden until loaded */
+.art-shell{opacity:0;transition:opacity .45s ease}
+.art-shell.loaded{opacity:1}
 
-.breadcrumb { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.08em; color: var(--ink-4); margin-bottom: 28px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.breadcrumb a { color: var(--crimson); transition: color 0.2s; }
-.breadcrumb a:hover { color: var(--crimson-2); }
-.breadcrumb-sep { color: var(--rule-2); }
+/* ARTICLE LAYOUT */
+.art-wrap{max-width:720px;margin:0 auto;padding:48px var(--g) 72px}
 
-.article-header { margin-bottom: 36px; }
+/* BREADCRUMB */
+.breadcrumb{font-family:var(--fm);font-size:.55rem;letter-spacing:.08em;color:var(--ink5);margin-bottom:26px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--red);transition:color .2s}
+.breadcrumb a:hover{color:var(--red2)}
+.bc-sep{color:var(--rule2)}
 
-.art-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-.art-category { font-family: var(--font-mono); font-size: 0.6rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--crimson); }
-.art-eyebrow-line { flex: 1; height: 1px; background: var(--rule); }
+/* ARTICLE HEADER */
+.art-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:18px}
+.art-cat{font-family:var(--fm);font-size:.56rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--red)}
+.art-eye-line{flex:1;height:1px;background:var(--rule)}
+.art-title{font-family:var(--fd);font-size:clamp(2rem,5vw,3.1rem);font-weight:600;line-height:1.14;letter-spacing:-.01em;color:var(--ink);margin-bottom:18px}
+.art-standfirst{font-family:var(--fb);font-size:1.15rem;font-weight:300;font-style:italic;color:var(--ink3);line-height:1.65;margin-bottom:24px;padding-left:16px;border-left:3px solid var(--gold)}
+.art-byline{display:flex;align-items:center;gap:0;padding:14px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:34px;flex-wrap:wrap}
+.byline-author{font-family:var(--fb);font-size:.95rem;font-weight:500;color:var(--ink2)}
+.byline-sep{margin:0 10px;color:var(--rule2);font-family:var(--fm);font-size:.6rem}
+.byline-date{font-family:var(--fm);font-size:.58rem;letter-spacing:.06em;color:var(--ink4)}
+.byline-time{font-family:var(--fm);font-size:.58rem;letter-spacing:.06em;color:var(--gold);font-weight:500}
+.byline-read{font-family:var(--fm);font-size:.58rem;color:var(--ink5);display:flex;align-items:center;gap:5px}
+.byline-read svg{width:12px;height:12px}
 
-.article-title { font-family: var(--font-display); font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 500; line-height: 1.15; letter-spacing: -0.01em; color: var(--ink); margin-bottom: 20px; }
+/* FEATURED IMAGE */
+.art-feat-img{width:100%;max-height:500px;object-fit:cover;display:block;margin-bottom:40px}
 
-.article-excerpt { font-family: var(--font-body); font-size: 1.2rem; font-weight: 300; font-style: italic; color: var(--ink-3); line-height: 1.6; margin-bottom: 28px; padding-left: 18px; border-left: 3px solid var(--gold); }
+/* ARTICLE BODY */
+.art-body{font-family:var(--fb);font-size:1.08rem;line-height:1.84;color:var(--ink2)}
+.art-body p{margin-bottom:22px}
 
-.article-meta { display: flex; align-items: center; gap: 20px; padding: 16px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin-bottom: 36px; flex-wrap: wrap; }
-.art-meta-author { font-family: var(--font-body); font-size: 0.95rem; font-weight: 500; color: var(--ink-2); }
-.art-meta-date { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; color: var(--ink-4); }
-.art-meta-readtime { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.06em; color: var(--ink-4); display: flex; align-items: center; gap: 6px; }
-.art-meta-readtime svg { width: 13px; height: 13px; }
-.art-meta-sep { color: var(--rule-2); }
+/* Drop cap */
+.art-body p:first-of-type::first-letter{
+  font-family:var(--fd);font-size:4.5rem;font-weight:700;
+  line-height:.8;float:left;margin-right:8px;margin-top:10px;
+  color:var(--red);
+}
 
-.art-featured-img { width: 100%; max-height: 520px; object-fit: cover; margin-bottom: 44px; }
-.art-img-caption { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.06em; color: var(--ink-4); margin-top: -36px; margin-bottom: 44px; padding: 8px 0; border-bottom: 1px solid var(--rule); }
+/* Headings */
+.art-body h2{font-family:var(--fd);font-size:1.72rem;font-weight:600;color:var(--ink);margin:40px 0 16px;line-height:1.2}
+.art-body h3{font-family:var(--fd);font-size:1.28rem;font-weight:600;color:var(--ink);margin:30px 0 12px}
 
-/* Article body */
-.article-body { font-family: var(--font-body); font-size: 1.08rem; line-height: 1.82; color: var(--ink-2); }
-.article-body p { margin-bottom: 22px; }
-.article-body p:first-child::first-letter { font-family: var(--font-display); font-size: 4.2rem; font-weight: 600; line-height: 0.82; float: left; margin-right: 8px; margin-top: 8px; color: var(--crimson); }
-.article-body h2 { font-family: var(--font-display); font-size: 1.75rem; font-weight: 500; color: var(--ink); margin: 44px 0 18px; line-height: 1.2; }
-.article-body h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 500; color: var(--ink); margin: 32px 0 14px; }
-.article-body blockquote { margin: 32px 0; padding: 20px 24px 20px 20px; border-left: 3px solid var(--gold); background: var(--paper-2); font-style: italic; font-size: 1.12rem; color: var(--ink-2); line-height: 1.7; }
-.article-body ul, .article-body ol { margin: 18px 0 22px 28px; }
-.article-body li { margin-bottom: 8px; }
-.article-body a { color: var(--crimson); text-decoration: underline; text-underline-offset: 2px; }
-.article-body a:hover { color: var(--crimson-2); }
-.article-body strong { font-weight: 600; color: var(--ink); }
+/* Pull quote — premium large style */
+.art-body blockquote{
+  margin:36px -24px;padding:28px 36px;
+  background:var(--paper-w);
+  border-left:none;border-top:1px solid var(--rule2);border-bottom:1px solid var(--rule2);
+  position:relative;
+}
+.art-body blockquote::before{
+  content:'\201C';
+  font-family:var(--fd);font-size:5rem;font-weight:700;
+  color:var(--gold);line-height:1;
+  position:absolute;top:-10px;left:28px;
+}
+.art-body blockquote p{
+  font-family:var(--fd);font-size:1.55rem;font-style:italic;
+  font-weight:500;line-height:1.45;color:var(--ink);
+  margin:0;padding-top:16px;
+}
+.art-body blockquote p::first-letter{font-size:unset;float:none;margin:0;color:inherit;font-weight:inherit}
+
+/* Lists */
+.art-body ul,.art-body ol{margin:16px 0 22px 26px}
+.art-body li{margin-bottom:7px}
+.art-body a{color:var(--red);text-decoration:underline;text-underline-offset:2px}
+.art-body a:hover{color:var(--red2)}
+.art-body strong{font-weight:600;color:var(--ink)}
 
 /* SHARE BAR */
-.share-bar { display: flex; align-items: center; gap: 12px; margin-top: 52px; padding: 24px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); flex-wrap: wrap; }
-.share-label { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-4); margin-right: 4px; }
-.share-btn { display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; border: 1px solid var(--rule); color: var(--ink-3); font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; background: var(--white); transition: all 0.2s; }
-.share-btn:hover { border-color: var(--ink); color: var(--ink); background: var(--paper-2); }
-.share-btn svg { width: 13px; height: 13px; }
+.share-bar{display:flex;align-items:center;gap:10px;margin-top:48px;padding:22px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.share-lbl{font-family:var(--fm);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink5);margin-right:4px}
+.share-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border:1px solid var(--rule);color:var(--ink3);font-family:var(--fm);font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;background:var(--white);transition:all .2s}
+.share-btn:hover{border-color:var(--ink);color:var(--ink);background:var(--paper-w)}
+.share-btn svg{width:12px;height:12px}
+
+/* NEXT ARTICLE RIBBON */
+.next-ribbon{
+  position:fixed;bottom:0;right:0;left:0;
+  background:var(--ink);color:var(--white);
+  padding:14px var(--g);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  transform:translateY(100%);
+  transition:transform .45s cubic-bezier(.4,0,.2,1);
+  z-index:200;
+  text-decoration:none;
+  border-top:2px solid var(--gold);
+}
+.next-ribbon.show{transform:translateY(0)}
+.next-ribbon:hover{background:var(--ink2)}
+.next-lbl{font-family:var(--fm);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);flex-shrink:0}
+.next-title{font-family:var(--fd);font-size:1rem;font-weight:500;color:var(--white);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.next-arrow{flex-shrink:0;color:var(--gold-l)}
+.next-arrow svg{width:16px;height:16px}
+.next-close{background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:.9rem;padding:4px;flex-shrink:0;transition:color .2s}
+.next-close:hover{color:var(--white)}
 
 /* RELATED */
-.related-wrap { background: var(--paper-2); border-top: 1px solid var(--rule); padding: 60px 0 80px; margin-top: 0; }
-.related-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--col); }
-.related-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 32px; padding-bottom: 12px; border-bottom: 2px solid var(--ink); }
-.related-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 500; }
-.related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
-.related-card { display: block; text-decoration: none; color: var(--ink); padding-right: 28px; border-right: 1px solid var(--rule); }
-.related-card:last-child { border-right: none; padding-right: 0; padding-left: 28px; }
-.related-card:first-child { padding-right: 28px; padding-left: 0; }
-.related-card-img { width: 100%; height: 150px; object-fit: cover; background: var(--paper-3); margin-bottom: 14px; }
-.related-card-ph { width: 100%; height: 150px; background: var(--paper-3); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
-.related-card-ph span { font-family: var(--font-display); font-size: 1.8rem; font-style: italic; color: var(--rule-2); }
-.related-card-cat { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--crimson); margin-bottom: 6px; }
-.related-card-title { font-family: var(--font-display); font-size: 1rem; font-weight: 500; line-height: 1.35; color: var(--ink); transition: color 0.2s; }
-.related-card:hover .related-card-title { color: var(--crimson-2); }
-.related-card-author { font-family: var(--font-mono); font-size: 0.58rem; color: var(--ink-4); margin-top: 6px; }
+.related-wrap{background:var(--paper-w);border-top:1px solid var(--rule);padding:52px 0 68px}
+.related-in{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
+.related-hd{display:flex;align-items:baseline;gap:10px;margin-bottom:28px;padding-bottom:9px;border-bottom:2px solid var(--ink)}
+.related-ttl{font-family:var(--fd);font-size:1.2rem;font-weight:600;color:var(--ink)}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.rel-card{display:block;text-decoration:none;color:var(--ink);padding-right:24px;border-right:1px solid var(--rule);transition:transform .22s}
+.rel-card:last-child{border-right:none;padding-right:0;padding-left:24px}
+.rel-card:nth-child(2){padding:0 24px}
+.rel-card:hover{transform:translateY(-2px)}
+.rel-img{width:100%;height:144px;object-fit:cover;background:var(--paper-d);display:block;margin-bottom:12px}
+.rel-ph{width:100%;height:144px;background:var(--paper-d);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.rel-ph span{font-family:var(--fd);font-size:1.7rem;font-style:italic;color:var(--rule2)}
+.rel-cat{font-family:var(--fm);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:5px}
+.rel-ttl{font-family:var(--fd);font-size:.98rem;font-weight:600;line-height:1.35;color:var(--ink);margin-bottom:6px;transition:color .2s}
+.rel-card:hover .rel-ttl{color:var(--red2)}
+.rel-meta{font-family:var(--fm);font-size:.52rem;color:var(--ink5)}
 
 /* FOOTER */
-.site-footer { background: var(--ink); color: rgba(255,255,255,0.4); padding: 60px 0 0; }
-.footer-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--col); }
-.footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.3fr; gap: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-.footer-brand-name { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white); margin-bottom: 6px; }
-.footer-brand-tag { font-family: var(--font-body); font-size: 0.8rem; font-style: italic; color: rgba(255,255,255,0.25); margin-bottom: 14px; }
-.footer-brand-desc { font-family: var(--font-body); font-size: 0.85rem; line-height: 1.7; color: rgba(255,255,255,0.28); font-weight: 300; max-width: 270px; }
-.footer-col-title { font-family: var(--font-mono); font-size: 0.54rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.18); margin-bottom: 14px; padding-bottom: 9px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.footer-links { display: flex; flex-direction: column; gap: 8px; }
-.footer-links a { font-family: var(--font-body); font-size: 0.82rem; color: rgba(255,255,255,0.38); font-weight: 300; transition: color 0.2s; }
-.footer-links a:hover { color: var(--white); }
-.footer-nl-text { font-family: var(--font-body); font-size: 0.82rem; color: rgba(255,255,255,0.28); font-weight: 300; margin-bottom: 12px; line-height: 1.6; }
-.footer-form { display: flex; gap: 0; }
-.footer-email-input { flex: 1; padding: 10px 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-right: none; color: var(--white); font-family: var(--font-body); font-size: 0.82rem; outline: none; transition: border-color 0.2s; }
-.footer-email-input:focus { border-color: var(--gold); }
-.footer-email-input::placeholder { color: rgba(255,255,255,0.16); }
-.footer-submit-btn { padding: 10px 14px; background: var(--gold-2); color: var(--white); border: none; cursor: pointer; font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; transition: background 0.2s; }
-.footer-submit-btn:hover { background: var(--gold); }
-.footer-msg { font-family: var(--font-mono); font-size: 0.58rem; min-height: 16px; margin-top: 6px; }
-.footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; gap: 14px; flex-wrap: wrap; }
-.footer-copy { font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.08em; color: rgba(255,255,255,0.16); }
-.footer-legal { display: flex; gap: 18px; }
-.footer-legal a { font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.08em; color: rgba(255,255,255,0.2); transition: color 0.2s; }
-.footer-legal a:hover { color: rgba(255,255,255,0.55); }
+.site-footer{background:var(--paper-w);border-top:2px solid var(--rule2);padding:56px 0 0}
+.ft-in{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
+.ft-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.4fr;gap:44px;padding-bottom:44px}
+.ft-logo-row{display:flex;align-items:center;gap:9px;margin-bottom:10px;text-decoration:none;color:var(--ink);width:fit-content}
+.ft-logo-row img{height:26px;opacity:.7}
+.ft-brand-name{font-family:var(--fd);font-size:1rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.ft-brand-desc{font-family:var(--fb);font-size:.88rem;color:var(--ink4);line-height:1.7;font-weight:300;max-width:260px}
+.ft-col-ttl{font-family:var(--fm);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink5);margin-bottom:13px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+.ft-links{display:flex;flex-direction:column;gap:7px}
+.ft-links a{font-family:var(--fb);font-size:.86rem;color:var(--ink4);font-weight:300;transition:color .2s}
+.ft-links a:hover{color:var(--red)}
+.ft-nl-txt{font-family:var(--fb);font-size:.86rem;color:var(--ink4);font-weight:300;margin-bottom:11px;line-height:1.6}
+.ft-form{display:flex}
+.ft-email{flex:1;padding:9px 12px;background:var(--white);border:1px solid var(--rule);border-right:none;font-family:var(--fb);font-size:.88rem;color:var(--ink);outline:none;transition:border-color .2s}
+.ft-email:focus{border-color:var(--gold)}
+.ft-email::placeholder{color:var(--ink5)}
+.ft-btn{padding:9px 13px;background:var(--ink);color:var(--white);border:none;cursor:pointer;font-family:var(--fm);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;transition:background .2s;white-space:nowrap}
+.ft-btn:hover{background:var(--red)}
+.ft-msg{font-family:var(--fm);font-size:.54rem;margin-top:6px;min-height:16px}
+.ft-bot{border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:12px;flex-wrap:wrap}
+.ft-copy{font-family:var(--fm);font-size:.52rem;letter-spacing:.06em;color:var(--ink5)}
+.ft-legal{display:flex;gap:16px}
+.ft-legal a{font-family:var(--fm);font-size:.52rem;letter-spacing:.06em;color:var(--ink5);transition:color .2s}
+.ft-legal a:hover{color:var(--red)}
 
 /* STATES */
-.state-loading, .state-error { text-align: center; padding: 80px 20px; }
-.state-loading p, .state-error p { font-family: var(--font-body); font-size: 1rem; font-style: italic; color: var(--ink-4); }
-.state-error h2 { font-family: var(--font-display); font-size: 2rem; font-weight: 500; color: var(--ink); margin-bottom: 12px; }
-.btn-back { display: inline-block; margin-top: 20px; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 24px; background: var(--ink); color: var(--white); }
+.state-loading{text-align:center;padding:80px 20px}
+.state-loading p{font-family:var(--fb);font-size:1rem;font-style:italic;color:var(--ink4)}
+.state-error{text-align:center;padding:80px 20px}
+.state-error h2{font-family:var(--fd);font-size:2.2rem;font-weight:500;color:var(--ink);margin-bottom:12px}
+.state-error p{font-family:var(--fb);color:var(--ink4);font-style:italic;margin-bottom:22px}
+.btn-back{display:inline-block;font-family:var(--fm);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:10px 24px;background:var(--ink);color:var(--white)}
 
 /* RESPONSIVE */
-@media(max-width: 768px) {
-  :root { --col: 16px; }
-  .btn-subscribe { display: none; }
-  .btn-menu-mobile { display: flex; }
-  .header-nav-wrap { display: none; }
-  .masthead-name { font-size: 1.3rem; }
-  .article-wrap { padding-top: 36px; }
-  .article-title { font-size: 2rem; }
-  .article-body { font-size: 1.02rem; }
-  .related-grid { grid-template-columns: 1fr; gap: 24px; }
-  .related-card { border-right: none; padding-right: 0; padding-left: 0 !important; border-bottom: 1px solid var(--rule); padding-bottom: 24px; }
-  .related-card:last-child { border-bottom: none; }
-  .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; }
+@media(max-width:768px){
+  .h-nav{display:none}.btn-sub{display:none}.btn-ham{display:flex}
+  .art-body blockquote{margin:28px 0;padding:22px 24px}
+  .art-body blockquote::before{font-size:4rem;top:-6px;left:18px}
+  .art-body blockquote p{font-size:1.3rem}
+  .related-grid{grid-template-columns:1fr;gap:24px}
+  .rel-card{border-right:none;padding:0!important;border-bottom:1px solid var(--rule);padding-bottom:22px!important}
+  .rel-card:last-child{border-bottom:none}
+  .ft-top{grid-template-columns:1fr 1fr;gap:24px}
+  .next-title{font-size:.9rem}
 }
-@media(max-width: 480px) {
-  .top-strip { display: none; }
-  .article-title { font-size: 1.65rem; }
-  .article-body p:first-child::first-letter { font-size: 3.2rem; }
-  .footer-top { grid-template-columns: 1fr; }
+@media(max-width:540px){
+  .art-title{font-size:1.75rem}
+  .art-body p:first-of-type::first-letter{font-size:3.5rem}
+  .ft-top{grid-template-columns:1fr}
+  .ft-bot{flex-direction:column;align-items:flex-start}
 }
 </style>
 </head>
 <body>
 
-<!-- TOP STRIP -->
-<div class="top-strip">
-  <span id="todayDate" style="color:rgba(255,255,255,0.28)"></span>
-  <div class="top-strip-links">
-    <a href="/">Front Page</a>
-    <a href="#subscribe">Newsletter</a>
-    <a href="/about.html">About</a>
-  </div>
-</div>
+<div class="prog" id="prog"></div>
 
 <!-- HEADER -->
 <header class="site-header" id="siteHeader">
-  <div class="header-inner">
-    <div class="header-main">
-      <div class="header-left"></div>
-      <a href="/" class="header-masthead">
-        <div class="masthead-name">The Pacific Signal</div>
-        <div class="masthead-rule"><div class="masthead-rule-line"></div><div class="masthead-rule-diamond"></div><div class="masthead-rule-line"></div></div>
-        <div class="masthead-tagline">Beyond the Headlines</div>
-      </a>
-      <div class="header-right">
-        <a href="/#subscribe" class="btn-subscribe">Subscribe</a>
-        <button class="btn-menu-mobile" onclick="openMobileNav()" aria-label="Menu">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
-        </button>
+  <div class="h-bar">
+    <a href="/" class="h-logo">
+      <img src="/images/tps.png" alt="The Pacific Signal">
+      <div class="h-logo-div"></div>
+      <div class="h-logo-text">
+        <span class="h-logo-name">The Pacific Signal</span>
+        <span class="h-logo-tag">Beyond the Headlines</span>
       </div>
-    </div>
-  </div>
-  <div style="height:1px;background:var(--rule)"></div>
-  <div class="header-inner">
-    <nav class="header-nav-wrap">
-      <div class="header-nav">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/?category=united-states-canada" class="nav-link">US &amp; Canada</a>
-        <a href="/?category=china-east-asia" class="nav-link">China &amp; East Asia</a>
-        <a href="/?category=europe-uk" class="nav-link">Europe</a>
-        <a href="/?category=middle-east-north-africa" class="nav-link">Middle East</a>
-        <a href="/?category=south-asia" class="nav-link">South Asia</a>
-        <a href="/?category=global-markets-trade" class="nav-link">Markets</a>
-        <a href="/?category=geopolitics-strategy" class="nav-link">Geopolitics</a>
-      </div>
+    </a>
+    <nav class="h-nav">
+      <a href="/" class="nav-a">Home</a>
+      <a href="/?category=united-states-canada" class="nav-a">US &amp; Canada</a>
+      <a href="/?category=china-east-asia" class="nav-a">China &amp; East Asia</a>
+      <a href="/?category=europe-uk" class="nav-a">Europe</a>
+      <a href="/?category=middle-east-north-africa" class="nav-a">Middle East</a>
+      <a href="/?category=south-asia" class="nav-a">South Asia</a>
+      <a href="/?category=global-markets-trade" class="nav-a">Markets</a>
+      <a href="/?category=geopolitics-strategy" class="nav-a">Geopolitics</a>
     </nav>
+    <div class="h-right">
+      <a href="/#subscribe" class="btn-sub">Subscribe</a>
+      <button class="btn-ham" onclick="openMob()" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+      </button>
+    </div>
   </div>
 </header>
 
 <!-- MOBILE NAV -->
-<div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
-<nav class="mobile-nav" id="mobileNav">
-  <div class="mobile-nav-head"><span class="mobile-nav-title">Navigation</span><button class="mobile-nav-close" onclick="closeMobileNav()">&#10005;</button></div>
-  <div class="mobile-nav-links">
-    <a href="/" class="mobile-nav-link">Home</a>
-    <a href="/?category=united-states-canada" class="mobile-nav-link">US &amp; Canada</a>
-    <a href="/?category=china-east-asia" class="mobile-nav-link">China &amp; East Asia</a>
-    <a href="/?category=europe-uk" class="mobile-nav-link">Europe &amp; UK</a>
-    <a href="/?category=middle-east-north-africa" class="mobile-nav-link">Middle East</a>
-    <a href="/?category=south-asia" class="mobile-nav-link">South Asia</a>
-    <a href="/?category=global-markets-trade" class="mobile-nav-link">Markets</a>
-    <a href="/?category=geopolitics-strategy" class="mobile-nav-link">Geopolitics</a>
+<div class="m-ov" id="mOv" onclick="closeMob()"></div>
+<nav class="m-nav" id="mNav">
+  <div class="m-head"><img src="/images/tps.png" alt="The Pacific Signal"><button class="m-close" onclick="closeMob()">&#10005;</button></div>
+  <div class="m-links">
+    <a href="/" class="m-link">Home</a>
+    <a href="/?category=united-states-canada" class="m-link">US &amp; Canada</a>
+    <a href="/?category=china-east-asia" class="m-link">China &amp; East Asia</a>
+    <a href="/?category=europe-uk" class="m-link">Europe &amp; UK</a>
+    <a href="/?category=middle-east-north-africa" class="m-link">Middle East</a>
+    <a href="/?category=south-asia" class="m-link">South Asia</a>
+    <a href="/?category=global-markets-trade" class="m-link">Markets</a>
+    <a href="/?category=geopolitics-strategy" class="m-link">Geopolitics</a>
   </div>
-  <div class="mobile-nav-foot"><a href="/#subscribe" class="mobile-nav-subscribe" onclick="closeMobileNav()">Subscribe to Newsletter</a></div>
+  <div class="m-foot"><a href="/#subscribe" class="m-sub-btn" onclick="closeMob()">Subscribe Free</a></div>
 </nav>
 
 <!-- ARTICLE CONTENT -->
-<div id="articleContainer">
+<div class="art-shell" id="artShell">
   <div class="state-loading"><p>Loading article&#x2026;</p></div>
 </div>
 
-<!-- RELATED ARTICLES -->
+<!-- RELATED -->
 <div id="relatedWrap" style="display:none">
   <div class="related-wrap">
-    <div class="related-inner">
-      <div class="related-head"><span class="related-title">Related Analysis</span></div>
-      <div class="related-grid" id="relatedGrid"></div>
+    <div class="related-in">
+      <div class="related-hd"><span class="related-ttl">Related Analysis</span></div>
+      <div class="related-grid" id="relGrid"></div>
     </div>
   </div>
 </div>
 
+<!-- NEXT ARTICLE RIBBON -->
+<a class="next-ribbon" id="nextRibbon" href="#">
+  <span class="next-lbl">Up Next</span>
+  <span class="next-title" id="nextTitle">&#x2014;</span>
+  <span class="next-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-7-7l7 7-7 7"/></svg></span>
+  <button class="next-close" id="nextClose" onclick="closeRibbon(event)">&#10005;</button>
+</a>
+
 <!-- FOOTER -->
 <footer class="site-footer" id="subscribe">
-  <div class="footer-inner">
-    <div class="footer-top">
+  <div class="ft-in">
+    <div class="ft-top">
       <div>
-        <div class="footer-brand-name">The Pacific Signal</div>
-        <div class="footer-brand-tag">Beyond the Headlines</div>
-        <p class="footer-brand-desc">Independent analysis and explained journalism for the curious mind.</p>
+        <a href="/" class="ft-logo-row"><img src="/images/tps.png" alt=""><span class="ft-brand-name">The Pacific Signal</span></a>
+        <p class="ft-brand-desc">Independent analysis and explained journalism for the curious mind.</p>
       </div>
       <div>
-        <div class="footer-col-title">Regions</div>
-        <div class="footer-links">
+        <div class="ft-col-ttl">Regions</div>
+        <div class="ft-links">
           <a href="/?category=united-states-canada">United States &amp; Canada</a>
           <a href="/?category=china-east-asia">China &amp; East Asia</a>
           <a href="/?category=europe-uk">Europe &amp; UK</a>
@@ -298,8 +330,8 @@ img { display: block; max-width: 100%; height: auto; }
         </div>
       </div>
       <div>
-        <div class="footer-col-title">Topics</div>
-        <div class="footer-links">
+        <div class="ft-col-ttl">Topics</div>
+        <div class="ft-links">
           <a href="/?category=global-markets-trade">Global Markets</a>
           <a href="/?category=geopolitics-strategy">Geopolitics</a>
           <a href="/?category=climate-environment">Climate</a>
@@ -308,144 +340,206 @@ img { display: block; max-width: 100%; height: auto; }
         </div>
       </div>
       <div>
-        <div class="footer-col-title">Newsletter</div>
-        <p class="footer-nl-text">The best analysis, free to your inbox each week.</p>
-        <form onsubmit="return handleSubscribe(event)">
-          <div class="footer-form">
-            <input type="email" placeholder="Your email address" class="footer-email-input" id="subEmail" required>
-            <button type="submit" class="footer-submit-btn">Subscribe</button>
+        <div class="ft-col-ttl">Newsletter</div>
+        <p class="ft-nl-txt">The best analysis, free to your inbox each week.</p>
+        <form onsubmit="return handleSub(event)">
+          <div class="ft-form">
+            <input type="email" placeholder="Your email" class="ft-email" id="subEmail" required>
+            <button type="submit" class="ft-btn">Subscribe</button>
           </div>
         </form>
-        <p class="footer-msg" id="subMsg" style="color:var(--gold)"></p>
+        <p class="ft-msg" id="subMsg"></p>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">&copy; 2025 The Pacific Signal. All rights reserved.</span>
-      <div class="footer-legal">
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="/terms.html">Terms</a>
+    <div class="ft-bot">
+      <span class="ft-copy">&copy; 2025 The Pacific Signal. All rights reserved.</span>
+      <div class="ft-legal">
+        <a href="/about.html">About</a><a href="/contact.html">Contact</a>
+        <a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a>
       </div>
     </div>
   </div>
 </footer>
 
 <script>
-// Date
-(function(){ var d=new Date(); var months=['January','February','March','April','May','June','July','August','September','October','November','December']; var el=document.getElementById('todayDate'); if(el) el.textContent=months[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear(); })();
+/* HELPERS */
+function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
 
-// Header scroll
-var header=document.getElementById('siteHeader'),lastY=0;
-window.addEventListener('scroll',function(){ var y=window.scrollY; if(y<80){header.classList.remove('hidden','scrolled');}else if(y>lastY+4){header.classList.add('hidden');}else if(y<lastY-2){header.classList.remove('hidden');header.classList.add('scrolled');} lastY=y; },{passive:true});
+function timeAgo(ds){
+  if(!ds)return'';
+  var diff=Math.floor((Date.now()-new Date(ds).getTime())/1000);
+  if(diff<60)return'Just now';
+  if(diff<3600){var m=Math.floor(diff/60);return m+' min'+(m>1?'s':'')+' ago'}
+  if(diff<86400){var h=Math.floor(diff/3600);return h+' hr'+(h>1?'s':'')+' ago'}
+  if(diff<604800){var dd=Math.floor(diff/86400);return dd+' day'+(dd>1?'s':'')+' ago'}
+  return new Date(ds).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})
+}
 
-function openMobileNav(){ document.getElementById('mobileNav').classList.add('open'); document.getElementById('mobileOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeMobileNav(){ document.getElementById('mobileNav').classList.remove('open'); document.getElementById('mobileOverlay').classList.remove('open'); document.body.style.overflow=''; }
+function fmtFull(ds){
+  if(!ds)return'';
+  return new Date(ds).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})
+}
 
-// Load article
-var slug = new URLSearchParams(location.search).get('slug');
+/* HEADER SCROLL */
+var hdr=document.getElementById('siteHeader'),lastY=0;
+window.addEventListener('scroll',function(){
+  var y=window.scrollY;
+  if(y<80){hdr.classList.remove('hide','scrolled')}
+  else if(y>lastY+5){hdr.classList.add('hide')}
+  else if(y<lastY-3){hdr.classList.remove('hide');hdr.classList.add('scrolled')}
+  lastY=y;
+},{passive:true});
+
+/* MOBILE NAV */
+function openMob(){document.getElementById('mNav').classList.add('on');document.getElementById('mOv').classList.add('on');document.body.style.overflow='hidden'}
+function closeMob(){document.getElementById('mNav').classList.remove('on');document.getElementById('mOv').classList.remove('on');document.body.style.overflow=''}
+
+/* READING PROGRESS */
+var prog=document.getElementById('prog');
+window.addEventListener('scroll',function(){
+  var artBody=document.getElementById('artBody');
+  if(!artBody)return;
+  var st=window.scrollY,ah=artBody.offsetHeight,at=artBody.offsetTop;
+  var pct=Math.min(100,Math.max(0,((st-at)/(ah-window.innerHeight))*100));
+  prog.style.width=pct+'%';
+  /* Next ribbon after 70% */
+  if(pct>70&&!ribbonClosed)document.getElementById('nextRibbon').classList.add('show');
+},{passive:true});
+
+/* LOAD ARTICLE */
+var slug=new URLSearchParams(location.search).get('slug');
+var ribbonClosed=false;
+
 if(!slug){
-  document.getElementById('articleContainer').innerHTML = '<div class="state-error"><h2>Article Not Found</h2><p>No article was specified.</p><a href="/" class="btn-back">Return to Front Page</a></div>';
-} else { loadArticle(slug); }
+  document.getElementById('artShell').innerHTML='<div class="art-wrap state-error"><h2>Article Not Found</h2><p>No article was specified.</p><a href="/" class="btn-back">Return to Front Page</a></div>';
+  document.getElementById('artShell').classList.add('loaded');
+}else{
+  loadArticle(slug);
+}
 
 async function loadArticle(slug){
   try{
-    var r = await fetch('/api/article/'+slug);
-    if(!r.ok) throw new Error();
-    var d = await r.json();
-    document.title = d.article.title+' — The Pacific Signal';
+    var r=await fetch('/api/article/'+slug);
+    if(!r.ok)throw new Error();
+    var d=await r.json();
+    document.title=d.article.title+' — The Pacific Signal';
     renderArticle(d.article);
-    if(d.related&&d.related.length>0) renderRelated(d.related);
+    if(d.related&&d.related.length){
+      renderRelated(d.related);
+      /* Set next ribbon to first related */
+      var ribbon=document.getElementById('nextRibbon');
+      ribbon.href='/article.html?slug='+d.related[0].slug;
+      document.getElementById('nextTitle').textContent=d.related[0].title;
+    }
+    requestAnimationFrame(function(){document.getElementById('artShell').classList.add('loaded')});
   }catch(e){
-    document.getElementById('articleContainer').innerHTML = '<div class="state-error"><h2>Article Not Found</h2><p>This article may have been removed or does not exist.</p><a href="/" class="btn-back">Return to Front Page</a></div>';
+    document.getElementById('artShell').innerHTML='<div class="art-wrap state-error"><h2>Article Not Found</h2><p>This article may have been removed.</p><a href="/" class="btn-back">Return to Front Page</a></div>';
+    document.getElementById('artShell').classList.add('loaded');
   }
 }
 
-function countWords(text){ return text.trim().split(/\s+/).length; }
+function closeRibbon(e){
+  e.preventDefault();e.stopPropagation();
+  ribbonClosed=true;
+  document.getElementById('nextRibbon').classList.remove('show');
+}
 
-function renderArticle(a){
-  var wordsPerMin = 220;
-  var wordCount = countWords(a.content||'');
-  var readTime = Math.max(1, Math.round(wordCount/wordsPerMin));
-
-  // Parse content: support ## headings, ### headings, > blockquotes, - lists
-  var content = (a.content||'')
-    .replace(/## (.+)/g,'<h2>$1</h2>')
-    .replace(/### (.+)/g,'<h3>$1</h3>')
-    .replace(/^> (.+)/gm,'<blockquote>$1</blockquote>')
-    .replace(/^- (.+)/gm,'<li>$1</li>')
-    .replace(/(<li>.+<\/li>\n?)+/g,function(m){ return '<ul>'+m+'</ul>'; })
+function parseContent(raw){
+  return (raw||'')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^> (.+)$/gm,'<blockquote><p>$1</p></blockquote>')
+    .replace(/^- (.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>[\s\S]+?<\/li>)/g,'<ul>$1</ul>')
     .replace(/\n\n+/g,'</p><p>')
     .replace(/\n/g,'<br>');
-
-  var html = '<div class="article-wrap">';
-  // Breadcrumb
-  html += '<div class="breadcrumb"><a href="/">Front Page</a>';
-  if(a.category_name&&a.category_slug) html += '<span class="breadcrumb-sep">&#x2044;</span><a href="/?category='+encodeURIComponent(a.category_slug)+'">'+escH(a.category_name)+'</a>';
-  html += '<span class="breadcrumb-sep">&#x2044;</span><span style="color:var(--ink-3)">'+escH(a.title.substring(0,44)+(a.title.length>44?'&#x2026;':''))+'</span></div>';
-
-  // Article header
-  html += '<div class="article-header">';
-  html += '<div class="art-eyebrow"><span class="art-category">'+escH(a.category_name||'Analysis')+'</span><div class="art-eyebrow-line"></div></div>';
-  html += '<h1 class="article-title">'+escH(a.title)+'</h1>';
-  if(a.excerpt) html += '<p class="article-excerpt">'+escH(a.excerpt)+'</p>';
-  html += '<div class="article-meta">';
-  html += '<span class="art-meta-author">'+escH(a.author||'The Pacific Signal')+'</span>';
-  html += '<span class="art-meta-sep">&mdash;</span>';
-  html += '<span class="art-meta-date">'+fmtDate(a.published_at||a.created_at)+'</span>';
-  html += '<span class="art-meta-sep">&middot;</span>';
-  html += '<span class="art-meta-readtime"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>'+readTime+' min read</span>';
-  html += '</div></div>';
-
-  // Featured image
-  if(a.image_url) html += '<img src="'+escH(a.image_url)+'" alt="'+escH(a.title)+'" class="art-featured-img" loading="eager">';
-
-  // Body
-  html += '<div class="article-body"><p>'+content+'</p></div>';
-
-  // Share bar
-  var shareUrl = encodeURIComponent(location.href);
-  var shareTitle = encodeURIComponent(a.title);
-  html += '<div class="share-bar">';
-  html += '<span class="share-label">Share</span>';
-  html += '<a href="https://twitter.com/intent/tweet?url='+shareUrl+'&text='+shareTitle+'" target="_blank" rel="noopener" class="share-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.852L1.745 2.25H8.2l4.259 5.63L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X / Twitter</a>';
-  html += '<a href="https://www.facebook.com/sharer/sharer.php?u='+shareUrl+'" target="_blank" rel="noopener" class="share-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg> Facebook</a>';
-  html += '<button class="share-btn" onclick="copyLink()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="1" ry="1"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Link</button>';
-  html += '</div></div>';
-
-  document.getElementById('articleContainer').innerHTML = html;
 }
 
-function copyLink(){ navigator.clipboard.writeText(location.href); var btn=document.querySelector('.share-btn:last-child'); btn.textContent='Copied'; setTimeout(function(){ btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="1" ry="1"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Link'; }, 2000); }
+function wordCount(s){return(s||'').trim().split(/\s+/).length}
 
-function renderRelated(related){
+function renderArticle(a){
+  var wc=wordCount(a.content);
+  var rt=Math.max(1,Math.round(wc/220));
+  var content=parseContent(a.content);
+
+  var html='<div class="art-wrap">';
+
+  /* Breadcrumb */
+  html+='<div class="breadcrumb">'
+    +'<a href="/">Front Page</a>';
+  if(a.category_name&&a.category_slug)html+='<span class="bc-sep">/</span><a href="/?category='+esc(a.category_slug)+'">'+esc(a.category_name)+'</a>';
+  html+='</div>';
+
+  /* Eyebrow + title */
+  html+='<div class="art-eyebrow"><span class="art-cat">'+esc(a.category_name||'Analysis')+'</span><div class="art-eye-line"></div></div>';
+  html+='<h1 class="art-title">'+esc(a.title)+'</h1>';
+
+  /* Standfirst */
+  if(a.excerpt)html+='<p class="art-standfirst">'+esc(a.excerpt)+'</p>';
+
+  /* Byline */
+  html+='<div class="art-byline">'
+    +'<span class="byline-author">'+esc(a.author||'The Pacific Signal')+'</span>'
+    +'<span class="byline-sep">&mdash;</span>'
+    +'<span class="byline-date">'+fmtFull(a.published_at||a.created_at)+'</span>'
+    +'<span class="byline-sep">&middot;</span>'
+    +'<span class="byline-time">'+timeAgo(a.published_at||a.created_at)+'</span>'
+    +'<span class="byline-sep">&middot;</span>'
+    +'<span class="byline-read"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>'+rt+' min read</span>'
+    +'</div>';
+
+  /* Featured image */
+  if(a.image_url)html+='<img src="'+esc(a.image_url)+'" alt="'+esc(a.title)+'" class="art-feat-img" loading="eager">';
+
+  /* Body */
+  html+='<div class="art-body" id="artBody"><p>'+content+'</p></div>';
+
+  /* Share bar */
+  var su=encodeURIComponent(location.href), st=encodeURIComponent(a.title);
+  html+='<div class="share-bar">'
+    +'<span class="share-lbl">Share</span>'
+    +'<a href="https://twitter.com/intent/tweet?url='+su+'&text='+st+'" target="_blank" rel="noopener" class="share-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.852L1.745 2.25H8.2l4.259 5.63L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X / Twitter</a>'
+    +'<a href="https://www.facebook.com/sharer/sharer.php?u='+su+'" target="_blank" rel="noopener" class="share-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg> Facebook</a>'
+    +'<button class="share-btn" id="copyBtn" onclick="copyLink()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="1"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Link</button>'
+    +'</div></div>';
+
+  document.getElementById('artShell').innerHTML=html;
+}
+
+function copyLink(){
+  navigator.clipboard.writeText(location.href);
+  var b=document.getElementById('copyBtn');
+  if(b){b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied';setTimeout(function(){b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="1"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Link'},2200)}
+}
+
+function renderRelated(rel){
   document.getElementById('relatedWrap').style.display='block';
-  var html='';
-  related.forEach(function(a,i){
-    var isFirst=(i===0), isLast=(i===related.length-1);
-    html += '<a href="/article.html?slug='+escH(a.slug)+'" class="related-card">';
-    if(a.image_url) html += '<img src="'+escH(a.image_url)+'" alt="'+escH(a.title)+'" class="related-card-img" loading="lazy">';
-    else html += '<div class="related-card-ph"><span>TPS</span></div>';
-    html += '<div class="related-card-cat">'+escH(a.category_name||'Analysis')+'</div>';
-    html += '<div class="related-card-title">'+escH(a.title)+'</div>';
-    html += '<div class="related-card-author">'+escH(a.author||'The Pacific Signal')+'</div>';
-    html += '</a>';
-  });
-  document.getElementById('relatedGrid').innerHTML = html;
+  document.getElementById('relGrid').innerHTML=rel.map(function(a,i){
+    var cls='rel-card'+(i===1?' style="padding:0 24px"':'');
+    return '<a href="/article.html?slug='+esc(a.slug)+'" class="rel-card" '+(i===1?'style="padding:0 24px"':'')+'>'
+      +(a.image_url?'<img src="'+esc(a.image_url)+'" alt="'+esc(a.title)+'" class="rel-img" loading="lazy">':'<div class="rel-ph"><span>TPS</span></div>')
+      +'<div class="rel-cat">'+esc(a.category_name||'Analysis')+'</div>'
+      +'<div class="rel-ttl">'+esc(a.title)+'</div>'
+      +'<div class="rel-meta">'+esc(a.author||'The Pacific Signal')+' &nbsp;&middot;&nbsp; <span style="color:var(--gold)">'+timeAgo(a.published_at||a.created_at)+'</span></div>'
+      +'</a>';
+  }).join('');
 }
 
-async function handleSubscribe(e){
+async function handleSub(e){
   e.preventDefault();
   var email=document.getElementById('subEmail').value.trim();
   var msg=document.getElementById('subMsg');
-  if(!email) return false;
-  try{ var r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email})}); var d=await r.json(); msg.textContent=r.ok?'You are now subscribed.':(d.error||'Error'); msg.style.color=r.ok?'var(--gold)':'#B85050'; if(r.ok) document.getElementById('subEmail').value=''; }catch(e){ msg.textContent='Network error.'; msg.style.color='#B85050'; }
-  setTimeout(function(){ msg.textContent=''; },5000);
+  if(!email)return false;
+  try{
+    var r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    var d=await r.json();
+    msg.textContent=r.ok?'Thank you \u2014 you are now subscribed.':(d.error||'Something went wrong.');
+    msg.style.color=r.ok?'var(--gold)':'var(--red)';
+    if(r.ok)document.getElementById('subEmail').value='';
+  }catch(er){msg.textContent='Network error.';msg.style.color='var(--red)'}
+  setTimeout(function(){msg.textContent=''},5000);
   return false;
 }
-
-function escH(s){ var d=document.createElement('div'); d.textContent=String(s||''); return d.innerHTML; }
-function fmtDate(d){ if(!d) return ''; return new Date(d).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}); }
 </script>
 </body>
 </html>
