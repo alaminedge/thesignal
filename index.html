@@ -31,6 +31,24 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 /* PROGRESS BAR */
 .prog{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--gold),var(--red));z-index:9999;transition:width .12s linear;pointer-events:none}
 
+/* ─── SKELETON ─── */
+@keyframes skshimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sk{
+  background:linear-gradient(90deg,var(--paper-d) 25%,var(--paper-w) 50%,var(--paper-d) 75%);
+  background-size:200% 100%;
+  animation:skshimmer 1.6s ease-in-out infinite;
+  border-radius:2px;
+  display:block;
+}
+/* skeleton rows */
+.sk-title{height:38px;margin-bottom:12px;width:88%}
+.sk-title-sm{height:22px;margin-bottom:8px;width:72%}
+.sk-line{height:14px;margin-bottom:8px}
+.sk-line-short{height:14px;margin-bottom:8px;width:55%}
+.sk-line-med{height:14px;margin-bottom:8px;width:75%}
+.sk-label{height:10px;width:90px;margin-bottom:14px}
+.sk-meta{height:10px;width:160px;margin-top:16px}
+
 /* ─── HEADER ─── */
 .site-header{
   position:sticky;top:0;z-index:300;
@@ -98,9 +116,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .cat-back{font-family:var(--fm);font-size:.56rem;letter-spacing:.08em;color:var(--gold);display:inline-flex;align-items:center;gap:5px;transition:color .2s}
 .cat-back:hover{color:var(--red)}
 
-/* CONTENT — hidden until loaded, no layout shift */
-.cs{opacity:0;transition:opacity .48s ease}
-.cs.loaded{opacity:1}
+
 
 /* ─── HERO ─── */
 .hero-sec{padding:38px 0 42px;border-bottom:1px solid var(--rule);margin-bottom:42px}
@@ -322,22 +338,64 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 <!-- MAIN -->
 <main>
   <div class="wrap">
-    <div class="cs" id="cs">
-      <section class="hero-sec" id="heroSec"></section>
-      <section class="feed-sec" id="feedSec">
-        <div class="sec-hd"><span class="sec-ttl">Intelligence Feed</span><span class="sec-sub">Analysis &amp; Briefings</span></div>
-        <div class="feed-grid" id="feedGrid"></div>
-      </section>
-      <section class="vis-sec" id="visSec"></section>
-      <section class="spot-sec" id="spotSec">
-        <div class="sec-hd"><span class="sec-ttl">Spotlight Analysis</span></div>
-        <div class="spot-grid" id="spotGrid"></div>
-      </section>
-      <section class="latest-sec" id="latestSec">
-        <div class="sec-hd"><span class="sec-ttl" id="latestTtl">Latest Analysis</span></div>
-        <div class="latest-grid" id="latestGrid"></div>
-      </section>
-    </div>
+
+    <!-- HERO SKELETON → replaced by renderHero() -->
+    <section class="hero-sec" id="heroSec">
+      <div class="hero-grid" style="pointer-events:none">
+        <div class="hero-img-col"><div class="sk" style="min-height:420px;width:100%"></div></div>
+        <div class="hero-body" style="gap:14px">
+          <span class="sk sk-label"></span>
+          <span class="sk sk-title"></span>
+          <span class="sk sk-title" style="width:70%;height:30px"></span>
+          <span class="sk sk-line"></span>
+          <span class="sk sk-line-med"></span>
+          <span class="sk sk-line-short"></span>
+          <span class="sk sk-meta"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEED SKELETON → replaced by renderFeed() -->
+    <section class="feed-sec" id="feedSec">
+      <div class="sec-hd"><span class="sec-ttl">Intelligence Feed</span><span class="sec-sub">Analysis &amp; Briefings</span></div>
+      <div class="feed-grid" id="feedGrid">
+        <!-- 8 skeleton feed rows -->
+        <div class="feed-item" style="padding-right:26px;border-right:1px solid var(--rule);pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm"></span><span class="sk" style="height:9px;width:100px;margin-top:6px"></span></div></div>
+        <div class="feed-item" style="padding-left:26px;pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm" style="width:85%"></span><span class="sk" style="height:9px;width:120px;margin-top:6px"></span></div></div>
+        <div class="feed-item" style="padding-right:26px;border-right:1px solid var(--rule);pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm" style="width:90%"></span><span class="sk" style="height:9px;width:90px;margin-top:6px"></span></div></div>
+        <div class="feed-item" style="padding-left:26px;pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm" style="width:75%"></span><span class="sk" style="height:9px;width:110px;margin-top:6px"></span></div></div>
+        <div class="feed-item" style="padding-right:26px;border-right:1px solid var(--rule);border-bottom:none;pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm" style="width:80%"></span><span class="sk" style="height:9px;width:95px;margin-top:6px"></span></div></div>
+        <div class="feed-item" style="padding-left:26px;border-bottom:none;pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm" style="width:65%"></span><span class="sk" style="height:9px;width:105px;margin-top:6px"></span></div></div>
+      </div>
+    </section>
+
+    <!-- VISUAL SKELETON → replaced by renderVisual() -->
+    <section class="vis-sec" id="visSec">
+      <div class="sk" style="height:400px;width:100%;border-radius:0"></div>
+    </section>
+
+    <!-- SPOTLIGHTS SKELETON → replaced by renderSpots() -->
+    <section class="spot-sec" id="spotSec">
+      <div class="sec-hd"><span class="sec-ttl">Spotlight Analysis</span></div>
+      <div class="spot-grid" id="spotGrid">
+        <div class="spot-card" style="pointer-events:none"><span class="sk" style="height:10px;width:80%;margin-bottom:14px"></span><span class="sk sk-title-sm"></span><span class="sk sk-title-sm" style="width:60%;height:18px;margin-top:4px"></span><span class="sk" style="height:9px;width:100px;margin-top:10px"></span></div>
+        <div class="spot-card" style="pointer-events:none"><span class="sk" style="height:10px;width:70%;margin-bottom:14px"></span><span class="sk sk-title-sm" style="width:90%"></span><span class="sk sk-title-sm" style="width:55%;height:18px;margin-top:4px"></span><span class="sk" style="height:9px;width:90px;margin-top:10px"></span></div>
+        <div class="spot-card" style="pointer-events:none"><span class="sk" style="height:10px;width:85%;margin-bottom:14px"></span><span class="sk sk-title-sm" style="width:75%"></span><span class="sk sk-title-sm" style="width:65%;height:18px;margin-top:4px"></span><span class="sk" style="height:9px;width:110px;margin-top:10px"></span></div>
+        <div class="spot-card" style="border-right:none;pointer-events:none"><span class="sk" style="height:10px;width:75%;margin-bottom:14px"></span><span class="sk sk-title-sm" style="width:80%"></span><span class="sk sk-title-sm" style="width:50%;height:18px;margin-top:4px"></span><span class="sk" style="height:9px;width:100px;margin-top:10px"></span></div>
+      </div>
+    </section>
+
+    <!-- LATEST SKELETON → replaced by renderLatest() -->
+    <section class="latest-sec" id="latestSec">
+      <div class="sec-hd"><span class="sec-ttl" id="latestTtl">Latest Analysis</span></div>
+      <div class="latest-grid" id="latestGrid">
+        <div class="art-card" style="pointer-events:none"><div class="sk art-card-img"></div><span class="sk sk-label"></span><span class="sk sk-title-sm"></span><span class="sk sk-title-sm" style="width:70%;height:18px;margin-top:3px"></span><span class="sk sk-line" style="margin-top:8px"></span><span class="sk sk-line-short"></span><span class="sk" style="height:9px;width:110px;margin-top:6px"></span></div>
+        <div class="art-card" style="pointer-events:none"><div class="sk art-card-img"></div><span class="sk sk-label"></span><span class="sk sk-title-sm" style="width:90%"></span><span class="sk sk-title-sm" style="width:65%;height:18px;margin-top:3px"></span><span class="sk sk-line" style="margin-top:8px"></span><span class="sk sk-line-med"></span><span class="sk" style="height:9px;width:90px;margin-top:6px"></span></div>
+        <div class="art-card" style="pointer-events:none"><div class="sk art-card-img"></div><span class="sk sk-label"></span><span class="sk sk-title-sm" style="width:80%"></span><span class="sk sk-title-sm" style="width:55%;height:18px;margin-top:3px"></span><span class="sk sk-line" style="margin-top:8px"></span><span class="sk sk-line-short"></span><span class="sk" style="height:9px;width:120px;margin-top:6px"></span></div>
+        <div class="art-card" style="border-right:none;padding-right:0;pointer-events:none"><div class="sk art-card-img"></div><span class="sk sk-label"></span><span class="sk sk-title-sm" style="width:85%"></span><span class="sk sk-title-sm" style="width:60%;height:18px;margin-top:3px"></span><span class="sk sk-line" style="margin-top:8px"></span><span class="sk sk-line-med"></span><span class="sk" style="height:9px;width:100px;margin-top:6px"></span></div>
+      </div>
+    </section>
+
     <div class="load-more" id="loadMoreWrap">
       <button class="btn-more" id="loadMoreBtn" onclick="loadMore()">Load More Articles</button>
     </div>
@@ -464,7 +522,6 @@ async function loadHome(p){
   }catch(e){
     document.getElementById('heroSec').innerHTML='<p style="padding:52px 0;text-align:center;font-style:italic;color:var(--ink4);font-family:var(--fb)">Unable to load content. Please refresh.</p>';
   }
-  reveal();
 }
 
 async function loadCat(slug,p){
@@ -478,11 +535,6 @@ async function loadCat(slug,p){
       document.getElementById('latestGrid').innerHTML='<p style="font-style:italic;color:var(--ink4);grid-column:1/-1;padding:48px 0;text-align:center;font-family:var(--fb)">No articles in this section yet.</p>';
     }
   }catch(e){}
-  reveal();
-}
-
-function reveal(){
-  requestAnimationFrame(function(){document.getElementById('cs').classList.add('loaded')});
 }
 
 /* RENDERERS */
