@@ -1,425 +1,438 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Page not found — The Pacific Signal</title>
-  <meta name="description" content="The page you are looking for does not exist.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,300;1,8..60,400;1,8..60,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --paper: #F7F4EE;
-      --paper-w: #F0ECE2;
-      --paper-d: #E8E2D4;
-      --ink: #1A1814;
-      --ink2: #2E2B24;
-      --ink3: #5C5849;
-      --ink4: #8C8878;
-      --ink5: #B0AB9E;
-      --rule: #DDD9CE;
-      --rule2: #CAC5B8;
-      --gold: #B49A5E;
-      --gold-l: #D4BA82;
-      --red: #7A1E1E;
-      --red2: #5C1616;
-      --white: #FFFFFF;
-      --max: 1280px;
-      --g: clamp(16px, 3vw, 32px);
-      --fd: 'Cormorant Garamond', Georgia, serif;
-      --fb: 'Source Serif 4', Georgia, serif;
-      --fm: 'DM Mono', monospace;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Page Not Found · The Pacific Signal</title>
+<meta name="description" content="The page you are looking for could not be found.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,300;1,8..60,400;1,8..60,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F4EE;--paper-w:#F0ECE2;--paper-d:#E8E2D4;
+  --ink:#1A1814;--ink2:#2E2B24;--ink3:#5C5849;--ink4:#8C8878;--ink5:#B0AB9E;
+  --rule:#DDD9CE;--rule2:#CAC5B8;
+  --gold:#B49A5E;--gold-l:#D4BA82;--gold-p:#F2EBD8;
+  --red:#7A1E1E;--red2:#5C1616;
+  --white:#FFFFFF;
+  --max:1280px;--g:clamp(16px,3vw,32px);
+  --fd:'Cormorant Garamond',Georgia,serif;
+  --fb:'Source Serif 4',Georgia,serif;
+  --fm:'DM Mono',monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--fb);
+  background:var(--paper);
+  color:var(--ink);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%;height:auto}
 
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+/* ─── HEADER ─── */
+.site-header{
+  background:var(--paper);
+  border-bottom:1px solid var(--rule);
+}
+.h-bar{
+  max-width:var(--max);margin:0 auto;padding:0 var(--g);
+  height:56px;display:flex;align-items:center;
+}
+.h-logo{display:flex;align-items:center;gap:0;text-decoration:none;color:inherit}
+.h-logo img{height:32px;width:auto;flex-shrink:0}
+.h-logo-div{width:1px;height:20px;background:var(--rule2);margin:0 12px;flex-shrink:0}
+.h-logo-text{display:flex;flex-direction:column;gap:1px}
+.h-logo-name{font-family:var(--fd);font-size:1.02rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink);line-height:1}
+.h-logo-tag{font-family:var(--fm);font-size:.46rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink5)}
+.h-right{margin-left:auto}
+.btn-home{
+  font-family:var(--fm);font-size:.54rem;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:7px 16px;background:var(--ink);color:var(--white);
+  border:none;cursor:pointer;transition:background .2s;display:inline-block;
+}
+.btn-home:hover{background:var(--red);color:var(--white)}
 
-    html {
-      -webkit-font-smoothing: antialiased;
-      scroll-behavior: smooth;
-    }
+/* ─── MAIN ─── */
+.page-body{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:60px var(--g) 80px;
+  position:relative;
+  overflow:hidden;
+}
 
-    body {
-      font-family: var(--fb);
-      background: var(--paper);
-      color: var(--ink);
-      font-size: 16px;
-      line-height: 1.6;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+/* large watermark number */
+.watermark{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-54%);
+  font-family:var(--fd);
+  font-size:clamp(220px,30vw,380px);
+  font-weight:700;
+  font-style:italic;
+  color:transparent;
+  -webkit-text-stroke:1px var(--rule);
+  line-height:1;
+  letter-spacing:-.02em;
+  pointer-events:none;
+  user-select:none;
+  white-space:nowrap;
+}
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+/* content card */
+.error-card{
+  position:relative;
+  z-index:1;
+  max-width:560px;
+  width:100%;
+  text-align:center;
+}
 
-    img {
-      display: block;
-      max-width: 100%;
-      height: auto;
-    }
+.error-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--fm);font-size:.56rem;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink5);margin-bottom:24px;
+}
+.error-eyebrow-line{width:28px;height:1px;background:var(--rule2)}
 
-    /* ─── HEADER (consistent with site) ─── */
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 300;
-      background: var(--paper);
-      border-bottom: 1px solid var(--rule);
-      transition: box-shadow 0.3s ease;
-    }
+.error-number{
+  font-family:var(--fd);
+  font-size:clamp(4rem,10vw,7rem);
+  font-weight:700;
+  font-style:italic;
+  line-height:1;
+  color:var(--red);
+  margin-bottom:8px;
+  letter-spacing:-.02em;
+}
 
-    .h-bar {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 var(--g);
-      height: 56px;
-      display: flex;
-      align-items: center;
-    }
+.error-rule{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin:0 auto 24px;
+  max-width:180px;
+}
+.error-rule-line{flex:1;height:1px;background:var(--rule2)}
+.error-rule-dia{width:5px;height:5px;background:var(--gold);transform:rotate(45deg);flex-shrink:0}
 
-    .h-logo {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      flex-shrink: 0;
-      text-decoration: none;
-      color: inherit;
-      margin-right: auto;
-    }
+.error-title{
+  font-family:var(--fd);
+  font-size:clamp(1.6rem,3.5vw,2.4rem);
+  font-weight:600;
+  line-height:1.2;
+  color:var(--ink);
+  margin-bottom:16px;
+  letter-spacing:-.01em;
+}
 
-    .h-logo img {
-      height: 32px;
-      width: auto;
-      display: block;
-      flex-shrink: 0;
-    }
+.error-desc{
+  font-family:var(--fb);
+  font-size:1.05rem;
+  color:var(--ink4);
+  line-height:1.75;
+  font-weight:300;
+  font-style:italic;
+  margin-bottom:36px;
+  max-width:440px;
+  margin-left:auto;margin-right:auto;
+}
 
-    .h-logo-div {
-      width: 1px;
-      height: 20px;
-      background: var(--rule2);
-      margin: 0 12px;
-      flex-shrink: 0;
-    }
+/* action buttons */
+.error-actions{
+  display:flex;align-items:center;justify-content:center;
+  gap:12px;flex-wrap:wrap;margin-bottom:48px;
+}
+.btn-primary{
+  font-family:var(--fm);font-size:.58rem;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:11px 28px;background:var(--ink);color:var(--white);
+  border:none;cursor:pointer;transition:background .2s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-primary:hover{background:var(--red);color:var(--white)}
+.btn-primary svg{width:12px;height:12px}
+.btn-ghost{
+  font-family:var(--fm);font-size:.58rem;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:10px 28px;background:transparent;color:var(--ink3);
+  border:1px solid var(--rule2);cursor:pointer;transition:all .2s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-ghost:hover{border-color:var(--ink);color:var(--ink)}
+.btn-ghost svg{width:12px;height:12px}
 
-    .h-logo-text {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-    }
+/* quick nav links */
+.error-nav{
+  padding-top:32px;
+  border-top:1px solid var(--rule);
+}
+.error-nav-label{
+  font-family:var(--fm);font-size:.52rem;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink5);margin-bottom:16px;
+}
+.error-nav-links{
+  display:flex;align-items:center;justify-content:center;
+  gap:0;flex-wrap:wrap;
+}
+.error-nav-link{
+  font-family:var(--fm);font-size:.56rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink4);padding:6px 14px;
+  border-right:1px solid var(--rule);
+  transition:color .2s;white-space:nowrap;
+}
+.error-nav-link:last-child{border-right:none}
+.error-nav-link:hover{color:var(--red)}
 
-    .h-logo-name {
-      font-family: var(--fd);
-      font-size: 1.02rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--ink);
-      line-height: 1;
-    }
+/* ─── RECENT ARTICLES ─── */
+.recent-section{
+  max-width:var(--max);margin:0 auto;
+  padding:0 var(--g) 72px;
+}
+.recent-head{
+  display:flex;align-items:baseline;gap:10px;
+  margin-bottom:24px;padding-bottom:9px;
+  border-bottom:2px solid var(--ink);
+}
+.recent-title{font-family:var(--fd);font-size:1.2rem;font-weight:600;color:var(--ink)}
+.recent-sub{font-family:var(--fm);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink5)}
 
-    .h-logo-tag {
-      font-family: var(--fm);
-      font-size: 0.46rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink5);
-    }
+.recent-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.art-card{padding:0 20px 28px 0;border-right:1px solid var(--rule);text-decoration:none;color:var(--ink);display:block;transition:transform .22s cubic-bezier(.4,0,.2,1)}
+.art-card:last-child{border-right:none;padding-right:0}
+.art-card:hover{transform:translateY(-3px)}
+.art-card-img{width:100%;height:156px;object-fit:cover;background:var(--paper-d);display:block;margin-bottom:12px}
+.art-card-ph{width:100%;height:156px;background:var(--paper-d);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.art-card-ph span{font-family:var(--fd);font-size:1.7rem;font-style:italic;color:var(--rule2)}
+.art-card-cat{font-family:var(--fm);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:5px}
+.art-card-ttl{font-family:var(--fd);font-size:.98rem;font-weight:600;line-height:1.35;color:var(--ink);margin-bottom:6px;transition:color .2s}
+.art-card:hover .art-card-ttl{color:var(--red2)}
+.art-card-meta{font-family:var(--fm);font-size:.52rem;color:var(--ink5)}
+.t-gold{color:var(--gold)}
 
-    .h-nav {
-      display: flex;
-      align-items: center;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      margin: 0 14px;
-    }
+/* recent skeleton */
+@keyframes skshimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sk{background:linear-gradient(90deg,var(--paper-d) 25%,var(--paper-w) 50%,var(--paper-d) 75%);background-size:200% 100%;animation:skshimmer 1.6s ease-in-out infinite;border-radius:2px;display:block}
 
-    .h-nav::-webkit-scrollbar {
-      display: none;
-    }
+/* ─── FOOTER ─── */
+.site-footer{background:var(--paper-w);border-top:2px solid var(--rule2);padding:40px 0 0}
+.ft-in{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
+.ft-bot{display:flex;align-items:center;justify-content:space-between;padding:0 0 18px;gap:12px;flex-wrap:wrap}
+.ft-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.ft-logo img{height:22px;opacity:.6}
+.ft-logo-name{font-family:var(--fd);font-size:.9rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.ft-copy{font-family:var(--fm);font-size:.52rem;letter-spacing:.06em;color:var(--ink5)}
+.ft-legal{display:flex;gap:16px}
+.ft-legal a{font-family:var(--fm);font-size:.52rem;letter-spacing:.06em;color:var(--ink5);transition:color .2s}
+.ft-legal a:hover{color:var(--red)}
 
-    .nav-a {
-      font-family: var(--fm);
-      font-size: 0.57rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink3);
-      white-space: nowrap;
-      padding: 0 12px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      border-bottom: 2px solid transparent;
-      transition: color 0.2s, border-color 0.2s;
-    }
-
-    .nav-a:hover {
-      color: var(--ink);
-      border-bottom-color: var(--gold-l);
-    }
-
-    .h-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
-    .btn-sub {
-      font-family: var(--fm);
-      font-size: 0.54rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 7px 16px;
-      background: var(--ink);
-      color: var(--white);
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s;
-      white-space: nowrap;
-    }
-
-    .btn-sub:hover {
-      background: var(--ink2);
-      color: var(--white);
-    }
-
-    /* ─── 404 MAIN ─── */
-    .not-found-wrap {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 48px var(--g);
-      width: 100%;
-    }
-
-    .not-found-card {
-      max-width: 620px;
-      width: 100%;
-      text-align: center;
-      background: var(--white);
-      border: 1px solid var(--rule);
-      padding: clamp(40px, 8vw, 72px) clamp(24px, 6vw, 52px);
-      box-shadow: 0 12px 38px rgba(26, 24, 20, 0.04);
-    }
-
-    .nf-rule {
-      width: 55px;
-      height: 2px;
-      background: var(--gold);
-      margin: 0 auto 28px;
-    }
-
-    .nf-code {
-      font-family: var(--fm);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--ink5);
-      margin-bottom: 12px;
-    }
-
-    .nf-title {
-      font-family: var(--fd);
-      font-size: clamp(2.4rem, 7vw, 3.8rem);
-      font-weight: 600;
-      line-height: 1.08;
-      letter-spacing: -0.01em;
-      color: var(--ink);
-      margin-bottom: 16px;
-    }
-
-    .nf-sub {
-      font-family: var(--fb);
-      font-size: 1.12rem;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--ink4);
-      line-height: 1.65;
-      margin-bottom: 32px;
-      padding: 0 8px;
-    }
-
-    .nf-actions {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-    }
-
-    .btn-primary {
-      font-family: var(--fm);
-      font-size: 0.6rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 12px 28px;
-      background: var(--ink);
-      color: var(--white);
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-primary:hover {
-      background: var(--ink2);
-    }
-
-    .btn-secondary {
-      font-family: var(--fm);
-      font-size: 0.6rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 12px 24px;
-      background: transparent;
-      color: var(--ink3);
-      border: 1px solid var(--rule2);
-      cursor: pointer;
-      transition: all 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--ink);
-      color: var(--ink);
-      background: var(--paper-w);
-    }
-
-    .nf-footer-note {
-      margin-top: 38px;
-      font-family: var(--fm);
-      font-size: 0.54rem;
-      letter-spacing: 0.07em;
-      color: var(--ink5);
-    }
-
-    .nf-footer-note a {
-      color: var(--red);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-      transition: color 0.2s;
-    }
-
-    .nf-footer-note a:hover {
-      color: var(--red2);
-    }
-
-    /* ─── FOOTER (compact) ─── */
-    .site-footer {
-      background: var(--paper-w);
-      border-top: 1px solid var(--rule2);
-      padding: 20px var(--g);
-      text-align: center;
-    }
-
-    .ft-copy {
-      font-family: var(--fm);
-      font-size: 0.52rem;
-      letter-spacing: 0.06em;
-      color: var(--ink5);
-    }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 768px) {
-      .h-nav {
-        display: none;
-      }
-      .btn-sub {
-        display: none;
-      }
-      .not-found-card {
-        padding: 44px 18px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .nf-actions {
-        flex-direction: column;
-        gap: 12px;
-      }
-      .btn-primary, .btn-secondary {
-        width: 100%;
-        justify-content: center;
-      }
-    }
-  </style>
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .recent-grid{grid-template-columns:repeat(2,1fr)}
+  .art-card:nth-child(2){border-right:none;padding-right:0}
+  .art-card:nth-child(3){border-right:1px solid var(--rule);padding-right:20px}
+}
+@media(max-width:600px){
+  .watermark{font-size:180px}
+  .error-actions{flex-direction:column;align-items:stretch}
+  .btn-primary,.btn-ghost{justify-content:center}
+  .recent-grid{grid-template-columns:1fr}
+  .art-card{border-right:none;padding-right:0;border-bottom:1px solid var(--rule);padding-bottom:22px}
+  .art-card:last-child{border-bottom:none}
+  .ft-bot{flex-direction:column;align-items:flex-start;gap:10px}
+}
+</style>
 </head>
 <body>
-  <!-- HEADER (same structure as main site) -->
-  <header class="site-header">
-    <div class="h-bar">
-      <a href="/" class="h-logo">
-        <!-- Replace with your actual logo path if needed -->
-        <img src="/images/tps.png" alt="The Pacific Signal">
-        <div class="h-logo-div"></div>
-        <div class="h-logo-text">
-          <span class="h-logo-name">The Pacific Signal</span>
-          <span class="h-logo-tag">Beyond the Headlines</span>
-        </div>
+
+<!-- ─── HEADER ─── -->
+<header class="site-header">
+  <div class="h-bar">
+    <a href="/" class="h-logo">
+      <img src="/images/tps.png" alt="The Pacific Signal">
+      <div class="h-logo-div"></div>
+      <div class="h-logo-text">
+        <span class="h-logo-name">The Pacific Signal</span>
+        <span class="h-logo-tag">Beyond the Headlines</span>
+      </div>
+    </a>
+    <div class="h-right">
+      <a href="/" class="btn-home">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:middle;margin-right:5px"><path d="M19 12H5m0 0l7 7m-7-7l7-7"/></svg>
+        Front Page
       </a>
-      <nav class="h-nav">
-        <a href="/" class="nav-a">Home</a>
-        <a href="/?category=united-states-canada" class="nav-a">US &amp; Canada</a>
-        <a href="/?category=china-east-asia" class="nav-a">China &amp; East Asia</a>
-        <a href="/?category=europe-uk" class="nav-a">Europe</a>
-        <a href="/?category=middle-east-north-africa" class="nav-a">Middle East</a>
-        <a href="/?category=geopolitics-strategy" class="nav-a">Geopolitics</a>
-      </nav>
-      <div class="h-right">
-        <a href="/#subscribe" class="btn-sub">Subscribe</a>
+    </div>
+  </div>
+</header>
+
+<!-- ─── 404 BODY ─── -->
+<div class="page-body">
+
+  <div class="watermark" aria-hidden="true">404</div>
+
+  <div class="error-card">
+
+    <div class="error-eyebrow">
+      <span class="error-eyebrow-line"></span>
+      Error
+      <span class="error-eyebrow-line"></span>
+    </div>
+
+    <div class="error-number">404</div>
+
+    <div class="error-rule">
+      <div class="error-rule-line"></div>
+      <div class="error-rule-dia"></div>
+      <div class="error-rule-line"></div>
+    </div>
+
+    <h1 class="error-title">This dispatch could not be found</h1>
+
+    <p class="error-desc">
+      The article, page, or resource you are looking for may have been moved, removed, or never existed. Our editors have been notified.
+    </p>
+
+    <div class="error-actions">
+      <a href="/" class="btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/></svg>
+        Return to Front Page
+      </a>
+      <button class="btn-ghost" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5m0 0l7 7m-7-7l7-7"/></svg>
+        Go Back
+      </button>
+    </div>
+
+    <div class="error-nav">
+      <div class="error-nav-label">Browse by section</div>
+      <div class="error-nav-links">
+        <a href="/?category=united-states-canada" class="error-nav-link">US &amp; Canada</a>
+        <a href="/?category=china-east-asia" class="error-nav-link">China &amp; East Asia</a>
+        <a href="/?category=europe-uk" class="error-nav-link">Europe</a>
+        <a href="/?category=middle-east-north-africa" class="error-nav-link">Middle East</a>
+        <a href="/?category=south-asia" class="error-nav-link">South Asia</a>
+        <a href="/?category=global-markets-trade" class="error-nav-link">Markets</a>
+        <a href="/?category=geopolitics-strategy" class="error-nav-link">Geopolitics</a>
       </div>
     </div>
-  </header>
 
-  <!-- 404 CONTENT -->
-  <main class="not-found-wrap">
-    <div class="not-found-card">
-      <div class="nf-rule"></div>
-      <div class="nf-code">Error 404</div>
-      <h1 class="nf-title">Signal lost<span style="color:var(--red);">.</span></h1>
-      <p class="nf-sub">
-        The page you are looking for has been moved,<br>removed, or never existed.
-      </p>
+  </div>
+</div>
 
-      <div class="nf-actions">
-        <a href="/" class="btn-primary">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M19 12H5m0 0l7 7m-7-7l7-7"/>
-          </svg>
-          Return to front page
-        </a>
-        <a href="/#subscribe" class="btn-secondary">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M22 12h-6l-2 3H10l-2-3H2"/>
-            <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
-          </svg>
-          Get our newsletter
-        </a>
-      </div>
-
-      <p class="nf-footer-note">
-        If you believe this is a mistake, <a href="/contact.html">contact our editors</a>.
-      </p>
+<!-- ─── RECENT ARTICLES ─── -->
+<section class="recent-section">
+  <div class="recent-head">
+    <span class="recent-title">Recent Analysis</span>
+    <span class="recent-sub">While you're here</span>
+  </div>
+  <div class="recent-grid" id="recentGrid">
+    <!-- skeleton cards -->
+    <div class="art-card" style="pointer-events:none">
+      <div class="sk art-card-img"></div>
+      <span class="sk" style="height:9px;width:70px;margin-bottom:8px"></span>
+      <span class="sk" style="height:18px;width:90%;margin-bottom:6px"></span>
+      <span class="sk" style="height:18px;width:65%;margin-bottom:10px"></span>
+      <span class="sk" style="height:9px;width:110px"></span>
     </div>
-  </main>
+    <div class="art-card" style="pointer-events:none">
+      <div class="sk art-card-img"></div>
+      <span class="sk" style="height:9px;width:80px;margin-bottom:8px"></span>
+      <span class="sk" style="height:18px;width:85%;margin-bottom:6px"></span>
+      <span class="sk" style="height:18px;width:55%;margin-bottom:10px"></span>
+      <span class="sk" style="height:9px;width:90px"></span>
+    </div>
+    <div class="art-card" style="pointer-events:none">
+      <div class="sk art-card-img"></div>
+      <span class="sk" style="height:9px;width:60px;margin-bottom:8px"></span>
+      <span class="sk" style="height:18px;width:92%;margin-bottom:6px"></span>
+      <span class="sk" style="height:18px;width:70%;margin-bottom:10px"></span>
+      <span class="sk" style="height:9px;width:100px"></span>
+    </div>
+    <div class="art-card" style="border-right:none;padding-right:0;pointer-events:none">
+      <div class="sk art-card-img"></div>
+      <span class="sk" style="height:9px;width:75px;margin-bottom:8px"></span>
+      <span class="sk" style="height:18px;width:80%;margin-bottom:6px"></span>
+      <span class="sk" style="height:18px;width:60%;margin-bottom:10px"></span>
+      <span class="sk" style="height:9px;width:95px"></span>
+    </div>
+  </div>
+</section>
 
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <span class="ft-copy">&copy; 2025 The Pacific Signal — Independent analysis and explained journalism.</span>
-  </footer>
+<!-- ─── FOOTER ─── -->
+<footer class="site-footer">
+  <div class="ft-in">
+    <div class="ft-bot">
+      <a href="/" class="ft-logo">
+        <img src="/images/tps.png" alt="The Pacific Signal">
+        <span class="ft-logo-name">The Pacific Signal</span>
+      </a>
+      <span class="ft-copy">&copy; 2025 The Pacific Signal. All rights reserved.</span>
+      <div class="ft-legal">
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function timeAgo(ds){
+  if(!ds)return'';
+  var diff=Math.floor((Date.now()-new Date(ds).getTime())/1000);
+  if(diff<60)return'Just now';
+  if(diff<3600){var m=Math.floor(diff/60);return m+' min'+(m>1?'s':'')+' ago'}
+  if(diff<86400){var h=Math.floor(diff/3600);return h+' hr'+(h>1?'s':'')+' ago'}
+  if(diff<604800){var d=Math.floor(diff/86400);return d+' day'+(d>1?'s':'')+' ago'}
+  return new Date(ds).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+}
+
+function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
+
+/* Load 4 recent articles to fill the grid */
+(async function(){
+  try{
+    var r=await fetch('/api/homepage?page=1');
+    var d=await r.json();
+    var arts=[];
+    if(d.hero)arts.push(d.hero);
+    if(d.feed&&d.feed.length)arts=arts.concat(d.feed);
+    if(d.latest&&d.latest.length)arts=arts.concat(d.latest);
+    /* deduplicate by id */
+    var seen={};
+    arts=arts.filter(function(a){if(seen[a.id])return false;seen[a.id]=true;return true});
+    arts=arts.slice(0,4);
+    if(!arts.length)return;
+
+    var grid=document.getElementById('recentGrid');
+    grid.innerHTML=arts.map(function(a,i){
+      var last=i===arts.length-1&&i===3;
+      return '<a href="/article.html?slug='+esc(a.slug)+'" class="art-card"'+(last?' style="border-right:none;padding-right:0"':'')+' >'
+        +(a.image_url
+          ?'<img src="'+esc(a.image_url)+'" alt="'+esc(a.title)+'" class="art-card-img" loading="lazy">'
+          :'<div class="art-card-ph"><span>TPS</span></div>')
+        +'<div class="art-card-cat">'+esc(a.category_name||'Analysis')+'</div>'
+        +'<div class="art-card-ttl">'+esc(a.title)+'</div>'
+        +'<div class="art-card-meta">'
+        +esc(a.author||'The Pacific Signal')
+        +' &nbsp;&middot;&nbsp; <span class="t-gold">'+timeAgo(a.published_at||a.created_at)+'</span>'
+        +'</div></a>';
+    }).join('');
+  }catch(e){
+    /* silently fail — skeleton stays if API unreachable */
+  }
+})();
+</script>
+
 </body>
 </html>
