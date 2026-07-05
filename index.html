@@ -5,8 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Pacific Signal — Beyond the Headlines</title>
 <meta name="description" content="Independent analysis and explained journalism on the forces shaping our world.">
+<link rel="alternate" type="application/rss+xml" title="The Pacific Signal — RSS Feed" href="/api/rss.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,300;1,8..60,400;1,8..60,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,300;1,8..60,400;1,8..60,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsMediaOrganization",
+  "name": "The Pacific Signal",
+  "url": "https://thepacificsignal.com",
+  "description": "Independent analysis and explained journalism on the forces shaping our world.",
+  "logo": "/images/tps.png"
+}
+</script>
 <style>
 :root{
   --paper:#F7F4EE;--paper-w:#F0ECE2;--paper-d:#E8E2D4;
@@ -24,8 +35,12 @@
 html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
 body{font-family:var(--fb);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;min-height:100vh}
 a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:auto}button{font-family:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
 
-/* LAYOUT */
 .wrap{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
 
 /* PROGRESS BAR */
@@ -33,14 +48,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 
 /* ─── SKELETON ─── */
 @keyframes skshimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.sk{
-  background:linear-gradient(90deg,var(--paper-d) 25%,var(--paper-w) 50%,var(--paper-d) 75%);
-  background-size:200% 100%;
-  animation:skshimmer 1.6s ease-in-out infinite;
-  border-radius:2px;
-  display:block;
-}
-/* skeleton rows */
+.sk{background:linear-gradient(90deg,var(--paper-d) 25%,var(--paper-w) 50%,var(--paper-d) 75%);background-size:200% 100%;animation:skshimmer 1.6s ease-in-out infinite;border-radius:2px;display:block}
 .sk-title{height:38px;margin-bottom:12px;width:88%}
 .sk-title-sm{height:22px;margin-bottom:8px;width:72%}
 .sk-line{height:14px;margin-bottom:8px}
@@ -50,48 +58,46 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .sk-meta{height:10px;width:160px;margin-top:16px}
 
 /* ─── HEADER ─── */
-.site-header{
-  position:sticky;top:0;z-index:300;
-  background:var(--paper);border-bottom:1px solid var(--rule);
-  transition:box-shadow .3s ease,transform .38s cubic-bezier(.4,0,.2,1);
-}
+.site-header{position:sticky;top:0;z-index:300;background:var(--paper);border-bottom:1px solid var(--rule);transition:box-shadow .3s ease,transform .38s cubic-bezier(.4,0,.2,1)}
 .site-header.scrolled{box-shadow:0 2px 28px rgba(26,24,20,.08)}
 .site-header.hide{transform:translateY(-100%)}
-
-.h-bar{
-  max-width:var(--max);margin:0 auto;padding:0 var(--g);
-  height:56px;display:flex;align-items:center;gap:0;
-}
-
-.h-logo{
-  display:flex;align-items:center;gap:0;
-  flex-shrink:0;text-decoration:none;color:inherit;margin-right:auto;
-}
+.h-bar{max-width:var(--max);margin:0 auto;padding:0 var(--g);height:56px;display:flex;align-items:center;gap:0}
+.h-logo{display:flex;align-items:center;gap:0;flex-shrink:0;text-decoration:none;color:inherit;margin-right:auto}
 .h-logo img{height:32px;width:auto;display:block;flex-shrink:0}
 .h-logo-div{width:1px;height:20px;background:var(--rule2);margin:0 12px;flex-shrink:0}
 .h-logo-text{display:flex;flex-direction:column;gap:1px}
 .h-logo-name{font-family:var(--fd);font-size:1.02rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink);line-height:1}
 .h-logo-tag{font-family:var(--fm);font-size:.46rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink5)}
-
 .h-nav{display:flex;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 14px}
 .h-nav::-webkit-scrollbar{display:none}
-.nav-a{
-  font-family:var(--fm);font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink3);white-space:nowrap;padding:0 12px;height:56px;
-  display:flex;align-items:center;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;
-}
+.nav-a{font-family:var(--fm);font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);white-space:nowrap;padding:0 12px;height:56px;display:flex;align-items:center;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
 .nav-a:hover{color:var(--ink);border-bottom-color:var(--gold-l)}
 .nav-a.on{color:var(--red);border-bottom-color:var(--red);font-weight:500}
-
-.h-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.btn-sub{
-  font-family:var(--fm);font-size:.54rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
-  padding:7px 16px;background:var(--ink);color:var(--white);
-  border:none;cursor:pointer;transition:background .2s;white-space:nowrap;display:inline-block;
-}
+.h-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.btn-search{background:none;border:none;color:var(--ink3);cursor:pointer;padding:7px;display:flex;align-items:center;transition:color .2s}
+.btn-search:hover{color:var(--red)}
+.btn-search svg{width:17px;height:17px}
+.btn-sub{font-family:var(--fm);font-size:.54rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:7px 16px;background:var(--ink);color:var(--white);border:none;cursor:pointer;transition:background .2s;white-space:nowrap;display:inline-block}
 .btn-sub:hover{background:var(--ink2);color:var(--white)}
 .btn-ham{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:5px;align-items:center}
 .btn-ham svg{width:20px;height:20px}
+
+/* SEARCH OVERLAY */
+.search-ov{position:fixed;inset:0;background:rgba(26,24,20,.6);z-index:600;display:none;backdrop-filter:blur(3px);padding:80px 20px 0}
+.search-ov.on{display:block}
+.search-panel{max-width:640px;margin:0 auto;background:var(--paper);border:1px solid var(--rule);box-shadow:0 24px 80px rgba(26,24,20,.3)}
+.search-in-row{display:flex;align-items:center;border-bottom:1px solid var(--rule);padding:0 18px}
+.search-in-row svg{width:16px;height:16px;color:var(--ink5);flex-shrink:0}
+.search-input{flex:1;border:none;background:none;outline:none;padding:16px 12px;font-family:var(--fb);font-size:1.05rem;color:var(--ink)}
+.search-input::placeholder{color:var(--ink5)}
+.search-close{background:none;border:none;color:var(--ink5);cursor:pointer;font-size:1rem;padding:8px}
+.search-results{max-height:60vh;overflow-y:auto;padding:8px 0}
+.search-empty{padding:32px 24px;text-align:center;font-family:var(--fb);font-style:italic;color:var(--ink4)}
+.sr-item{display:flex;gap:12px;padding:12px 18px;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--rule)}
+.sr-item:last-child{border-bottom:none}
+.sr-item:hover{background:var(--paper-w)}
+.sr-cat{font-family:var(--fm);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:3px}
+.sr-ttl{font-family:var(--fd);font-size:1rem;font-weight:600;line-height:1.3}
 
 /* MOBILE NAV */
 .m-ov{display:none;position:fixed;inset:0;background:rgba(26,24,20,.55);z-index:400;backdrop-filter:blur(3px)}
@@ -116,8 +122,6 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .cat-back{font-family:var(--fm);font-size:.56rem;letter-spacing:.08em;color:var(--gold);display:inline-flex;align-items:center;gap:5px;transition:color .2s}
 .cat-back:hover{color:var(--red)}
 
-
-
 /* ─── HERO ─── */
 .hero-sec{padding:38px 0 42px;border-bottom:1px solid var(--rule);margin-bottom:42px}
 .hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:0;text-decoration:none;color:var(--ink)}
@@ -130,7 +134,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .hero-body{padding:34px 38px;background:var(--white);border:1px solid var(--rule);border-left:none;display:flex;flex-direction:column;justify-content:center}
 .art-lbl{display:flex;align-items:center;gap:7px;font-family:var(--fm);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:14px}
 .art-lbl::before{content:'';display:block;width:14px;height:1px;background:currentColor}
-.hero-ttl{font-family:var(--fd);font-size:clamp(1.5rem,2.3vw,2.35rem);font-weight:600;line-height:1.18;letter-spacing:-.01em;color:var(--ink);margin-bottom:14px;transition:color .2s}
+.hero-ttl{font-family:var(--fd);font-size:clamp(1.5rem,2.3vw,2.35rem);font-weight:700;line-height:1.16;letter-spacing:-.01em;color:var(--ink);margin-bottom:14px;transition:color .2s}
 .hero-grid:hover .hero-ttl{color:var(--red2)}
 .hero-exc{font-family:var(--fb);font-size:.98rem;color:var(--ink3);line-height:1.7;margin-bottom:20px;font-weight:300}
 .art-meta{display:flex;align-items:center;font-family:var(--fm);font-size:.56rem;letter-spacing:.05em;color:var(--ink5);flex-wrap:wrap;gap:0}
@@ -146,6 +150,18 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .sec-hd{display:flex;align-items:baseline;gap:10px;margin-bottom:22px;padding-bottom:9px;border-bottom:2px solid var(--ink)}
 .sec-ttl{font-family:var(--fd);font-size:1.2rem;font-weight:600;color:var(--ink)}
 .sec-sub{font-family:var(--fm);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink5)}
+
+/* ─── MOST READ ─── */
+.mr-sec{padding-bottom:36px;border-bottom:1px solid var(--rule);margin-bottom:42px}
+.mr-list{display:grid;grid-template-columns:repeat(5,1fr);gap:0}
+.mr-item{display:flex;gap:11px;padding:0 18px;text-decoration:none;color:var(--ink);border-right:1px solid var(--rule)}
+.mr-item:last-child{border-right:none}
+.mr-item:first-child{padding-left:0}
+.mr-n{font-family:var(--fd);font-size:2.1rem;font-weight:600;font-style:italic;color:var(--gold-l);line-height:1;flex-shrink:0}
+.mr-body{min-width:0}
+.mr-cat{font-family:var(--fm);font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink5);margin-bottom:4px}
+.mr-ttl{font-family:var(--fd);font-size:.92rem;font-weight:600;line-height:1.3;color:var(--ink);transition:color .2s}
+.mr-item:hover .mr-ttl{color:var(--red2)}
 
 /* ─── FEED ─── */
 .feed-sec{padding-bottom:42px;border-bottom:1px solid var(--rule);margin-bottom:42px}
@@ -205,7 +221,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .btn-more:hover{background:var(--ink);color:var(--white)}
 .btn-more:disabled{opacity:.35;cursor:not-allowed}
 
-/* ─── FOOTER — warm paper ─── */
+/* ─── FOOTER ─── */
 .site-footer{background:var(--paper-w);border-top:2px solid var(--rule2);padding:56px 0 0}
 .ft-in{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
 .ft-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.4fr;gap:44px;padding-bottom:44px}
@@ -227,7 +243,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .ft-msg{font-family:var(--fm);font-size:.54rem;margin-top:6px;min-height:16px}
 .ft-bot{border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:12px;flex-wrap:wrap}
 .ft-copy{font-family:var(--fm);font-size:.52rem;letter-spacing:.06em;color:var(--ink5)}
-.ft-legal{display:flex;gap:16px}
+.ft-legal{display:flex;gap:16px;align-items:center}
 .ft-legal a{font-family:var(--fm);font-size:.52rem;letter-spacing:.06em;color:var(--ink5);transition:color .2s}
 .ft-legal a:hover{color:var(--red)}
 
@@ -240,6 +256,8 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   .art-card:nth-child(2){border-right:none;padding-right:0}
   .art-card:nth-child(3){border-right:1px solid var(--rule);padding-right:20px}
   .ft-top{grid-template-columns:1fr 1fr;gap:28px}
+  .mr-list{grid-template-columns:repeat(3,1fr)}
+  .mr-item:nth-child(3){border-right:none}
 }
 @media(max-width:860px){
   .hero-grid{grid-template-columns:1fr}
@@ -250,6 +268,9 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   .feed-item:nth-child(even){padding-left:0}
   .feed-item{border-bottom:1px solid var(--rule)!important}
   .feed-item:last-child{border-bottom:none!important}
+  .mr-list{grid-template-columns:repeat(2,1fr)}
+  .mr-item:nth-child(2){border-right:none}
+  .mr-item:nth-child(3){border-right:1px solid var(--rule)}
 }
 @media(max-width:768px){
   .h-nav{display:none}.btn-sub{display:none}.btn-ham{display:flex}
@@ -260,10 +281,14 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   .art-card{border-right:none;padding-right:0;border-bottom:1px solid var(--rule);padding-bottom:22px}
   .art-card:last-child{border-bottom:none}
   .vis-ov{padding:22px 20px}
+  .mr-list{grid-template-columns:1fr 1fr}
 }
 @media(max-width:540px){
   .ft-top{grid-template-columns:1fr;gap:24px}
   .ft-bot{flex-direction:column;align-items:flex-start;gap:8px}
+  .mr-list{grid-template-columns:1fr}
+  .mr-item{border-right:none!important;padding:10px 0;border-bottom:1px solid var(--rule)}
+  .mr-item:last-child{border-bottom:none}
 }
 </style>
 </head>
@@ -271,7 +296,6 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 
 <div class="prog" id="prog"></div>
 
-<!-- HEADER -->
 <header class="site-header" id="siteHeader">
   <div class="h-bar">
     <a href="/" class="h-logo">
@@ -293,6 +317,9 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
       <a href="/?category=geopolitics-strategy" class="nav-a">Geopolitics</a>
     </nav>
     <div class="h-right">
+      <button class="btn-search" onclick="openSearch()" aria-label="Search articles">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
       <a href="#subscribe" class="btn-sub">Subscribe</a>
       <button class="btn-ham" onclick="openMob()" aria-label="Menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
@@ -301,12 +328,24 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   </div>
 </header>
 
+<!-- SEARCH OVERLAY -->
+<div class="search-ov" id="searchOv" onclick="if(event.target===this)closeSearch()">
+  <div class="search-panel">
+    <div class="search-in-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search analysis and briefings…" oninput="onSearchInput()">
+      <button class="search-close" onclick="closeSearch()" aria-label="Close search">&#10005;</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
 <!-- MOBILE NAV -->
 <div class="m-ov" id="mOv" onclick="closeMob()"></div>
 <nav class="m-nav" id="mNav">
   <div class="m-head">
     <img src="/images/tps.png" alt="The Pacific Signal">
-    <button class="m-close" onclick="closeMob()">&#10005;</button>
+    <button class="m-close" onclick="closeMob()" aria-label="Close menu">&#10005;</button>
   </div>
   <div class="m-links">
     <a href="/" class="m-link" onclick="closeMob()">Home</a>
@@ -323,7 +362,6 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   <div class="m-foot"><a href="#subscribe" class="m-sub" onclick="closeMob()">Subscribe Free</a></div>
 </nav>
 
-<!-- CATEGORY BANNER -->
 <div class="cat-bn" id="catBn">
   <div class="wrap">
     <div class="cat-eye">Section</div>
@@ -335,11 +373,9 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   </div>
 </div>
 
-<!-- MAIN -->
 <main>
   <div class="wrap">
 
-    <!-- HERO SKELETON → replaced by renderHero() -->
     <section class="hero-sec" id="heroSec">
       <div class="hero-grid" style="pointer-events:none">
         <div class="hero-img-col"><div class="sk" style="min-height:420px;width:100%"></div></div>
@@ -355,11 +391,14 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
       </div>
     </section>
 
-    <!-- FEED SKELETON → replaced by renderFeed() -->
+    <section class="mr-sec" id="mrSec" style="display:none">
+      <div class="sec-hd"><span class="sec-ttl">Most Read</span><span class="sec-sub">By Readers This Period</span></div>
+      <div class="mr-list" id="mrList"></div>
+    </section>
+
     <section class="feed-sec" id="feedSec">
       <div class="sec-hd"><span class="sec-ttl">Intelligence Feed</span><span class="sec-sub">Analysis &amp; Briefings</span></div>
       <div class="feed-grid" id="feedGrid">
-        <!-- 8 skeleton feed rows -->
         <div class="feed-item" style="padding-right:26px;border-right:1px solid var(--rule);pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm"></span><span class="sk" style="height:9px;width:100px;margin-top:6px"></span></div></div>
         <div class="feed-item" style="padding-left:26px;pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm" style="width:85%"></span><span class="sk" style="height:9px;width:120px;margin-top:6px"></span></div></div>
         <div class="feed-item" style="padding-right:26px;border-right:1px solid var(--rule);pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm" style="width:90%"></span><span class="sk" style="height:9px;width:90px;margin-top:6px"></span></div></div>
@@ -369,12 +408,10 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
       </div>
     </section>
 
-    <!-- VISUAL SKELETON → replaced by renderVisual() -->
     <section class="vis-sec" id="visSec">
       <div class="sk" style="height:400px;width:100%;border-radius:0"></div>
     </section>
 
-    <!-- SPOTLIGHTS SKELETON → replaced by renderSpots() -->
     <section class="spot-sec" id="spotSec">
       <div class="sec-hd"><span class="sec-ttl">Spotlight Analysis</span></div>
       <div class="spot-grid" id="spotGrid">
@@ -385,7 +422,6 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
       </div>
     </section>
 
-    <!-- LATEST SKELETON → replaced by renderLatest() -->
     <section class="latest-sec" id="latestSec">
       <div class="sec-hd"><span class="sec-ttl" id="latestTtl">Latest Analysis</span></div>
       <div class="latest-grid" id="latestGrid">
@@ -402,7 +438,6 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   </div>
 </main>
 
-<!-- FOOTER -->
 <footer class="site-footer" id="subscribe">
   <div class="ft-in">
     <div class="ft-top">
@@ -449,19 +484,19 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
       </div>
     </div>
     <div class="ft-bot">
-      <span class="ft-copy">&copy; 2025 The Pacific Signal. All rights reserved.</span>
+      <span class="ft-copy" id="ftCopy">&copy; The Pacific Signal. All rights reserved.</span>
       <div class="ft-legal">
         <a href="/about.html">About</a>
         <a href="/contact.html">Contact</a>
         <a href="/privacy.html">Privacy</a>
         <a href="/terms.html">Terms</a>
+        <a href="/api/rss.xml">RSS</a>
       </div>
     </div>
   </div>
 </footer>
 
 <script>
-/* HELPERS */
 function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
 
 function timeAgo(ds){
@@ -473,6 +508,8 @@ function timeAgo(ds){
   if(diff<604800){var d=Math.floor(diff/86400);return d+' day'+(d>1?'s':'')+' ago'}
   return new Date(ds).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
 }
+
+document.getElementById('ftCopy').innerHTML='&copy; '+new Date().getFullYear()+' The Pacific Signal. All rights reserved.';
 
 /* HEADER SCROLL */
 var hdr=document.getElementById('siteHeader'),lastY=0;
@@ -488,6 +525,44 @@ window.addEventListener('scroll',function(){
 function openMob(){document.getElementById('mNav').classList.add('on');document.getElementById('mOv').classList.add('on');document.body.style.overflow='hidden'}
 function closeMob(){document.getElementById('mNav').classList.remove('on');document.getElementById('mOv').classList.remove('on');document.body.style.overflow=''}
 
+/* SEARCH */
+var searchTimer=null;
+function openSearch(){
+  document.getElementById('searchOv').classList.add('on');
+  document.body.style.overflow='hidden';
+  setTimeout(function(){document.getElementById('searchInput').focus()},50);
+}
+function closeSearch(){
+  document.getElementById('searchOv').classList.remove('on');
+  document.body.style.overflow='';
+  document.getElementById('searchInput').value='';
+  document.getElementById('searchResults').innerHTML='';
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){e.preventDefault();openSearch()}
+  if(e.key==='Escape')closeSearch();
+});
+function onSearchInput(){
+  clearTimeout(searchTimer);
+  var q=document.getElementById('searchInput').value.trim();
+  if(q.length<2){document.getElementById('searchResults').innerHTML='';return}
+  searchTimer=setTimeout(function(){runSearch(q)},280);
+}
+async function runSearch(q){
+  var c=document.getElementById('searchResults');
+  try{
+    var r=await fetch('/api/search?q='+encodeURIComponent(q));
+    var d=await r.json();
+    var results=d.results||[];
+    if(!results.length){c.innerHTML='<div class="search-empty">No articles found for &ldquo;'+esc(q)+'&rdquo;.</div>';return}
+    c.innerHTML=results.map(function(a){
+      return '<a href="/article.html?slug='+esc(a.slug)+'" class="sr-item">'
+        +'<div><div class="sr-cat">'+esc(a.category_name||'')+'</div><div class="sr-ttl">'+esc(a.title)+'</div></div>'
+        +'</a>';
+    }).join('');
+  }catch(e){c.innerHTML='<div class="search-empty">Search unavailable. Please try again.</div>'}
+}
+
 /* STATE */
 var pg=1,hasMore=false,isCat=false,curCat='';
 var params=new URLSearchParams(location.search);
@@ -499,6 +574,7 @@ if(filterCat){
   document.getElementById('catBn').classList.add('on');
   document.getElementById('catTtl').textContent=nm;
   document.getElementById('heroSec').style.display='none';
+  document.getElementById('mrSec').style.display='none';
   document.getElementById('feedSec').style.display='none';
   document.getElementById('visSec').style.display='none';
   document.getElementById('spotSec').style.display='none';
@@ -514,7 +590,13 @@ async function loadHome(p){
   try{
     var r=await fetch('/api/homepage?page='+(p||1));
     var d=await r.json();
-    if(p===1){renderHero(d.hero);renderFeed(d.feed||[]);renderVisual(d.visual);renderSpots(d.spotlights||[])}
+    if(p===1){
+      renderHero(d.hero);
+      renderMostRead(d.most_read||[]);
+      renderFeed(d.feed||[]);
+      renderVisual(d.visual);
+      renderSpots(d.spotlights||[]);
+    }
     renderLatest(d.latest||[],p>1);
     hasMore=d.hasMore||(d.latest&&d.latest.length>=12);
     pg=d.page||p;
@@ -553,6 +635,18 @@ function renderHero(h){
     +'<div class="art-meta"><span class="meta-author">'+esc(h.author||'The Pacific Signal')+'</span><span class="meta-sep">&mdash;</span><span class="meta-time">'+timeAgo(h.published_at||h.created_at)+'</span></div>'
     +'<span class="read-more">Continue Reading <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-7-7l7 7-7 7"/></svg></span>'
     +'</div></a>';
+}
+
+function renderMostRead(items){
+  var sec=document.getElementById('mrSec'),c=document.getElementById('mrList');
+  if(!items.length){sec.style.display='none';return}
+  sec.style.display='block';
+  c.innerHTML=items.map(function(a,i){
+    return '<a href="/article.html?slug='+esc(a.slug)+'" class="mr-item">'
+      +'<span class="mr-n">'+(i+1)+'</span>'
+      +'<div class="mr-body"><div class="mr-cat">'+esc(a.category_name||'')+'</div><div class="mr-ttl">'+esc(a.title)+'</div></div>'
+      +'</a>';
+  }).join('');
 }
 
 function renderFeed(feed){
