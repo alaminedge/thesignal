@@ -119,7 +119,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .art-body h2{font-family:var(--fd);font-size:1.72rem;font-weight:600;color:var(--ink);margin:40px 0 16px;line-height:1.2}
 .art-body h3{font-family:var(--fd);font-size:1.28rem;font-weight:600;color:var(--ink);margin:30px 0 12px}
 
-/* Pull quote — premium large style */
+/* Pull quote */
 .art-body blockquote{
   margin:36px -24px;padding:28px 36px;
   background:var(--paper-w);
@@ -139,9 +139,9 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 }
 .art-body blockquote p::first-letter{font-size:unset;float:none;margin:0;color:inherit;font-weight:inherit}
 
-/* Lists */
-.art-body ul,.art-body ol{margin:16px 0 22px 26px}
-.art-body li{margin-bottom:7px}
+/* Lists — tightened spacing */
+.art-body ul,.art-body ol{margin:14px 0 20px 26px}
+.art-body li{margin-bottom:4px}
 .art-body a{color:var(--red);text-decoration:underline;text-underline-offset:2px}
 .art-body a:hover{color:var(--red2)}
 .art-body strong{font-weight:600;color:var(--ink)}
@@ -297,38 +297,31 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   <div class="m-foot"><a href="/#subscribe" class="m-sub-btn" onclick="closeMob()">Subscribe Free</a></div>
 </nav>
 
-<!-- ARTICLE CONTENT — skeleton pre-renders full layout, replaced by renderArticle() -->
+<!-- ARTICLE CONTENT -->
 <div id="artShell">
   <div class="art-wrap" id="artSkeleton">
-    <!-- breadcrumb -->
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:26px">
       <span class="sk" style="height:10px;width:60px"></span>
       <span class="sk" style="height:10px;width:8px"></span>
       <span class="sk" style="height:10px;width:80px"></span>
     </div>
-    <!-- eyebrow -->
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px">
       <span class="sk" style="height:10px;width:90px"></span>
       <span class="sk" style="height:1px;flex:1"></span>
     </div>
-    <!-- title -->
     <span class="sk" style="height:52px;width:92%;display:block;margin-bottom:12px"></span>
     <span class="sk" style="height:52px;width:76%;display:block;margin-bottom:12px"></span>
     <span class="sk" style="height:52px;width:58%;display:block;margin-bottom:22px"></span>
-    <!-- standfirst -->
     <div style="padding-left:16px;border-left:3px solid var(--rule2);margin-bottom:24px">
       <span class="sk sk-line"></span>
       <span class="sk sk-line-med"></span>
     </div>
-    <!-- byline -->
     <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:34px">
       <span class="sk" style="height:12px;width:130px"></span>
       <span class="sk" style="height:12px;width:90px"></span>
       <span class="sk" style="height:12px;width:70px"></span>
     </div>
-    <!-- featured image -->
     <div class="sk" style="width:100%;height:420px;display:block;margin-bottom:40px;border-radius:0"></div>
-    <!-- body paragraphs -->
     <span class="sk sk-line"></span>
     <span class="sk sk-line"></span>
     <span class="sk sk-line-med"></span>
@@ -339,7 +332,6 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
     <span class="sk sk-line-med"></span>
     <span class="sk sk-line"></span>
     <span class="sk sk-line-short" style="margin-bottom:22px"></span>
-    <!-- subheading -->
     <span class="sk" style="height:28px;width:55%;display:block;margin:36px 0 16px"></span>
     <span class="sk sk-line"></span>
     <span class="sk sk-line"></span>
@@ -350,7 +342,6 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
     <span class="sk sk-line-med"></span>
     <span class="sk sk-line"></span>
     <span class="sk sk-line-short" style="margin-bottom:22px"></span>
-    <!-- subheading 2 -->
     <span class="sk" style="height:28px;width:48%;display:block;margin:36px 0 16px"></span>
     <span class="sk sk-line"></span>
     <span class="sk sk-line"></span>
@@ -470,7 +461,6 @@ window.addEventListener('scroll',function(){
   var st=window.scrollY,ah=artBody.offsetHeight,at=artBody.offsetTop;
   var pct=Math.min(100,Math.max(0,((st-at)/(ah-window.innerHeight))*100));
   prog.style.width=pct+'%';
-  /* Next ribbon after 70% */
   if(pct>70&&!ribbonClosed)document.getElementById('nextRibbon').classList.add('show');
 },{passive:true});
 
@@ -513,8 +503,13 @@ function parseContent(raw){
     .replace(/^## (.+)$/gm,'<h2>$1</h2>')
     .replace(/^### (.+)$/gm,'<h3>$1</h3>')
     .replace(/^> (.+)$/gm,'<blockquote><p>$1</p></blockquote>')
-    .replace(/^- (.+)$/gm,'<li>$1</li>')
-    .replace(/(<li>[\s\S]+?<\/li>)/g,'<ul>$1</ul>')
+    // Group consecutive bullet points into a single <ul>
+    .replace(/((?:^- .+\n?)+)/gm, function(match) {
+      var items = match.trim().split('\n').map(function(line) {
+        return '<li>' + line.replace(/^- /, '') + '</li>';
+      }).join('');
+      return '<ul>' + items + '</ul>';
+    })
     .replace(/\n\n+/g,'</p><p>')
     .replace(/\n/g,'<br>');
 }
@@ -528,20 +523,16 @@ function renderArticle(a){
 
   var html='<div class="art-wrap">';
 
-  /* Breadcrumb */
   html+='<div class="breadcrumb">'
     +'<a href="/">Front Page</a>';
   if(a.category_name&&a.category_slug)html+='<span class="bc-sep">/</span><a href="/?category='+esc(a.category_slug)+'">'+esc(a.category_name)+'</a>';
   html+='</div>';
 
-  /* Eyebrow + title */
   html+='<div class="art-eyebrow"><span class="art-cat">'+esc(a.category_name||'Analysis')+'</span><div class="art-eye-line"></div></div>';
   html+='<h1 class="art-title">'+esc(a.title)+'</h1>';
 
-  /* Standfirst */
   if(a.excerpt)html+='<p class="art-standfirst">'+esc(a.excerpt)+'</p>';
 
-  /* Byline */
   html+='<div class="art-byline">'
     +'<span class="byline-author">'+esc(a.author||'The Pacific Signal')+'</span>'
     +'<span class="byline-sep">&mdash;</span>'
@@ -552,13 +543,10 @@ function renderArticle(a){
     +'<span class="byline-read"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>'+rt+' min read</span>'
     +'</div>';
 
-  /* Featured image */
   if(a.image_url)html+='<img src="'+esc(a.image_url)+'" alt="'+esc(a.title)+'" class="art-feat-img" loading="eager">';
 
-  /* Body */
   html+='<div class="art-body" id="artBody"><p>'+content+'</p></div>';
 
-  /* Share bar */
   var su=encodeURIComponent(location.href), st=encodeURIComponent(a.title);
   html+='<div class="share-bar">'
     +'<span class="share-lbl">Share</span>'
@@ -579,7 +567,6 @@ function copyLink(){
 function renderRelated(rel){
   document.getElementById('relatedWrap').style.display='block';
   document.getElementById('relGrid').innerHTML=rel.map(function(a,i){
-    var cls='rel-card'+(i===1?' style="padding:0 24px"':'');
     return '<a href="/article.html?slug='+esc(a.slug)+'" class="rel-card" '+(i===1?'style="padding:0 24px"':'')+'>'
       +(a.image_url?'<img src="'+esc(a.image_url)+'" alt="'+esc(a.title)+'" class="rel-img" loading="lazy">':'<div class="rel-ph"><span>TPS</span></div>')
       +'<div class="rel-cat">'+esc(a.category_name||'Analysis')+'</div>'
