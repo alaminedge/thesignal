@@ -99,7 +99,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .sr-cat{font-family:var(--fm);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:3px}
 .sr-ttl{font-family:var(--fd);font-size:1rem;font-weight:600;line-height:1.3}
 
-/* MOBILE NAV — light theme, matches site (was solid black before) */
+/* MOBILE NAV — light theme */
 .m-ov{display:none;position:fixed;inset:0;background:rgba(26,24,20,.55);z-index:400;backdrop-filter:blur(3px)}
 .m-ov.on{display:block}
 .m-nav{position:fixed;top:0;right:0;bottom:0;width:min(300px,88vw);background:var(--paper);z-index:500;transform:translateX(110%);transition:transform .32s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;border-left:1px solid var(--rule2);box-shadow:-10px 0 36px rgba(26,24,20,.16)}
@@ -123,36 +123,36 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .cat-back{font-family:var(--fm);font-size:.56rem;letter-spacing:.08em;color:var(--gold);display:inline-flex;align-items:center;gap:5px;transition:color .2s}
 .cat-back:hover{color:var(--red)}
 
-/* ─── HERO ─── */
-.hero-sec{padding:38px 0 42px;border-bottom:1px solid var(--rule);margin-bottom:42px}
-.hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:0;text-decoration:none;color:var(--ink)}
-.hero-img-col{overflow:hidden;background:var(--paper-d);position:relative;min-height:400px}
-.hero-img{width:100%;height:100%;min-height:400px;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.4,0,.2,1)}
-.hero-grid:hover .hero-img{transform:scale(1.04)}
-.hero-ph{min-height:400px;width:100%;background:var(--paper-d);display:flex;align-items:center;justify-content:center}
+/* ─── HERO — Full-width cinematic overlay ─── */
+.hero-sec{padding:0;margin-bottom:42px}
+.hero-card{display:block;position:relative;overflow:hidden;background:var(--ink);text-decoration:none;color:var(--white);min-height:520px}
+.hero-img{width:100%;height:100%;min-height:520px;object-fit:cover;opacity:.78;display:block;transition:transform 1.2s cubic-bezier(.4,0,.2,1),opacity .4s}
+.hero-card:hover .hero-img{transform:scale(1.04);opacity:.65}
+.hero-ph{min-height:520px;width:100%;background:var(--paper-d);display:flex;align-items:center;justify-content:center}
 .hero-ph-m{font-family:var(--fd);font-size:5rem;font-weight:300;font-style:italic;color:var(--rule2)}
-.hero-badge{position:absolute;top:16px;left:16px;font-family:var(--fm);font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;padding:5px 9px;background:var(--red);color:var(--white)}
-.hero-body{padding:34px 38px;background:var(--white);border:1px solid var(--rule);border-left:none;display:flex;flex-direction:column;justify-content:center}
-.art-lbl{display:flex;align-items:center;gap:7px;font-family:var(--fm);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:14px}
-.art-lbl::before{content:'';display:block;width:14px;height:1px;background:currentColor}
-.hero-ttl{font-family:var(--fd);font-size:clamp(1.5rem,2.3vw,2.35rem);font-weight:700;line-height:1.16;letter-spacing:-.01em;color:var(--ink);margin-bottom:14px;transition:color .2s}
-.hero-grid:hover .hero-ttl{color:var(--red2)}
-.hero-exc{font-family:var(--fb);font-size:.98rem;color:var(--ink3);line-height:1.7;margin-bottom:20px;font-weight:300}
-.art-meta{display:flex;align-items:center;font-family:var(--fm);font-size:.56rem;letter-spacing:.05em;color:var(--ink5);flex-wrap:wrap;gap:0}
-.meta-author{color:var(--ink3);font-weight:500}
-.meta-sep{margin:0 7px;color:var(--rule2)}
-.meta-time{color:var(--gold)}
-.read-more{margin-top:22px;display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);padding-bottom:2px;border-bottom:1px solid var(--rule2);transition:color .2s,border-color .2s;width:fit-content}
-.read-more:hover{color:var(--red);border-bottom-color:var(--red)}
-.read-more svg{width:10px;height:10px;transition:transform .2s}
-.read-more:hover svg{transform:translateX(3px)}
+.hero-badge{position:absolute;top:24px;left:var(--g);font-family:var(--fm);font-size:.48rem;letter-spacing:.16em;text-transform:uppercase;padding:6px 10px;background:var(--red);color:var(--white);z-index:2}
+.hero-ov{position:absolute;inset:0;padding:var(--g);background:linear-gradient(to top,rgba(26,24,20,.92) 0%,rgba(26,24,20,.45) 35%,rgba(26,24,20,.08) 60%,rgba(26,24,20,0) 75%);display:flex;flex-direction:column;justify-content:flex-end;z-index:1}
+.hero-content{max-width:720px}
+.hero-cat{display:inline-flex;align-items:center;gap:8px;font-family:var(--fm);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-l);margin-bottom:14px}
+.hero-cat::after{content:'';display:block;width:24px;height:1px;background:var(--gold-l);opacity:.6}
+.hero-ttl{font-family:var(--fd);font-size:clamp(1.7rem,3.2vw,2.8rem);font-weight:700;line-height:1.14;letter-spacing:-.01em;color:var(--white);margin-bottom:14px;transition:color .2s;text-shadow:0 1px 8px rgba(0,0,0,.3)}
+.hero-card:hover .hero-ttl{color:var(--gold-l)}
+.hero-exc{font-family:var(--fb);font-size:1.02rem;color:rgba(255,255,255,.78);line-height:1.65;font-weight:300;margin-bottom:18px;max-width:600px}
+.hero-meta{display:flex;align-items:center;font-family:var(--fm);font-size:.54rem;letter-spacing:.06em;color:rgba(255,255,255,.5);flex-wrap:wrap;gap:0}
+.hero-meta-author{color:rgba(255,255,255,.75);font-weight:500}
+.hero-meta-sep{margin:0 7px;color:rgba(255,255,255,.25)}
+.hero-meta-time{color:var(--gold-l)}
+.hero-read{display:inline-flex;align-items:center;gap:7px;margin-top:22px;font-family:var(--fm);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--white);padding-bottom:3px;border-bottom:1px solid rgba(255,255,255,.35);transition:all .2s;width:fit-content}
+.hero-read:hover{color:var(--gold-l);border-bottom-color:var(--gold-l)}
+.hero-read svg{width:10px;height:10px;transition:transform .2s}
+.hero-card:hover .hero-read svg{transform:translateX(3px)}
 
 /* ─── SECTION HEAD ─── */
 .sec-hd{display:flex;align-items:baseline;gap:10px;margin-bottom:22px;padding-bottom:9px;border-bottom:2px solid var(--ink)}
 .sec-ttl{font-family:var(--fd);font-size:1.2rem;font-weight:600;color:var(--ink)}
 .sec-sub{font-family:var(--fm);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink5)}
 
-/* ─── MOST READ (now sits directly above Latest) ─── */
+/* ─── MOST READ ─── */
 .mr-sec{padding-bottom:36px;border-bottom:1px solid var(--rule);margin-bottom:42px}
 .mr-list{display:grid;grid-template-columns:repeat(5,1fr);gap:0}
 .mr-item{display:flex;gap:11px;padding:0 18px;text-decoration:none;color:var(--ink);border-right:1px solid var(--rule)}
@@ -164,7 +164,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .mr-ttl{font-family:var(--fd);font-size:.92rem;font-weight:600;line-height:1.3;color:var(--ink);transition:color .2s}
 .mr-item:hover .mr-ttl{color:var(--red2)}
 
-/* ─── INTELLIGENCE FEED — vertical list, headline+read-time left / thumbnail right ─── */
+/* ─── INTELLIGENCE FEED ─── */
 .feed-sec{padding-bottom:8px;border-bottom:1px solid var(--rule);margin-bottom:42px}
 .feed-list{display:flex;flex-direction:column}
 .feed-item{display:grid;grid-template-columns:1fr 128px;align-items:center;gap:28px;padding:30px 0;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--ink)}
@@ -222,7 +222,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .btn-more:hover{background:var(--ink);color:var(--white)}
 .btn-more:disabled{opacity:.35;cursor:not-allowed}
 
-/* ─── FOOTER — deliberately deeper tone than body, not a near-accidental match ─── */
+/* ─── FOOTER ─── */
 .site-footer{background:var(--paper-w);border-top:1px solid var(--footer-rule);box-shadow:inset 0 1px 0 rgba(255,255,255,.4);padding:56px 0 0}
 .ft-in{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
 .ft-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.4fr;gap:44px;padding-bottom:44px}
@@ -261,9 +261,11 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   .mr-item:nth-child(3){border-right:none}
 }
 @media(max-width:860px){
-  .hero-grid{grid-template-columns:1fr}
-  .hero-img,.hero-ph{min-height:240px}
-  .hero-body{border-left:1px solid var(--rule);border-top:none;padding:24px 22px}
+  .hero-card,.hero-img,.hero-ph{min-height:420px}
+  .hero-ov{padding:24px 22px}
+  .hero-content{max-width:100%}
+  .hero-ttl{font-size:1.6rem}
+  .hero-exc{font-size:.9rem;max-width:100%}
   .mr-list{grid-template-columns:repeat(2,1fr)}
   .mr-item:nth-child(2){border-right:none}
   .mr-item:nth-child(3){border-right:1px solid var(--rule)}
@@ -275,6 +277,12 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   .h-nav{display:none}
   .btn-sub{display:none}
   .btn-ham{display:flex}
+  .hero-card,.hero-img,.hero-ph{min-height:340px}
+  .hero-ov{padding:20px 18px;background:linear-gradient(to top,rgba(26,24,20,.94) 0%,rgba(26,24,20,.4) 40%,rgba(26,24,20,.04) 65%,rgba(26,24,20,0) 80%)}
+  .hero-badge{top:16px;left:18px;font-size:.44rem;padding:4px 8px}
+  .hero-ttl{font-size:1.4rem;margin-bottom:10px}
+  .hero-exc{font-size:.84rem;-webkit-line-clamp:3;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+  .hero-read{margin-top:14px}
   .spot-grid{grid-template-columns:1fr}
   .spot-card{border-right:none;border-bottom:1px solid var(--rule)}
   .spot-card:last-child{border-bottom:none}
@@ -285,6 +293,12 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   .mr-list{grid-template-columns:1fr 1fr}
 }
 @media(max-width:540px){
+  .hero-card,.hero-img,.hero-ph{min-height:280px}
+  .hero-ov{background:linear-gradient(to top,rgba(26,24,20,.96) 0%,rgba(26,24,20,.5) 30%,rgba(26,24,20,.02) 60%,rgba(26,24,20,0) 75%)}
+  .hero-ttl{font-size:1.2rem}
+  .hero-exc{font-size:.78rem}
+  .hero-meta{font-size:.5rem}
+  .hero-cat{font-size:.46rem;margin-bottom:10px}
   .ft-top{grid-template-columns:1fr;gap:24px}
   .ft-bot{flex-direction:column;align-items:flex-start;gap:8px}
   .mr-list{grid-template-columns:1fr}
@@ -379,22 +393,23 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 </div>
 
 <main>
-  <div class="wrap">
-
-    <section class="hero-sec" id="heroSec">
-      <div class="hero-grid" style="pointer-events:none">
-        <div class="hero-img-col"><div class="sk" style="min-height:420px;width:100%"></div></div>
-        <div class="hero-body" style="gap:14px">
-          <span class="sk sk-label"></span>
-          <span class="sk sk-title"></span>
-          <span class="sk sk-title" style="width:70%;height:30px"></span>
-          <span class="sk sk-line"></span>
-          <span class="sk sk-line-med"></span>
-          <span class="sk sk-line-short"></span>
-          <span class="sk sk-meta"></span>
+  <section class="hero-sec" id="heroSec">
+    <div class="hero-card" style="pointer-events:none">
+      <div class="hero-ph"><span class="hero-ph-m">TPS</span></div>
+      <div class="hero-ov">
+        <div class="hero-content">
+          <span class="sk sk-label" style="background:rgba(255,255,255,.08)"></span>
+          <span class="sk" style="height:44px;width:88%;background:rgba(255,255,255,.08);margin-bottom:12px"></span>
+          <span class="sk" style="height:44px;width:65%;background:rgba(255,255,255,.08);margin-bottom:12px"></span>
+          <span class="sk" style="height:16px;width:75%;background:rgba(255,255,255,.06);margin-bottom:8px"></span>
+          <span class="sk" style="height:16px;width:55%;background:rgba(255,255,255,.06);margin-bottom:8px"></span>
+          <span class="sk" style="height:12px;width:160px;background:rgba(255,255,255,.06);margin-top:14px"></span>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
+
+  <div class="wrap">
 
     <section class="feed-sec" id="feedSec">
       <div class="sec-hd"><span class="sec-ttl">Intelligence Feed</span><span class="sec-sub">Analysis &amp; Briefings</span></div>
@@ -428,7 +443,6 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
       </div>
     </section>
 
-    <!-- MOST READ now sits directly above Latest, as a final "before you go" hook -->
     <section class="mr-sec" id="mrSec" style="display:none">
       <div class="sec-hd"><span class="sec-ttl">Most Read</span><span class="sec-sub">By Readers This Period</span></div>
       <div class="mr-list" id="mrList"></div>
@@ -521,9 +535,6 @@ function timeAgo(ds){
   return new Date(ds).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
 }
 
-/* Reading time: use a.reading_time / a.read_minutes if the API supplies one,
-   otherwise fall back to an estimate from word_count, otherwise a soft
-   estimate derived from excerpt length so the label never disappears. */
 function readTime(a){
   var mins=a&&(a.reading_time||a.read_minutes);
   if(!mins&&a&&a.word_count)mins=Math.max(1,Math.round(a.word_count/200));
@@ -627,7 +638,7 @@ async function loadHome(p){
     pg=d.page||p;
     document.getElementById('loadMoreWrap').style.display=hasMore?'block':'none';
   }catch(e){
-    document.getElementById('heroSec').innerHTML='<p style="padding:52px 0;text-align:center;font-style:italic;color:var(--ink4);font-family:var(--fb)">Unable to load content. Please refresh.</p>';
+    document.getElementById('heroSec').innerHTML='<div class="wrap"><p style="padding:52px 0;text-align:center;font-style:italic;color:var(--ink4);font-family:var(--fb)">Unable to load content. Please refresh.</p></div>';
   }
 }
 
@@ -647,19 +658,18 @@ async function loadCat(slug,p){
 /* RENDERERS */
 function renderHero(h){
   var c=document.getElementById('heroSec');
-  if(!h){c.innerHTML='<p style="padding:52px 0;text-align:center;font-style:italic;color:var(--ink4);font-family:var(--fb)">No featured article yet.</p>';return}
-  c.innerHTML='<a href="/article.html?slug='+esc(h.slug)+'" class="hero-grid">'
-    +'<div class="hero-img-col">'
+  if(!h){c.innerHTML='<div class="wrap"><p style="padding:52px 0;text-align:center;font-style:italic;color:var(--ink4);font-family:var(--fb)">No featured article yet.</p></div>';return}
+  c.innerHTML='<a href="/article.html?slug='+esc(h.slug)+'" class="hero-card">'
     +(h.image_url?'<img src="'+esc(h.image_url)+'" alt="'+esc(h.title)+'" class="hero-img" loading="eager">':'<div class="hero-ph"><span class="hero-ph-m">TPS</span></div>')
     +'<div class="hero-badge">Featured</div>'
-    +'</div>'
-    +'<div class="hero-body">'
-    +'<div class="art-lbl">'+esc(h.category_name||'Analysis')+'</div>'
+    +'<div class="hero-ov">'
+    +'<div class="hero-content">'
+    +'<div class="hero-cat">'+esc(h.category_name||'Analysis')+'</div>'
     +'<h2 class="hero-ttl">'+esc(h.title)+'</h2>'
     +(h.excerpt?'<p class="hero-exc">'+esc(h.excerpt)+'</p>':'')
-    +'<div class="art-meta"><span class="meta-author">'+esc(h.author||'The Pacific Signal')+'</span><span class="meta-sep">&mdash;</span><span class="meta-time">'+timeAgo(h.published_at||h.created_at)+'</span></div>'
-    +'<span class="read-more">Continue Reading <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-7-7l7 7-7 7"/></svg></span>'
-    +'</div></a>';
+    +'<div class="hero-meta"><span class="hero-meta-author">'+esc(h.author||'The Pacific Signal')+'</span><span class="hero-meta-sep">&mdash;</span><span class="hero-meta-time">'+timeAgo(h.published_at||h.created_at)+'</span></div>'
+    +'<span class="hero-read">Continue Reading <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-7-7l7 7-7 7"/></svg></span>'
+    +'</div></div></a>';
 }
 
 function renderMostRead(items){
@@ -674,8 +684,6 @@ function renderMostRead(items){
   }).join('');
 }
 
-/* Feed: single vertical list, each row = bold headline + read time (left)
-   and a small thumbnail (right), separated by thin divider lines. */
 function renderFeed(feed){
   var c=document.getElementById('feedGrid');
   if(!feed.length){c.innerHTML='<p style="font-style:italic;color:var(--ink4);font-family:var(--fb)">No feed articles yet.</p>';return}
