@@ -3,13 +3,13 @@
 // Professional News Analysis Platform
 // Beyond the Headlines
 //
-// SECURITY NOTE: Auth now uses hand-rolled JWT (HMAC-SHA256 via crypto.subtle)
-// and SHA-256 password hashing instead of plaintext + substring checks.
+// SECURITY NOTE: Auth uses hand-rolled JWT (HMAC-SHA256 via crypto.subtle)
+// and SHA-256 password hashing. Two-layer auth with master phrase.
 // Set an env var JWT_SECRET in Cloudflare Pages settings for production use.
-// A fallback secret is used only so local/dev deploys don't crash — change it.
 
 const FALLBACK_SECRET = 'pacific-signal-dev-secret-change-me-in-cloudflare-env';
 const TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+const MASTER_PHRASE_TTL_MS = 5 * 24 * 60 * 60 * 1000; // 5 days
 
 export async function onRequest(context) {
 
@@ -19,7 +19,7 @@ export async function onRequest(context) {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Master-Token'
   };
 
   if (request.method === 'OPTIONS') {
@@ -149,12 +149,32 @@ export async function onRequest(context) {
     return match ? match[1].trim() : null;
   }
 
+  function extractMasterToken(request) {
+    return request.headers.get('X-Master-Token') || null;
+  }
+
   async function getAdminUser(request) {
     var token = extractBearer(request);
     if (!token) return null;
     var payload = await verifyToken(token);
     if (!payload || payload.role !== 'admin') return null;
     return payload;
+  }
+
+  // Check if master phrase is set and verified
+  async function checkMasterPhraseSetup() {
+    if (!db) return { is_set: false, is_verified: false };
+    var record = await db.prepare("SELECT * FROM master_phrase WHERE id = 1").first();
+    return { is_set: !!record, is_verified: false };
+  }
+
+  // Verify the master phrase JWT token
+  async function verifyMasterAccess(request) {
+    var masterToken = extractMasterToken(request);
+    if (!masterToken) return false;
+    var payload = await verifyToken(masterToken);
+    if (!payload || payload.purpose !== 'master-phrase') return false;
+    return true;
   }
 
   // Helper function to create URL-friendly slug
@@ -200,7 +220,7 @@ export async function onRequest(context) {
   // DATABASE SETUP — Create all tables if they don't exist
   // ══════════════════════════════════════════════════════════════
 
-  if (db && !globalThis.__pacific_signal_db_v2) {
+  if (db && !globalThis.__pacific_signal_db_v3) {
 
     try {
       await db.prepare(
@@ -217,6 +237,12 @@ export async function onRequest(context) {
     try {
       await db.prepare(
         "CREATE TABLE IF NOT EXISTS admins (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE NOT NULL, password TEXT NOT NULL, display_name TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)"
+      ).run();
+    } catch (e) {}
+
+    try {
+      await db.prepare(
+        "CREATE TABLE IF NOT EXISTS master_phrase (id INTEGER PRIMARY KEY, phrase_hash TEXT NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)"
       ).run();
     } catch (e) {}
 
@@ -253,7 +279,7 @@ export async function onRequest(context) {
     try { await db.prepare("CREATE INDEX IF NOT EXISTS idx_articles_block ON articles(display_block, is_published)").run(); } catch (e) {}
     try { await db.prepare("CREATE INDEX IF NOT EXISTS idx_articles_views ON articles(view_count)").run(); } catch (e) {}
 
-    // Seed default admin — password stored as SHA-256 hash, not plaintext
+    // Seed default admin — password stored as SHA-256 hash
     try {
       var defaultHash = await sha256Hex('admin123');
       await db.prepare(
@@ -261,8 +287,7 @@ export async function onRequest(context) {
       ).bind(defaultHash).run();
     } catch (e) {}
 
-    // If an old plaintext password ('admin123' stored raw) exists from a prior
-    // deploy of this file, upgrade it to a hash automatically.
+    // Upgrade legacy plaintext password if needed
     try {
       var legacyAdmin = await db.prepare("SELECT id, password FROM admins WHERE username = 'admin'").first();
       if (legacyAdmin && legacyAdmin.password === 'admin123') {
@@ -298,7 +323,7 @@ export async function onRequest(context) {
       }
     }
 
-    globalThis.__pacific_signal_db_v2 = true;
+    globalThis.__pacific_signal_db_v3 = true;
   }
 
   // ══════════════════════════════════════════════════════════════
@@ -348,7 +373,7 @@ export async function onRequest(context) {
     });
   }
 
-  // GET /api/most-read — standalone, usable on any page (e.g. category pages)
+  // GET /api/most-read — standalone
   if (path === '/api/most-read' && request.method === 'GET') {
     if (!db) return json([]);
     var mr = await db.prepare(
@@ -357,7 +382,7 @@ export async function onRequest(context) {
     return json(mr.results || []);
   }
 
-  // GET /api/search?q=... — lightweight LIKE search, no extra tables/indexes
+  // GET /api/search?q=...
   if (path === '/api/search' && request.method === 'GET') {
     if (!db) return json({ query: '', results: [] });
     var q = (url.searchParams.get('q') || '').trim();
@@ -371,7 +396,7 @@ export async function onRequest(context) {
     return json({ query: q, results: searchResult.results || [] });
   }
 
-  // GET /api/rss.xml — RSS 2.0 feed, generated on the fly from existing data
+  // GET /api/rss.xml
   if (path === '/api/rss.xml' && request.method === 'GET') {
     if (!db) return xmlResponse('<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel></channel></rss>');
 
@@ -480,6 +505,7 @@ export async function onRequest(context) {
   // ADMIN AUTH ROUTES
   // ══════════════════════════════════════════════════════════════
 
+  // POST /api/admin/login — login with username/password
   if (path === '/api/admin/login' && request.method === 'POST') {
     var adminUsername = body.username;
     var adminPassword = body.password;
@@ -493,6 +519,11 @@ export async function onRequest(context) {
     var attemptHash = await sha256Hex(adminPassword);
     if (attemptHash !== adminRecord.password) return err('Invalid credentials', 401);
 
+    // Check if master phrase is already set
+    var masterRecord = await db.prepare("SELECT * FROM master_phrase WHERE id = 1").first();
+    var masterPhraseSet = !!masterRecord;
+
+    // Sign the main admin token
     var token = await signToken({
       id: adminRecord.id,
       username: adminRecord.username,
@@ -506,18 +537,105 @@ export async function onRequest(context) {
         id: adminRecord.id,
         username: adminRecord.username,
         display_name: adminRecord.display_name
-      }
+      },
+      master_phrase_set: masterPhraseSet
+    });
+  }
+
+  // POST /api/admin/set-master-phrase — set the master phrase (first time only)
+  if (path === '/api/admin/set-master-phrase' && request.method === 'POST') {
+    var currentAdmin = await getAdminUser(request);
+    if (!currentAdmin) return err('Unauthorized — Please sign in', 401);
+    if (!db) return err('Database not configured', 500);
+
+    // Check if master phrase is already set
+    var existingMaster = await db.prepare("SELECT * FROM master_phrase WHERE id = 1").first();
+    if (existingMaster) return err('Master phrase is already set. Use verify-master-phrase instead.', 400);
+
+    var phrase = body.master_phrase;
+    if (!phrase || phrase.length < 8) return err('Master phrase must be at least 8 characters');
+
+    var phraseHash = await sha256Hex(phrase);
+
+    try {
+      await db.prepare("INSERT INTO master_phrase (id, phrase_hash) VALUES (1, ?)").bind(phraseHash).run();
+    } catch (e) {
+      return err('Error setting master phrase: ' + e.message, 500);
+    }
+
+    // Sign a master phrase token valid for 5 days
+    var masterToken = await signToken({
+      admin_id: currentAdmin.id,
+      purpose: 'master-phrase',
+      exp: Date.now() + MASTER_PHRASE_TTL_MS
+    });
+
+    return json({
+      message: 'Master phrase set successfully',
+      master_token: masterToken,
+      expires_in_ms: MASTER_PHRASE_TTL_MS
+    });
+  }
+
+  // POST /api/admin/verify-master-phrase — verify the master phrase
+  if (path === '/api/admin/verify-master-phrase' && request.method === 'POST') {
+    var currentAdmin = await getAdminUser(request);
+    if (!currentAdmin) return err('Unauthorized — Please sign in', 401);
+    if (!db) return err('Database not configured', 500);
+
+    var masterRecord = await db.prepare("SELECT * FROM master_phrase WHERE id = 1").first();
+    if (!masterRecord) return err('Master phrase has not been set yet. Use set-master-phrase first.', 400);
+
+    var phrase = body.master_phrase;
+    if (!phrase) return err('Master phrase is required');
+
+    var phraseHash = await sha256Hex(phrase);
+    if (phraseHash !== masterRecord.phrase_hash) return err('Incorrect master phrase', 401);
+
+    // Sign a master phrase token valid for 5 days
+    var masterToken = await signToken({
+      admin_id: currentAdmin.id,
+      purpose: 'master-phrase',
+      exp: Date.now() + MASTER_PHRASE_TTL_MS
+    });
+
+    return json({
+      message: 'Master phrase verified',
+      master_token: masterToken,
+      expires_in_ms: MASTER_PHRASE_TTL_MS
+    });
+  }
+
+  // POST /api/admin/validate-master-token — check if existing master token is still valid
+  if (path === '/api/admin/validate-master-token' && request.method === 'POST') {
+    var currentAdmin = await getAdminUser(request);
+    if (!currentAdmin) return err('Unauthorized — Please sign in', 401);
+
+    var masterToken = extractMasterToken(request);
+    if (!masterToken) return err('No master token provided', 401);
+
+    var payload = await verifyToken(masterToken);
+    if (!payload || payload.purpose !== 'master-phrase') return err('Invalid or expired master token', 401);
+
+    return json({
+      message: 'Master token is valid',
+      admin_id: payload.admin_id,
+      expires_at: payload.exp
     });
   }
 
   // ══════════════════════════════════════════════════════════════
-  // ADMIN ROUTES — Authentication required (real JWT verification)
+  // ADMIN ROUTES — Authentication + Master Phrase required
   // ══════════════════════════════════════════════════════════════
 
   if (path.startsWith('/api/admin/')) {
 
     var currentAdmin = await getAdminUser(request);
     if (!currentAdmin) return err('Unauthorized — Please sign in', 401);
+
+    // All admin routes (except auth routes above) require master phrase verification
+    var masterAccess = await verifyMasterAccess(request);
+    if (!masterAccess) return err('Master phrase verification required. Use X-Master-Token header.', 401);
 
     var adminRoutePath = path.replace('/api/admin', '');
 
