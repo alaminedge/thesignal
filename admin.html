@@ -27,6 +27,31 @@ body{font-family:var(--fb);background:var(--paper);color:var(--ink);min-height:1
 a{color:inherit;text-decoration:none}img{display:block;max-width:100%}button{font-family:inherit;cursor:pointer}
 :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
+/* ─── AUTH OVERLAY ─── */
+.auth-overlay{position:fixed;inset:0;background:var(--paper);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
+.auth-overlay.hidden{display:none}
+.auth-card{width:100%;max-width:420px;background:var(--white);border:1px solid var(--rule);box-shadow:0 24px 80px rgba(26,24,20,.12);padding:36px 32px}
+.auth-logo{display:flex;align-items:center;gap:9px;margin-bottom:24px;justify-content:center}
+.auth-logo img{height:32px}
+.auth-logo-text{font-family:var(--fd);font-size:1.1rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.auth-logo-tag{font-family:var(--fm);font-size:.44rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink5)}
+.auth-title{font-family:var(--fd);font-size:1.3rem;font-weight:600;color:var(--ink);margin-bottom:6px;text-align:center}
+.auth-sub{font-family:var(--fb);font-size:.85rem;color:var(--ink4);margin-bottom:20px;text-align:center;font-style:italic}
+.auth-error{font-family:var(--fm);font-size:.54rem;letter-spacing:.06em;color:var(--red);margin-bottom:14px;display:none;padding:8px 11px;background:rgba(122,30,30,.07);border-left:3px solid var(--red)}
+.auth-error.show{display:block}
+.auth-success{font-family:var(--fm);font-size:.54rem;letter-spacing:.06em;color:var(--green);margin-bottom:14px;display:none;padding:8px 11px;background:var(--green-l);border-left:3px solid var(--green)}
+.auth-success.show{display:block}
+.fg{margin-bottom:14px}
+.flbl{display:block;font-family:var(--fm);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink5);margin-bottom:5px}
+.finp{width:100%;padding:10px 11px;background:var(--white);border:1px solid var(--rule);border-bottom:2px solid var(--rule2);font-family:var(--fb);font-size:.92rem;color:var(--ink);outline:none;transition:all .15s}
+.finp:focus{border-color:var(--ink3);border-bottom-color:var(--gold);box-shadow:0 1px 0 0 var(--gold)}
+.finp::placeholder{color:var(--ink5)}
+.btn-auth{width:100%;padding:11px;font-family:var(--fm);font-size:.58rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;background:var(--ink);color:var(--white);border:none;transition:background .15s}
+.btn-auth:hover{background:var(--ink2)}
+.btn-auth:disabled{opacity:.5;cursor:not-allowed}
+.auth-hint{font-family:var(--fm);font-size:.5rem;letter-spacing:.06em;color:var(--ink5);margin-top:6px;text-align:center}
+.auth-spacer{text-align:center;padding:8px 0;font-family:var(--fm);font-size:.5rem;color:var(--ink5);letter-spacing:.08em}
+
 /* ─── MOBILE TOPBAR ─── */
 .topbar{display:none;background:var(--sb);padding:0 16px;height:52px;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .topbar-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
@@ -116,10 +141,10 @@ tr:hover td{background:rgba(240,236,226,.4)}
 .bdg-pin{background:var(--gold-p);color:var(--gold);border:1px solid rgba(180,154,94,.25);font-family:var(--fm);font-size:.46rem;padding:2px 6px}
 
 /* ─── FORMS ─── */
-.fg{margin-bottom:14px}
-.flbl{display:block;font-family:var(--fm);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink5);margin-bottom:5px}
-.finp,.fsel,.ftxt{width:100%;padding:9px 11px;background:var(--white);border:1px solid var(--rule);border-bottom:2px solid var(--rule2);font-family:var(--fb);font-size:.92rem;color:var(--ink);outline:none;transition:all .15s}
-.finp:focus,.fsel:focus,.ftxt:focus{border-color:var(--ink3);border-bottom-color:var(--gold);box-shadow:0 1px 0 0 var(--gold)}
+.fg2{margin-bottom:14px}
+.flbl2{display:block;font-family:var(--fm);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink5);margin-bottom:5px}
+.finp2,.fsel,.ftxt{width:100%;padding:9px 11px;background:var(--white);border:1px solid var(--rule);border-bottom:2px solid var(--rule2);font-family:var(--fb);font-size:.92rem;color:var(--ink);outline:none;transition:all .15s}
+.finp2:focus,.fsel:focus,.ftxt:focus{border-color:var(--ink3);border-bottom-color:var(--gold);box-shadow:0 1px 0 0 var(--gold)}
 .fsel{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%235C5849'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;padding-right:28px}
 .ftxt{resize:vertical;min-height:200px;line-height:1.65}
 .fhint{font-family:var(--fm);font-size:.5rem;letter-spacing:.06em;color:var(--ink5);margin-top:3px}
@@ -182,10 +207,63 @@ input[type=checkbox]{accent-color:var(--gold);width:13px;height:13px;cursor:poin
   .modal-body{padding:14px 15px}
   .modal-head{padding:13px 15px}
   .modal-foot{padding:11px 15px}
+  .auth-card{padding:24px 18px}
 }
 </style>
 </head>
 <body>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- AUTH OVERLAY — Two-layer: Login → Master Phrase → Dashboard -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <img src="/images/tps.png" alt="The Pacific Signal">
+      <div>
+        <div class="auth-logo-text">Pacific Signal</div>
+        <div class="auth-logo-tag">Admin Panel</div>
+      </div>
+    </div>
+
+    <!-- STEP 1: LOGIN -->
+    <div id="authStepLogin">
+      <h2 class="auth-title">Sign In</h2>
+      <p class="auth-sub">Enter your admin credentials</p>
+      <div class="auth-error" id="loginError"></div>
+      <div class="fg"><label class="flbl">Username</label><input class="finp" type="text" id="loginUser" placeholder="admin" autocomplete="username"></div>
+      <div class="fg"><label class="flbl">Password</label><input class="finp" type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"></div>
+      <button class="btn-auth" id="loginBtn" onclick="doLogin()">Sign In</button>
+    </div>
+
+    <!-- STEP 2: SET MASTER PHRASE (first time) -->
+    <div id="authStepSetMaster" style="display:none">
+      <h2 class="auth-title">Set Master Phrase</h2>
+      <p class="auth-sub">Create a secret phrase to protect the admin panel. You'll need this every time you sign in from a new session.</p>
+      <div class="auth-error" id="setMasterError"></div>
+      <div class="auth-success" id="setMasterSuccess"></div>
+      <div class="fg"><label class="flbl">Master Phrase (min 8 characters)</label><input class="finp" type="password" id="setMasterPhrase" placeholder="Enter a secure phrase" autocomplete="off"></div>
+      <div class="fg"><label class="flbl">Confirm Master Phrase</label><input class="finp" type="password" id="setMasterConfirm" placeholder="Re-enter the phrase" autocomplete="off"></div>
+      <button class="btn-auth" id="setMasterBtn" onclick="doSetMasterPhrase()">Set Master Phrase &amp; Enter</button>
+    </div>
+
+    <!-- STEP 3: VERIFY MASTER PHRASE (returning user) -->
+    <div id="authStepVerifyMaster" style="display:none">
+      <h2 class="auth-title">Master Phrase Required</h2>
+      <p class="auth-sub">Enter your master phrase to unlock the admin panel.</p>
+      <div class="auth-error" id="verifyMasterError"></div>
+      <div class="fg"><label class="flbl">Master Phrase</label><input class="finp" type="password" id="verifyMasterPhrase" placeholder="Enter your master phrase" autocomplete="off"></div>
+      <button class="btn-auth" id="verifyMasterBtn" onclick="doVerifyMasterPhrase()">Unlock Admin Panel</button>
+      <div class="auth-spacer">— or —</div>
+      <button class="btn-auth" style="background:transparent;color:var(--ink4);border:1px solid var(--rule)" onclick="doLogout()">Sign Out &amp; Return</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- MAIN ADMIN INTERFACE (hidden until fully authenticated) -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="appShell" style="display:none">
 
 <div class="topbar">
   <a href="/" class="topbar-logo">
@@ -249,7 +327,7 @@ input[type=checkbox]{accent-color:var(--gold);width:13px;height:13px;cursor:poin
 
   <div class="sb-foot">
     <span class="sb-user" id="sbUser">Editor</span>
-    <button class="btn-signout" onclick="logout()">Sign Out</button>
+    <button class="btn-signout" onclick="doLogout()">Sign Out</button>
   </div>
 </aside>
 
@@ -277,24 +355,364 @@ input[type=checkbox]{accent-color:var(--gold);width:13px;height:13px;cursor:poin
   <span id="toastMsg"></span>
 </div>
 
+</div><!-- end appShell -->
+
 <script>
-/* ─── AUTH ─── */
-var token=localStorage.getItem('pacific_signal_token');
-var admin=JSON.parse(localStorage.getItem('pacific_signal_admin')||'null');
-if(!token){window.location.href='/signin.html'}
-if(admin&&document.getElementById('sbUser'))document.getElementById('sbUser').textContent=admin.display_name||admin.username||'Editor';
+/* ══════════════════════════════════════════════════════════════ */
+/* AUTH STATE MANAGEMENT                                           */
+/* ══════════════════════════════════════════════════════════════ */
 
-var allArts=[],allCats=[];
-var IMGBB='4a780b9806217405482ea7632dac862b';
-var curImg='';
+var token = localStorage.getItem('pacific_signal_token');
+var admin = JSON.parse(localStorage.getItem('pacific_signal_admin') || 'null');
+var masterToken = localStorage.getItem('pacific_signal_master_token');
+var masterExpires = parseInt(localStorage.getItem('pacific_signal_master_expires') || '0');
 
-function logout(){localStorage.clear();window.location.href='/signin.html'}
-
-function toast(msg,err){
-  var t=document.getElementById('toast'),m=document.getElementById('toastMsg');
-  m.textContent=msg;t.className='toast'+(err?' err':'')+' on';
-  setTimeout(function(){t.classList.remove('on')},3000);
+// Check if master token is still valid (not expired)
+function hasValidMasterToken() {
+  if (!masterToken || !masterExpires) return false;
+  return Date.now() < masterExpires;
 }
+
+// Save master token with expiry
+function saveMasterToken(mt, expiresInMs) {
+  localStorage.setItem('pacific_signal_master_token', mt);
+  localStorage.setItem('pacific_signal_master_expires', String(Date.now() + expiresInMs));
+  masterToken = mt;
+  masterExpires = Date.now() + expiresInMs;
+}
+
+// Clear all auth data
+function clearAllAuth() {
+  localStorage.removeItem('pacific_signal_token');
+  localStorage.removeItem('pacific_signal_admin');
+  localStorage.removeItem('pacific_signal_master_token');
+  localStorage.removeItem('pacific_signal_master_expires');
+  token = null;
+  admin = null;
+  masterToken = null;
+  masterExpires = 0;
+}
+
+/* ══════════════════════════════════════════════════════════════ */
+/* AUTH UI FLOW                                                     */
+/* ══════════════════════════════════════════════════════════════ */
+
+// On page load, determine what step to show
+function initAuth() {
+  // If no token at all, show login
+  if (!token) {
+    showAuthStep('login');
+    return;
+  }
+
+  // Validate the admin token first
+  validateAdminToken().then(function(valid) {
+    if (!valid) {
+      clearAllAuth();
+      showAuthStep('login');
+      return;
+    }
+
+    // Admin token is valid — check master token
+    if (hasValidMasterToken()) {
+      // Also validate master token with the server
+      validateMasterToken().then(function(masterValid) {
+        if (masterValid) {
+          // Fully authenticated — show the app
+          showApp();
+        } else {
+          // Master token expired/invalid — need to verify master phrase
+          showAuthStep('verifyMaster');
+        }
+      });
+    } else {
+      // No valid master token — need to set or verify
+      checkMasterPhraseStatus();
+    }
+  });
+}
+
+function checkMasterPhraseStatus() {
+  fetch('/api/admin/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+    body: JSON.stringify({ username: admin ? admin.username : '', password: '' })
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    // We expect an error (since we sent empty password), but master_phrase_set tells us what we need
+    // Actually, let's use a dedicated check — we'll just try to validate and see
+    // Since login requires password, let's check differently
+    // We already know admin token is valid from initAuth, so check master phrase status
+    // Use validate-master-token endpoint
+    if (d.master_phrase_set !== undefined) {
+      if (d.master_phrase_set) {
+        showAuthStep('verifyMaster');
+      } else {
+        showAuthStep('setMaster');
+      }
+    } else {
+      // Fallback: try validate master token
+      validateMasterToken().then(function(v) {
+        if (v) {
+          showApp();
+        } else {
+          // Assume master phrase needs setting if we got here with valid admin token
+          showAuthStep('setMaster');
+        }
+      });
+    }
+  }).catch(function() {
+    showAuthStep('login');
+  });
+}
+
+function showAuthStep(step) {
+  document.getElementById('authStepLogin').style.display = step === 'login' ? '' : 'none';
+  document.getElementById('authStepSetMaster').style.display = step === 'setMaster' ? '' : 'none';
+  document.getElementById('authStepVerifyMaster').style.display = step === 'verifyMaster' ? '' : 'none';
+  document.getElementById('authOverlay').classList.remove('hidden');
+  document.getElementById('appShell').style.display = 'none';
+
+  // Clear any previous errors
+  var errors = document.querySelectorAll('.auth-error');
+  for (var i = 0; i < errors.length; i++) errors[i].classList.remove('show');
+  var successes = document.querySelectorAll('.auth-success');
+  for (var j = 0; j < successes.length; j++) successes[j].classList.remove('show');
+
+  // Focus appropriate input
+  setTimeout(function() {
+    if (step === 'login') document.getElementById('loginUser').focus();
+    if (step === 'setMaster') document.getElementById('setMasterPhrase').focus();
+    if (step === 'verifyMaster') document.getElementById('verifyMasterPhrase').focus();
+  }, 100);
+}
+
+function showApp() {
+  document.getElementById('authOverlay').classList.add('hidden');
+  document.getElementById('appShell').style.display = '';
+  if (admin && document.getElementById('sbUser')) {
+    document.getElementById('sbUser').textContent = admin.display_name || admin.username || 'Editor';
+  }
+  loadDash();
+}
+
+/* ══════════════════════════════════════════════════════════════ */
+/* AUTH ACTIONS                                                     */
+/* ══════════════════════════════════════════════════════════════ */
+
+async function doLogin() {
+  var user = document.getElementById('loginUser').value.trim();
+  var pass = document.getElementById('loginPass').value;
+  var errEl = document.getElementById('loginError');
+  var btn = document.getElementById('loginBtn');
+
+  if (!user || !pass) {
+    errEl.textContent = 'Username and password are required.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Signing in…';
+
+  try {
+    var r = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: user, password: pass })
+    });
+    var d = await r.json();
+
+    if (!r.ok) {
+      errEl.textContent = d.error || 'Invalid credentials.';
+      errEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Sign In';
+      return;
+    }
+
+    // Save admin token
+    token = d.token;
+    admin = d.admin;
+    localStorage.setItem('pacific_signal_token', token);
+    localStorage.setItem('pacific_signal_admin', JSON.stringify(admin));
+
+    // Determine next step
+    if (d.master_phrase_set) {
+      // Master phrase exists — need to verify
+      showAuthStep('verifyMaster');
+    } else {
+      // No master phrase set — need to create one
+      showAuthStep('setMaster');
+    }
+  } catch (e) {
+    errEl.textContent = 'Network error. Please try again.';
+    errEl.classList.add('show');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Sign In';
+}
+
+async function doSetMasterPhrase() {
+  var phrase = document.getElementById('setMasterPhrase').value;
+  var confirm = document.getElementById('setMasterConfirm').value;
+  var errEl = document.getElementById('setMasterError');
+  var successEl = document.getElementById('setMasterSuccess');
+  var btn = document.getElementById('setMasterBtn');
+
+  errEl.classList.remove('show');
+  successEl.classList.remove('show');
+
+  if (!phrase || phrase.length < 8) {
+    errEl.textContent = 'Master phrase must be at least 8 characters.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  if (phrase !== confirm) {
+    errEl.textContent = 'Phrases do not match. Please try again.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Setting master phrase…';
+
+  try {
+    var r = await fetch('/api/admin/set-master-phrase', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ master_phrase: phrase })
+    });
+    var d = await r.json();
+
+    if (!r.ok) {
+      errEl.textContent = d.error || 'Error setting master phrase.';
+      errEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Set Master Phrase & Enter';
+      return;
+    }
+
+    // Save master token
+    saveMasterToken(d.master_token, d.expires_in_ms);
+
+    successEl.textContent = 'Master phrase set! Entering admin panel…';
+    successEl.classList.add('show');
+
+    setTimeout(function() {
+      showApp();
+    }, 800);
+  } catch (e) {
+    errEl.textContent = 'Network error. Please try again.';
+    errEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Set Master Phrase & Enter';
+  }
+}
+
+async function doVerifyMasterPhrase() {
+  var phrase = document.getElementById('verifyMasterPhrase').value;
+  var errEl = document.getElementById('verifyMasterError');
+  var btn = document.getElementById('verifyMasterBtn');
+
+  errEl.classList.remove('show');
+
+  if (!phrase) {
+    errEl.textContent = 'Please enter your master phrase.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Verifying…';
+
+  try {
+    var r = await fetch('/api/admin/verify-master-phrase', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ master_phrase: phrase })
+    });
+    var d = await r.json();
+
+    if (!r.ok) {
+      errEl.textContent = d.error || 'Incorrect master phrase.';
+      errEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Unlock Admin Panel';
+      return;
+    }
+
+    // Save master token
+    saveMasterToken(d.master_token, d.expires_in_ms);
+
+    showApp();
+  } catch (e) {
+    errEl.textContent = 'Network error. Please try again.';
+    errEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Unlock Admin Panel';
+  }
+}
+
+async function validateAdminToken() {
+  if (!token) return false;
+  try {
+    var r = await fetch('/api/admin/validate-master-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, 'X-Master-Token': masterToken || '' }
+    });
+    // If we get a 401 for master token but not for admin token, admin is still valid
+    // If we get 401 for admin token, admin is invalid
+    var d = await r.json();
+    // Check if error is about master token vs admin token
+    if (r.status === 401 && d.error && d.error.indexOf('Master phrase') >= 0) {
+      return true; // Admin token valid, master token just expired
+    }
+    return r.status !== 401 || (d.error && d.error.indexOf('sign in') < 0);
+  } catch (e) {
+    return false;
+  }
+}
+
+async function validateMasterToken() {
+  if (!token || !masterToken) return false;
+  try {
+    var r = await fetch('/api/admin/validate-master-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, 'X-Master-Token': masterToken }
+    });
+    return r.ok;
+  } catch (e) {
+    return false;
+  }
+}
+
+function doLogout() {
+  clearAllAuth();
+  document.getElementById('authOverlay').classList.remove('hidden');
+  document.getElementById('appShell').style.display = 'none';
+  showAuthStep('login');
+}
+
+// Allow Enter key on auth inputs
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  var overlay = document.getElementById('authOverlay');
+  if (overlay.classList.contains('hidden')) return;
+
+  if (document.getElementById('authStepLogin').style.display !== 'none') {
+    doLogin();
+  } else if (document.getElementById('authStepSetMaster').style.display !== 'none') {
+    doSetMasterPhrase();
+  } else if (document.getElementById('authStepVerifyMaster').style.display !== 'none') {
+    doVerifyMasterPhrase();
+  }
+});
+
+/* ══════════════════════════════════════════════════════════════ */
+/* API HELPERS (now include master token in all admin requests)    */
+/* ══════════════════════════════════════════════════════════════ */
 
 function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
 
@@ -310,13 +728,36 @@ function timeAgo(ds){
 
 async function api(method,path,body){
   try{
-    var o={method,headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}};
+    var headers={
+      'Content-Type':'application/json',
+      'Authorization':'Bearer '+token,
+      'X-Master-Token': masterToken || ''
+    };
+    var o={method,headers:headers};
     if(body)o.body=JSON.stringify(body);
     var r=await fetch('/api'+path,o);
     var d=await r.json();
-    if(r.status===401){logout();return{ok:false,data:d}}
+    if(r.status===401){
+      var msg = d.error || '';
+      if(msg.indexOf('Master phrase') >= 0){
+        // Master token expired — show verify screen
+        document.getElementById('appShell').style.display = 'none';
+        document.getElementById('authOverlay').classList.remove('hidden');
+        showAuthStep('verifyMaster');
+        return{ok:false,data:d};
+      }
+      // Admin token expired
+      doLogout();
+      return{ok:false,data:d};
+    }
     return{ok:r.ok,data:d};
   }catch(e){return{ok:false,data:{error:'Network error'}}}
+}
+
+function toast(msg,err){
+  var t=document.getElementById('toast'),m=document.getElementById('toastMsg');
+  m.textContent=msg;t.className='toast'+(err?' err':'')+' on';
+  setTimeout(function(){t.classList.remove('on')},3000);
 }
 
 function openSb(){document.getElementById('sidebar').classList.add('on');document.getElementById('sbOv').classList.add('on')}
@@ -342,7 +783,14 @@ function openModal(ttl,body,foot){
 function closeModal(){document.getElementById('gModal').classList.remove('on');document.body.style.overflow=''}
 function showAlert(msg,ok){var e=document.getElementById('_alert');if(e){e.className='i-alert on'+(ok?' ok':'');e.textContent=msg}}
 
-/* ─── DASHBOARD ─── */
+/* ══════════════════════════════════════════════════════════════ */
+/* DASHBOARD                                                        */
+/* ══════════════════════════════════════════════════════════════ */
+
+var allArts=[],allCats=[];
+var IMGBB='4a780b9806217405482ea7632dac862b';
+var curImg='';
+
 async function loadDash(){
   var r=await api('GET','/admin/stats');
   var s=r.ok?r.data:{total_articles:0,published_articles:0,categories:0,pinned_articles:0,total_subscribers:0};
@@ -367,7 +815,10 @@ async function loadDash(){
   document.getElementById('view-dashboard').innerHTML=h;
 }
 
-/* ─── ARTICLES ─── */
+/* ══════════════════════════════════════════════════════════════ */
+/* ARTICLES                                                         */
+/* ══════════════════════════════════════════════════════════════ */
+
 async function loadArts(){
   var cr=await api('GET','/admin/categories');allCats=cr.ok?cr.data:[];
   var r=await api('GET','/admin/articles');allArts=r.ok?r.data:[];
@@ -413,18 +864,18 @@ function openArtModal(id){
   var h='<div class="i-alert" id="_alert"></div>'
     +'<input type="hidden" id="_id" value="'+(a?a.id:'')+'">';
 
-  h+='<div class="fg"><label class="flbl">Title *</label><input class="finp" id="_title" value="'+esc(a?a.title:'')+'" placeholder="Article headline" oninput="autoSlug()"></div>';
-  h+='<div class="fg"><label class="flbl">Slug</label><input class="finp" id="_slug" value="'+esc(a?a.slug:'')+'" placeholder="Auto-generated from title"><div class="fhint">Leave blank to auto-generate</div></div>';
+  h+='<div class="fg2"><label class="flbl2">Title *</label><input class="finp2" id="_title" value="'+esc(a?a.title:'')+'" placeholder="Article headline" oninput="autoSlug()"></div>';
+  h+='<div class="fg2"><label class="flbl2">Slug</label><input class="finp2" id="_slug" value="'+esc(a?a.slug:'')+'" placeholder="Auto-generated from title"><div class="fhint">Leave blank to auto-generate</div></div>';
 
   h+='<div class="frow">'
-    +'<div class="fg"><label class="flbl">Author</label><input class="finp" id="_author" value="'+esc(a?a.author:'The Pacific Signal')+'"></div>'
-    +'<div class="fg"><label class="flbl">Category</label><select class="fsel" id="_cat">'+catOpts+'</select></div>'
+    +'<div class="fg2"><label class="flbl2">Author</label><input class="finp2" id="_author" value="'+esc(a?a.author:'The Pacific Signal')+'"></div>'
+    +'<div class="fg2"><label class="flbl2">Category</label><select class="fsel" id="_cat">'+catOpts+'</select></div>'
     +'</div>';
 
-  h+='<div class="fg"><label class="flbl">Excerpt / Standfirst</label>'
+  h+='<div class="fg2"><label class="flbl2">Excerpt / Standfirst</label>'
     +'<textarea class="ftxt" id="_exc" style="min-height:56px" placeholder="Short summary shown on cards and as article standfirst (max 200 chars)" maxlength="200">'+esc(a?a.excerpt:'')+'</textarea></div>';
 
-  h+='<div class="fg"><label class="flbl">Featured Image</label>'
+  h+='<div class="fg2"><label class="flbl2">Featured Image</label>'
     +'<div class="upzone" onclick="document.getElementById(\'fileIn\').click()">'
     +'<div class="upzone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>'
     +'<div class="upzone-txt">Click to upload via ImgBB</div>'
@@ -435,11 +886,11 @@ function openArtModal(id){
     +'<button class="btn-rm-img" id="rmBtn" style="'+(a&&a.image_url?'display:block':'display:none')+'" onclick="removeImg()">Remove Image</button>'
     +'<input type="hidden" id="imgUrl" value="'+(a?a.image_url||'':'')+'"></div>';
 
-  h+='<div class="fg"><label class="flbl">Content *</label>'
+  h+='<div class="fg2"><label class="flbl2">Content *</label>'
     +'<textarea class="ftxt" id="_content" placeholder="Full article content&#10;&#10;Use ## for H2 headings&#10;Use > for pull quotes / blockquotes&#10;Use - for bullet lists">'+esc(a?a.content:'')+'</textarea></div>';
 
   h+='<div class="frow">'
-    +'<div class="fg"><label class="flbl">Display Block</label>'
+    +'<div class="fg2"><label class="flbl2">Display Block</label>'
     +'<select class="fsel" id="_block" onchange="toggleSpotLbl()">'
     +'<option value="">— None / Latest Grid —</option>'
     +'<option value="hero"'+(a&&a.display_block==='hero'?' selected':'')+'>Block A — Hero Feature</option>'
@@ -447,9 +898,9 @@ function openArtModal(id){
     +'<option value="visual"'+(a&&a.display_block==='visual'?' selected':'')+'>Block C — Visual Showcase</option>'
     +'<option value="spotlight"'+(a&&a.display_block==='spotlight'?' selected':'')+'>Block D — Spotlight Analysis</option>'
     +'</select></div>'
-    +'<div class="fg" id="_spotWrap" style="display:'+(a&&a.display_block==='spotlight'?'block':'none')+'">'
-    +'<label class="flbl">Spotlight Label</label>'
-    +'<input class="finp" id="_spotLbl" value="'+esc(a?a.spotlight_label||'':'')+'" placeholder="e.g. Geopolitics Focus"></div>'
+    +'<div class="fg2" id="_spotWrap" style="display:'+(a&&a.display_block==='spotlight'?'block':'none')+'">'
+    +'<label class="flbl2">Spotlight Label</label>'
+    +'<input class="finp2" id="_spotLbl" value="'+esc(a?a.spotlight_label||'':'')+'" placeholder="e.g. Geopolitics Focus"></div>'
     +'</div>';
 
   h+='<div style="display:flex;gap:22px;flex-wrap:wrap;padding-top:4px">'
@@ -499,7 +950,10 @@ async function deleteArt(id){
   loadArts();loadDash();toast('Article deleted.');
 }
 
-/* ─── IMGBB ─── */
+/* ══════════════════════════════════════════════════════════════ */
+/* IMGBB                                                            */
+/* ══════════════════════════════════════════════════════════════ */
+
 async function uploadImg(){
   var fi=document.getElementById('fileIn'),file=fi.files[0];
   if(!file)return;
@@ -533,7 +987,10 @@ function removeImg(){
   document.getElementById('fileIn').value='';
 }
 
-/* ─── CATEGORIES ─── */
+/* ══════════════════════════════════════════════════════════════ */
+/* CATEGORIES                                                       */
+/* ══════════════════════════════════════════════════════════════ */
+
 async function loadCats(){
   var r=await api('GET','/admin/categories');allCats=r.ok?r.data:[];
   var h='<div class="pg-head"><h2 class="pg-title">Categories<span class="pg-count">('+allCats.length+')</span></h2>'
@@ -554,7 +1011,7 @@ async function loadCats(){
 function openCatModal(id){
   var c=id?allCats.find(function(x){return x.id===id}):null;
   var h='<div class="i-alert" id="_alert"></div><input type="hidden" id="_id" value="'+(c?c.id:'')+'">'
-    +'<div class="fg"><label class="flbl">Category Name *</label><input class="finp" id="_name" value="'+esc(c?c.name:'')+'" placeholder="e.g. South Asia"></div>';
+    +'<div class="fg2"><label class="flbl2">Category Name *</label><input class="finp2" id="_name" value="'+esc(c?c.name:'')+'" placeholder="e.g. South Asia"></div>';
   openModal(c?'Edit Category':'New Category',h,
     '<button class="btn btn-primary" onclick="saveCat()">Save Category</button><button class="btn btn-ghost" onclick="closeModal()">Cancel</button>');
 }
@@ -574,15 +1031,18 @@ async function deleteCat(id){
   loadCats();toast('Category deleted.');
 }
 
-/* ─── SETTINGS ─── */
+/* ══════════════════════════════════════════════════════════════ */
+/* SETTINGS                                                         */
+/* ══════════════════════════════════════════════════════════════ */
+
 async function loadSettings(){
   var r=await api('GET','/admin/settings');
   var s=r.ok?r.data:{site_title:'The Pacific Signal',site_tagline:'Beyond the Headlines'};
   var h='<div class="pg-head"><h2 class="pg-title">Settings</h2></div>'
     +'<div class="card"><div class="card-head"><span class="card-head-ttl">General Settings</span></div><div style="padding:18px">'
     +'<div class="i-alert" id="_alert"></div>'
-    +'<div class="fg"><label class="flbl">Site Title</label><input class="finp" id="_siteTitle" value="'+esc(s.site_title)+'"></div>'
-    +'<div class="fg"><label class="flbl">Tagline</label><input class="finp" id="_tagline" value="'+esc(s.site_tagline)+'"></div>'
+    +'<div class="fg2"><label class="flbl2">Site Title</label><input class="finp2" id="_siteTitle" value="'+esc(s.site_title)+'"></div>'
+    +'<div class="fg2"><label class="flbl2">Tagline</label><input class="finp2" id="_tagline" value="'+esc(s.site_tagline)+'"></div>'
     +'<button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>'
     +'</div></div>';
   document.getElementById('view-settings').innerHTML=h;
@@ -597,14 +1057,17 @@ async function saveSettings(){
   toast('Settings saved.');
 }
 
-/* ─── SECURITY ─── */
+/* ══════════════════════════════════════════════════════════════ */
+/* SECURITY                                                         */
+/* ══════════════════════════════════════════════════════════════ */
+
 function loadSecurity(){
   var h='<div class="pg-head"><h2 class="pg-title">Security</h2></div>'
     +'<div class="card"><div class="card-head"><span class="card-head-ttl">Change Password</span></div><div style="padding:18px;max-width:420px">'
     +'<div class="i-alert" id="_alert"></div>'
-    +'<div class="fg"><label class="flbl">Current Password</label><input class="finp" type="password" id="_curPw" autocomplete="current-password"></div>'
-    +'<div class="fg"><label class="flbl">New Password</label><input class="finp" type="password" id="_newPw" autocomplete="new-password"><div class="fhint">Minimum 8 characters</div></div>'
-    +'<div class="fg"><label class="flbl">Confirm New Password</label><input class="finp" type="password" id="_newPw2" autocomplete="new-password"></div>'
+    +'<div class="fg2"><label class="flbl2">Current Password</label><input class="finp2" type="password" id="_curPw" autocomplete="current-password"></div>'
+    +'<div class="fg2"><label class="flbl2">New Password</label><input class="finp2" type="password" id="_newPw" autocomplete="new-password"><div class="fhint">Minimum 8 characters</div></div>'
+    +'<div class="fg2"><label class="flbl2">Confirm New Password</label><input class="finp2" type="password" id="_newPw2" autocomplete="new-password"></div>'
     +'<button class="btn btn-primary" onclick="changePassword()">Update Password</button>'
     +'</div></div>';
   document.getElementById('view-security').innerHTML=h;
@@ -626,8 +1089,11 @@ async function changePassword(){
   toast('Password updated.');
 }
 
-/* ─── INIT ─── */
-loadDash();
+/* ══════════════════════════════════════════════════════════════ */
+/* INIT                                                             */
+/* ══════════════════════════════════════════════════════════════ */
+
+initAuth();
 </script>
 </body>
 </html>
