@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,300;1,8..60,400;1,8..60,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#F7F4EE;--paper-w:#F0ECE2;--paper-d:#E8E2D4;
+  --paper:#F7F4EE;--paper-w:#EFE9DA;--paper-d:#E8E2D4;
   --ink:#1A1814;--ink2:#2E2B24;--ink3:#5C5849;--ink4:#8C8878;--ink5:#B0AB9E;
   --rule:#DDD9CE;--rule2:#CAC5B8;--footer-rule:#C9C2AF;
   --gold:#B49A5E;--gold-l:#D4BA82;--gold-p:#F2EBD8;
@@ -55,7 +55,7 @@ button{font-family:inherit}
 .btn-ham{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:5px;align-items:center}
 .btn-ham svg{width:20px;height:20px}
 
-/* MOBILE NAV — light theme, matches index */
+/* MOBILE NAV — matches index */
 .m-ov{display:none;position:fixed;inset:0;background:rgba(26,24,20,.55);z-index:400;backdrop-filter:blur(3px)}
 .m-ov.on{display:block}
 .m-nav{position:fixed;top:0;right:0;bottom:0;width:min(300px,88vw);background:var(--paper);z-index:500;transform:translateX(110%);transition:transform .32s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;border-left:1px solid var(--rule2);box-shadow:-10px 0 36px rgba(26,24,20,.16)}
@@ -101,18 +101,15 @@ button{font-family:inherit}
 .art-body{font-family:var(--fb);font-size:1.08rem;line-height:1.84;color:var(--ink2)}
 .art-body p{margin-bottom:22px}
 
-/* Drop cap */
 .art-body p:first-of-type::first-letter{
   font-family:var(--fd);font-size:4.5rem;font-weight:700;
   line-height:.8;float:left;margin-right:8px;margin-top:10px;
   color:var(--red);
 }
 
-/* Headings */
 .art-body h2{font-family:var(--fd);font-size:1.72rem;font-weight:600;color:var(--ink);margin:40px 0 16px;line-height:1.2}
 .art-body h3{font-family:var(--fd);font-size:1.28rem;font-weight:600;color:var(--ink);margin:30px 0 12px}
 
-/* Pull quote */
 .art-body blockquote{
   margin:36px -24px;padding:28px 36px;
   background:var(--paper-w);
@@ -132,7 +129,6 @@ button{font-family:inherit}
 }
 .art-body blockquote p::first-letter{font-size:unset;float:none;margin:0;color:inherit;font-weight:inherit}
 
-/* Lists */
 .art-body ul,.art-body ol{margin:14px 0 20px 26px}
 .art-body li{margin-bottom:4px}
 .art-body a{color:var(--red);text-decoration:underline;text-underline-offset:2px}
@@ -185,7 +181,7 @@ button{font-family:inherit}
 .rel-card:hover .rel-ttl{color:var(--red2)}
 .rel-meta{font-family:var(--fm);font-size:.52rem;color:var(--ink5)}
 
-/* FOOTER — matches index exactly */
+/* FOOTER — exact match with index */
 .site-footer{background:var(--paper-w);border-top:1px solid var(--footer-rule);box-shadow:inset 0 1px 0 rgba(255,255,255,.4);padding:56px 0 0}
 .ft-in{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
 .ft-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.4fr;gap:44px;padding-bottom:44px}
@@ -249,7 +245,6 @@ button{font-family:inherit}
 
 <div class="prog" id="prog"></div>
 
-<!-- HEADER — matches index -->
 <header class="site-header" id="siteHeader">
   <div class="h-bar">
     <a href="/" class="h-logo">
@@ -279,7 +274,6 @@ button{font-family:inherit}
   </div>
 </header>
 
-<!-- MOBILE NAV — light theme, matches index -->
 <div class="m-ov" id="mOv" onclick="closeMob()"></div>
 <nav class="m-nav" id="mNav">
   <div class="m-head">
@@ -301,7 +295,6 @@ button{font-family:inherit}
   <div class="m-foot"><a href="/#subscribe" class="m-sub-btn" onclick="closeMob()">Subscribe Free</a></div>
 </nav>
 
-<!-- ARTICLE CONTENT -->
 <div id="artShell">
   <div class="art-wrap" id="artSkeleton">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:26px">
@@ -355,7 +348,6 @@ button{font-family:inherit}
   </div>
 </div>
 
-<!-- RELATED -->
 <div id="relatedWrap" style="display:none">
   <div class="related-wrap">
     <div class="related-in">
@@ -365,7 +357,6 @@ button{font-family:inherit}
   </div>
 </div>
 
-<!-- NEXT ARTICLE RIBBON -->
 <a class="next-ribbon" id="nextRibbon" href="#">
   <span class="next-lbl">Up Next</span>
   <span class="next-title" id="nextTitle">&#x2014;</span>
@@ -373,7 +364,6 @@ button{font-family:inherit}
   <button class="next-close" id="nextClose" onclick="closeRibbon(event)">&#10005;</button>
 </a>
 
-<!-- FOOTER — matches index exactly -->
 <footer class="site-footer" id="subscribe">
   <div class="ft-in">
     <div class="ft-top">
@@ -433,7 +423,6 @@ button{font-family:inherit}
 </footer>
 
 <script>
-/* HELPERS */
 function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
 
 function timeAgo(ds){
@@ -453,7 +442,6 @@ function fmtFull(ds){
 
 document.getElementById('ftCopy').innerHTML='&copy; '+new Date().getFullYear()+' The Pacific Signal. All rights reserved.';
 
-/* HEADER SCROLL */
 var hdr=document.getElementById('siteHeader'),lastY=0;
 window.addEventListener('scroll',function(){
   var y=window.scrollY;
@@ -463,11 +451,9 @@ window.addEventListener('scroll',function(){
   lastY=y;
 },{passive:true});
 
-/* MOBILE NAV */
 function openMob(){document.getElementById('mNav').classList.add('on');document.getElementById('mOv').classList.add('on');document.body.style.overflow='hidden'}
 function closeMob(){document.getElementById('mNav').classList.remove('on');document.getElementById('mOv').classList.remove('on');document.body.style.overflow=''}
 
-/* READING PROGRESS */
 var prog=document.getElementById('prog');
 window.addEventListener('scroll',function(){
   var artBody=document.getElementById('artBody');
@@ -478,7 +464,6 @@ window.addEventListener('scroll',function(){
   if(pct>70&&!ribbonClosed)document.getElementById('nextRibbon').classList.add('show');
 },{passive:true});
 
-/* LOAD ARTICLE */
 var slug=new URLSearchParams(location.search).get('slug');
 var ribbonClosed=false;
 
