@@ -20,9 +20,9 @@
 </script>
 <style>
 :root{
-  --paper:#F7F4EE;--paper-w:#F0ECE2;--paper-d:#E8E2D4;
+  --paper:#F7F4EE;--paper-w:#EFE9DA;--paper-d:#E8E2D4;
   --ink:#1A1814;--ink2:#2E2B24;--ink3:#5C5849;--ink4:#8C8878;--ink5:#B0AB9E;
-  --rule:#DDD9CE;--rule2:#CAC5B8;
+  --rule:#DDD9CE;--rule2:#CAC5B8;--footer-rule:#C9C2AF;
   --gold:#B49A5E;--gold-l:#D4BA82;--gold-p:#F2EBD8;
   --red:#7A1E1E;--red2:#5C1616;
   --white:#FFFFFF;
@@ -99,20 +99,21 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .sr-cat{font-family:var(--fm);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:3px}
 .sr-ttl{font-family:var(--fd);font-size:1rem;font-weight:600;line-height:1.3}
 
-/* MOBILE NAV */
+/* MOBILE NAV — light theme, matches site (was solid black before) */
 .m-ov{display:none;position:fixed;inset:0;background:rgba(26,24,20,.55);z-index:400;backdrop-filter:blur(3px)}
 .m-ov.on{display:block}
-.m-nav{position:fixed;top:0;right:0;bottom:0;width:min(300px,88vw);background:var(--ink);z-index:500;transform:translateX(110%);transition:transform .32s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.m-nav{position:fixed;top:0;right:0;bottom:0;width:min(300px,88vw);background:var(--paper);z-index:500;transform:translateX(110%);transition:transform .32s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;border-left:1px solid var(--rule2);box-shadow:-10px 0 36px rgba(26,24,20,.16)}
 .m-nav.on{transform:translateX(0)}
-.m-head{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between}
-.m-head img{height:26px;filter:brightness(0) invert(1)}
-.m-close{background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:1.1rem}
+.m-head{padding:16px 20px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between}
+.m-head img{height:26px}
+.m-close{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:1.1rem;padding:6px;transition:color .2s}
+.m-close:hover{color:var(--red)}
 .m-links{flex:1;overflow-y:auto;padding:6px 0}
-.m-link{display:block;padding:11px 20px;font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);border-left:2px solid transparent;transition:all .18s}
-.m-link:hover{color:var(--white);border-left-color:var(--gold);background:rgba(255,255,255,.03)}
-.m-foot{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08)}
-.m-sub{display:block;text-align:center;padding:11px;font-family:var(--fm);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;background:var(--gold);color:var(--white);transition:background .2s}
-.m-sub:hover{background:var(--gold-l);color:var(--ink)}
+.m-link{display:block;padding:11px 20px;font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);border-left:2px solid transparent;transition:all .18s}
+.m-link:hover{color:var(--red);border-left-color:var(--gold);background:var(--paper-w)}
+.m-foot{padding:16px 20px;border-top:1px solid var(--rule)}
+.m-sub{display:block;text-align:center;padding:11px;font-family:var(--fm);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;background:var(--ink);color:var(--white);transition:background .2s}
+.m-sub:hover{background:var(--red)}
 
 /* CAT BANNER */
 .cat-bn{display:none;border-bottom:1px solid var(--rule);padding:26px 0 20px;margin-bottom:40px}
@@ -221,131 +222,77 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .btn-more:hover{background:var(--ink);color:var(--white)}
 .btn-more:disabled{opacity:.35;cursor:not-allowed}
 
-/* ─── FOOTER ─── */
-.site-footer{background:var(--paper-w);border-top:2px solid var(--rule2);padding:56px 0 0}
+/* ─── FOOTER — deliberately deeper tone than body, not a near-accidental match ─── */
+.site-footer{background:var(--paper-w);border-top:1px solid var(--footer-rule);box-shadow:inset 0 1px 0 rgba(255,255,255,.4);padding:56px 0 0}
 .ft-in{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
 .ft-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.4fr;gap:44px;padding-bottom:44px}
 .ft-logo-row{display:flex;align-items:center;gap:9px;margin-bottom:10px;text-decoration:none;color:var(--ink);width:fit-content}
 .ft-logo-row img{height:26px;opacity:.7}
 .ft-brand-name{font-family:var(--fd);font-size:1rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
 .ft-brand-desc{font-family:var(--fb);font-size:.88rem;color:var(--ink4);line-height:1.7;font-weight:300;max-width:260px}
-.ft-col-ttl{font-family:var(--fm);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink5);margin-bottom:13px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+.ft-col-ttl{font-family:var(--fm);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink5);margin-bottom:13px;padding-bottom:8px;border-bottom:1px solid var(--footer-rule)}
 .ft-links{display:flex;flex-direction:column;gap:7px}
-.ft-links a{font-family:var(--fb);font-size:.86rem;color:var(--ink4);font-weight:300;transition:color .2s}
-.ft-links a:hover{color:var(--red)}
+.ft-links a{font-family:var(--fb);font-size:.86rem;color:var(--ink4);font-weight:300;transition:color .2s,transform .2s;display:inline-block}
+.ft-links a:hover{color:var(--red);transform:translateX(2px)}
 .ft-nl-txt{font-family:var(--fb);font-size:.86rem;color:var(--ink4);font-weight:300;margin-bottom:11px;line-height:1.6}
 .ft-form{display:flex}
-.ft-email{flex:1;padding:9px 12px;background:var(--white);border:1px solid var(--rule);border-right:none;font-family:var(--fb);font-size:.88rem;color:var(--ink);outline:none;transition:border-color .2s}
-.ft-email:focus{border-color:var(--gold)}
+.ft-email{flex:1;padding:9px 12px;background:var(--paper);border:1px solid var(--footer-rule);border-right:none;font-family:var(--fb);font-size:.88rem;color:var(--ink);outline:none;transition:border-color .2s}
+.ft-email:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(180,154,94,.12)}
 .ft-email::placeholder{color:var(--ink5)}
 .ft-btn{padding:9px 13px;background:var(--ink);color:var(--white);border:none;cursor:pointer;font-family:var(--fm);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;transition:background .2s;white-space:nowrap}
 .ft-btn:hover{background:var(--red)}
-/* ============================================================
-   THE PACIFIC SIGNAL — ELITE COHESION PATCH
-   Fixes: footer/header mismatch, harsh hamburger icon,
-   adds refined "premium print" polish throughout.
-   Paste these overrides after your existing <style> block,
-   or merge the changed rules directly into their originals.
-   ============================================================ */
+.ft-msg{font-family:var(--fm);font-size:.54rem;margin-top:6px;min-height:16px}
+.ft-bot{border-top:1px solid var(--footer-rule);display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:12px;flex-wrap:wrap}
+.ft-copy{font-family:var(--fm);font-size:.52rem;letter-spacing:.06em;color:var(--ink5)}
+.ft-legal{display:flex;gap:16px;align-items:center}
+.ft-legal a{font-family:var(--fm);font-size:.52rem;letter-spacing:.06em;color:var(--ink5);transition:color .2s}
+.ft-legal a:hover{color:var(--red)}
 
-/* ---- 1. UNIFY THE PALETTE RELATIONSHIP ----
-   Header/body use --paper. Footer used a near-identical
-   --paper-w, which read as an accident rather than a choice.
-   Fix: push the footer to a deliberately deeper tone and
-   strengthen the divider so the shift feels intentional. */
-
-:root{
-  --paper-w:#EFE9DA;      /* was #F0ECE2 — now clearly deeper than --paper */
-  --footer-rule:#C9C2AF;  /* new — a touch stronger than --rule2 for the seam */
+/* ─── RESPONSIVE ─── */
+@media(max-width:1100px){
+  .spot-grid{grid-template-columns:repeat(2,1fr)}
+  .spot-card:nth-child(2){border-right:none}
+  .spot-card:nth-child(3){border-right:1px solid var(--rule)}
+  .latest-grid{grid-template-columns:repeat(2,1fr)}
+  .art-card:nth-child(2){border-right:none;padding-right:0}
+  .art-card:nth-child(3){border-right:1px solid var(--rule);padding-right:20px}
+  .ft-top{grid-template-columns:1fr 1fr;gap:28px}
+  .mr-list{grid-template-columns:repeat(3,1fr)}
+  .mr-item:nth-child(3){border-right:none}
 }
-
-.site-footer{
-  background:var(--paper-w);
-  border-top:1px solid var(--footer-rule);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.4);
-  padding:60px 0 0;
+@media(max-width:860px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-img,.hero-ph{min-height:240px}
+  .hero-body{border-left:1px solid var(--rule);border-top:none;padding:24px 22px}
+  .feed-grid{grid-template-columns:1fr}
+  .feed-item:nth-child(odd){padding-right:0;border-right:none}
+  .feed-item:nth-child(even){padding-left:0}
+  .feed-item{border-bottom:1px solid var(--rule)!important}
+  .feed-item:last-child{border-bottom:none!important}
+  .mr-list{grid-template-columns:repeat(2,1fr)}
+  .mr-item:nth-child(2){border-right:none}
+  .mr-item:nth-child(3){border-right:1px solid var(--rule)}
 }
-
-/* ---- 2. SOFTEN THE HAMBURGER ICON ----
-   --ink (#1A1814) sat starkly black against the warm cream
-   header. Bring it into the same tonal family as the nav
-   links (--ink3), with a refined hover into gold, matching
-   how .nav-a already behaves. */
-
-.btn-ham{
-  color:var(--ink3);
-  border-radius:50%;
-  transition:color .2s ease, background .2s ease;
+@media(max-width:768px){
+  .h-nav{display:none}
+  .btn-sub{display:none}
+  .btn-ham{display:flex}
+  .spot-grid{grid-template-columns:1fr}
+  .spot-card{border-right:none;border-bottom:1px solid var(--rule)}
+  .spot-card:last-child{border-bottom:none}
+  .latest-grid{grid-template-columns:1fr}
+  .art-card{border-right:none;padding-right:0;border-bottom:1px solid var(--rule);padding-bottom:22px}
+  .art-card:last-child{border-bottom:none}
+  .vis-ov{padding:22px 20px}
+  .mr-list{grid-template-columns:1fr 1fr}
 }
-.btn-ham:hover{
-  color:var(--red);
-  background:rgba(180,154,94,.08); /* faint gold wash, not flat gray */
+@media(max-width:540px){
+  .ft-top{grid-template-columns:1fr;gap:24px}
+  .ft-bot{flex-direction:column;align-items:flex-start;gap:8px}
+  .mr-list{grid-template-columns:1fr}
+  .mr-item{border-right:none!important;padding:10px 0;border-bottom:1px solid var(--rule)}
+  .mr-item:last-child{border-bottom:none}
 }
-.btn-ham:active{
-  background:rgba(180,154,94,.14);
-}
-
-/* ---- 3. SAME TREATMENT FOR THE SEARCH ICON ----
-   btn-search already used --ink3 → --red, so it was already
-   correct. This just gives it the matching circular hover
-   so both icons feel like one system. */
-
-.btn-search{
-  border-radius:50%;
-  transition:color .2s ease, background .2s ease;
-}
-.btn-search:hover{
-  background:rgba(180,154,94,.08);
-}
-
-/* ---- 4. MOBILE MENU CLOSE BUTTON — match the same logic ----
-   Currently a flat, low-contrast gray with no hover polish. */
-
-.m-close{
-  border-radius:50%;
-  padding:6px 9px;
-  transition:color .2s ease, background .2s ease;
-}
-.m-close:hover{
-  color:var(--gold-l);
-  background:rgba(255,255,255,.06);
-}
-
-/* ---- 5. FOOTER LINK COLUMNS — small elite touches ----
-   Slightly stronger heading rule + tighter link hover motion
-   for a more considered, less "template" feel. */
-
-.ft-col-ttl{
-  border-bottom:1px solid var(--footer-rule);
-}
-
-.ft-links a{
-  position:relative;
-  display:inline-block;
-  transition:color .2s ease, transform .2s ease;
-}
-.ft-links a:hover{
-  color:var(--red);
-  transform:translateX(2px);
-}
-
-/* ---- 6. NEWSLETTER FORM — align with footer's deeper tone ---- */
-
-.ft-email{
-  background:var(--paper);       /* lighter than footer bg = clear input field */
-  border:1px solid var(--footer-rule);
-}
-.ft-email:focus{
-  border-color:var(--gold);
-  box-shadow:0 0 0 3px rgba(180,154,94,.12);
-}
-
-/* ---- 7. FOOTER BOTTOM BAR — subtle refinement ---- */
-
-.ft-bot{
-  border-top:1px solid var(--footer-rule);
-}
-
 </style>
 </head>
 <body>
