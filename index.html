@@ -152,7 +152,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .sec-ttl{font-family:var(--fd);font-size:1.2rem;font-weight:600;color:var(--ink)}
 .sec-sub{font-family:var(--fm);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink5)}
 
-/* ─── MOST READ ─── */
+/* ─── MOST READ (now sits directly above Latest) ─── */
 .mr-sec{padding-bottom:36px;border-bottom:1px solid var(--rule);margin-bottom:42px}
 .mr-list{display:grid;grid-template-columns:repeat(5,1fr);gap:0}
 .mr-item{display:flex;gap:11px;padding:0 18px;text-decoration:none;color:var(--ink);border-right:1px solid var(--rule)}
@@ -164,20 +164,20 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .mr-ttl{font-family:var(--fd);font-size:.92rem;font-weight:600;line-height:1.3;color:var(--ink);transition:color .2s}
 .mr-item:hover .mr-ttl{color:var(--red2)}
 
-/* ─── FEED ─── */
-.feed-sec{padding-bottom:42px;border-bottom:1px solid var(--rule);margin-bottom:42px}
-.feed-grid{display:grid;grid-template-columns:1fr 1fr}
-.feed-item{display:flex;gap:12px;padding:15px 0;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--ink);transition:background .15s}
-.feed-item:nth-child(odd){padding-right:26px;border-right:1px solid var(--rule)}
-.feed-item:nth-child(even){padding-left:26px}
-.feed-item:nth-last-child(-n+2){border-bottom:none}
-.feed-n{font-family:var(--fd);font-size:1.9rem;font-weight:300;font-style:italic;color:var(--rule2);line-height:1;margin-top:2px;flex-shrink:0;min-width:30px;transition:color .2s}
-.feed-item:hover .feed-n{color:var(--gold)}
-.feed-body{flex:1;min-width:0}
-.feed-cat{font-family:var(--fm);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:3px}
-.feed-ttl{font-family:var(--fd);font-size:.98rem;font-weight:600;line-height:1.35;color:var(--ink);margin-bottom:4px;transition:color .2s}
+/* ─── INTELLIGENCE FEED — vertical list, headline+read-time left / thumbnail right ─── */
+.feed-sec{padding-bottom:8px;border-bottom:1px solid var(--rule);margin-bottom:42px}
+.feed-list{display:flex;flex-direction:column}
+.feed-item{display:grid;grid-template-columns:1fr 128px;align-items:center;gap:28px;padding:30px 0;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--ink)}
+.feed-item:last-child{border-bottom:none}
+.feed-body{min-width:0}
+.feed-cat{font-family:var(--fm);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+.feed-ttl{font-family:var(--fd);font-size:1.4rem;font-weight:700;line-height:1.22;letter-spacing:-.01em;color:var(--ink);margin-bottom:12px;transition:color .2s}
 .feed-item:hover .feed-ttl{color:var(--red2)}
-.feed-meta{font-family:var(--fm);font-size:.52rem;color:var(--ink5)}
+.feed-meta{font-family:var(--fm);font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink5)}
+.feed-thumb{width:128px;height:92px;object-fit:cover;background:var(--paper-d);flex-shrink:0;transition:transform .6s cubic-bezier(.4,0,.2,1)}
+.feed-item:hover .feed-thumb{transform:scale(1.045)}
+.feed-thumb-ph{width:128px;height:92px;background:var(--paper-d);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.feed-thumb-ph span{font-family:var(--fd);font-size:1.1rem;font-style:italic;color:var(--rule2)}
 
 /* ─── VISUAL ─── */
 .vis-sec{padding-bottom:42px;border-bottom:1px solid var(--rule);margin-bottom:42px}
@@ -264,14 +264,12 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   .hero-grid{grid-template-columns:1fr}
   .hero-img,.hero-ph{min-height:240px}
   .hero-body{border-left:1px solid var(--rule);border-top:none;padding:24px 22px}
-  .feed-grid{grid-template-columns:1fr}
-  .feed-item:nth-child(odd){padding-right:0;border-right:none}
-  .feed-item:nth-child(even){padding-left:0}
-  .feed-item{border-bottom:1px solid var(--rule)!important}
-  .feed-item:last-child{border-bottom:none!important}
   .mr-list{grid-template-columns:repeat(2,1fr)}
   .mr-item:nth-child(2){border-right:none}
   .mr-item:nth-child(3){border-right:1px solid var(--rule)}
+  .feed-item{grid-template-columns:1fr 104px;gap:18px;padding:24px 0}
+  .feed-ttl{font-size:1.2rem}
+  .feed-thumb,.feed-thumb-ph{width:104px;height:78px}
 }
 @media(max-width:768px){
   .h-nav{display:none}
@@ -292,6 +290,10 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   .mr-list{grid-template-columns:1fr}
   .mr-item{border-right:none!important;padding:10px 0;border-bottom:1px solid var(--rule)}
   .mr-item:last-child{border-bottom:none}
+  .feed-item{grid-template-columns:1fr 84px;gap:14px;padding:20px 0}
+  .feed-ttl{font-size:1.08rem;margin-bottom:8px}
+  .feed-cat{margin-bottom:6px}
+  .feed-thumb,.feed-thumb-ph{width:84px;height:64px}
 }
 </style>
 </head>
@@ -394,20 +396,21 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
       </div>
     </section>
 
-    <section class="mr-sec" id="mrSec" style="display:none">
-      <div class="sec-hd"><span class="sec-ttl">Most Read</span><span class="sec-sub">By Readers This Period</span></div>
-      <div class="mr-list" id="mrList"></div>
-    </section>
-
     <section class="feed-sec" id="feedSec">
       <div class="sec-hd"><span class="sec-ttl">Intelligence Feed</span><span class="sec-sub">Analysis &amp; Briefings</span></div>
-      <div class="feed-grid" id="feedGrid">
-        <div class="feed-item" style="padding-right:26px;border-right:1px solid var(--rule);pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm"></span><span class="sk" style="height:9px;width:100px;margin-top:6px"></span></div></div>
-        <div class="feed-item" style="padding-left:26px;pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm" style="width:85%"></span><span class="sk" style="height:9px;width:120px;margin-top:6px"></span></div></div>
-        <div class="feed-item" style="padding-right:26px;border-right:1px solid var(--rule);pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm" style="width:90%"></span><span class="sk" style="height:9px;width:90px;margin-top:6px"></span></div></div>
-        <div class="feed-item" style="padding-left:26px;pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm" style="width:75%"></span><span class="sk" style="height:9px;width:110px;margin-top:6px"></span></div></div>
-        <div class="feed-item" style="padding-right:26px;border-right:1px solid var(--rule);border-bottom:none;pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm" style="width:80%"></span><span class="sk" style="height:9px;width:95px;margin-top:6px"></span></div></div>
-        <div class="feed-item" style="padding-left:26px;border-bottom:none;pointer-events:none"><span class="sk feed-n" style="width:28px;height:36px;flex-shrink:0;border-radius:2px"></span><div class="feed-body"><span class="sk sk-label" style="margin-bottom:8px"></span><span class="sk sk-title-sm" style="width:65%"></span><span class="sk" style="height:9px;width:105px;margin-top:6px"></span></div></div>
+      <div class="feed-list" id="feedGrid">
+        <div class="feed-item" style="pointer-events:none">
+          <div class="feed-body"><span class="sk sk-label" style="margin-bottom:10px"></span><span class="sk sk-title" style="height:28px"></span><span class="sk" style="height:9px;width:100px;margin-top:12px"></span></div>
+          <span class="sk" style="width:128px;height:92px;flex-shrink:0"></span>
+        </div>
+        <div class="feed-item" style="pointer-events:none">
+          <div class="feed-body"><span class="sk sk-label" style="margin-bottom:10px;width:65px"></span><span class="sk sk-title" style="height:28px;width:85%"></span><span class="sk" style="height:9px;width:120px;margin-top:12px"></span></div>
+          <span class="sk" style="width:128px;height:92px;flex-shrink:0"></span>
+        </div>
+        <div class="feed-item" style="pointer-events:none">
+          <div class="feed-body"><span class="sk sk-label" style="margin-bottom:10px;width:80px"></span><span class="sk sk-title" style="height:28px;width:92%"></span><span class="sk" style="height:9px;width:90px;margin-top:12px"></span></div>
+          <span class="sk" style="width:128px;height:92px;flex-shrink:0"></span>
+        </div>
       </div>
     </section>
 
@@ -423,6 +426,12 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
         <div class="spot-card" style="pointer-events:none"><span class="sk" style="height:10px;width:85%;margin-bottom:14px"></span><span class="sk sk-title-sm" style="width:75%"></span><span class="sk sk-title-sm" style="width:65%;height:18px;margin-top:4px"></span><span class="sk" style="height:9px;width:110px;margin-top:10px"></span></div>
         <div class="spot-card" style="border-right:none;pointer-events:none"><span class="sk" style="height:10px;width:75%;margin-bottom:14px"></span><span class="sk sk-title-sm" style="width:80%"></span><span class="sk sk-title-sm" style="width:50%;height:18px;margin-top:4px"></span><span class="sk" style="height:9px;width:100px;margin-top:10px"></span></div>
       </div>
+    </section>
+
+    <!-- MOST READ now sits directly above Latest, as a final "before you go" hook -->
+    <section class="mr-sec" id="mrSec" style="display:none">
+      <div class="sec-hd"><span class="sec-ttl">Most Read</span><span class="sec-sub">By Readers This Period</span></div>
+      <div class="mr-list" id="mrList"></div>
     </section>
 
     <section class="latest-sec" id="latestSec">
@@ -512,6 +521,19 @@ function timeAgo(ds){
   return new Date(ds).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
 }
 
+/* Reading time: use a.reading_time / a.read_minutes if the API supplies one,
+   otherwise fall back to an estimate from word_count, otherwise a soft
+   estimate derived from excerpt length so the label never disappears. */
+function readTime(a){
+  var mins=a&&(a.reading_time||a.read_minutes);
+  if(!mins&&a&&a.word_count)mins=Math.max(1,Math.round(a.word_count/200));
+  if(!mins){
+    var words=(a&&a.excerpt)?a.excerpt.trim().split(/\s+/).length*14:280;
+    mins=Math.max(1,Math.round(words/200));
+  }
+  return mins+' MIN READ';
+}
+
 document.getElementById('ftCopy').innerHTML='&copy; '+new Date().getFullYear()+' The Pacific Signal. All rights reserved.';
 
 /* HEADER SCROLL */
@@ -577,10 +599,10 @@ if(filterCat){
   document.getElementById('catBn').classList.add('on');
   document.getElementById('catTtl').textContent=nm;
   document.getElementById('heroSec').style.display='none';
-  document.getElementById('mrSec').style.display='none';
   document.getElementById('feedSec').style.display='none';
   document.getElementById('visSec').style.display='none';
   document.getElementById('spotSec').style.display='none';
+  document.getElementById('mrSec').style.display='none';
   document.getElementById('latestTtl').textContent=nm;
   document.querySelectorAll('.nav-a').forEach(function(l){l.classList.remove('on')});
   loadCat(filterCat,1);
@@ -595,10 +617,10 @@ async function loadHome(p){
     var d=await r.json();
     if(p===1){
       renderHero(d.hero);
-      renderMostRead(d.most_read||[]);
       renderFeed(d.feed||[]);
       renderVisual(d.visual);
       renderSpots(d.spotlights||[]);
+      renderMostRead(d.most_read||[]);
     }
     renderLatest(d.latest||[],p>1);
     hasMore=d.hasMore||(d.latest&&d.latest.length>=12);
@@ -652,18 +674,20 @@ function renderMostRead(items){
   }).join('');
 }
 
+/* Feed: single vertical list, each row = bold headline + read time (left)
+   and a small thumbnail (right), separated by thin divider lines. */
 function renderFeed(feed){
   var c=document.getElementById('feedGrid');
-  if(!feed.length){c.innerHTML='<p style="font-style:italic;color:var(--ink4);grid-column:1/-1;font-family:var(--fb)">No feed articles yet.</p>';return}
-  c.innerHTML=feed.map(function(a,i){
-    var odd=i%2===0;
-    return '<a href="/article.html?slug='+esc(a.slug)+'" class="feed-item" style="'+(odd?'padding-right:26px;border-right:1px solid var(--rule)':'padding-left:26px')+'">'
-      +'<span class="feed-n">'+(i+1)+'</span>'
+  if(!feed.length){c.innerHTML='<p style="font-style:italic;color:var(--ink4);font-family:var(--fb)">No feed articles yet.</p>';return}
+  c.innerHTML=feed.map(function(a){
+    return '<a href="/article.html?slug='+esc(a.slug)+'" class="feed-item">'
       +'<div class="feed-body">'
       +'<div class="feed-cat">'+esc(a.category_name||'')+'</div>'
       +'<div class="feed-ttl">'+esc(a.title)+'</div>'
-      +'<div class="feed-meta">'+esc(a.author||'The Pacific Signal')+' &nbsp;&middot;&nbsp; <span class="t-gold">'+timeAgo(a.published_at||a.created_at)+'</span></div>'
-      +'</div></a>';
+      +'<div class="feed-meta">'+esc(readTime(a))+'</div>'
+      +'</div>'
+      +(a.image_url?'<img src="'+esc(a.image_url)+'" alt="'+esc(a.title)+'" class="feed-thumb" loading="lazy">':'<div class="feed-thumb-ph"><span>TPS</span></div>')
+      +'</a>';
   }).join('');
 }
 
