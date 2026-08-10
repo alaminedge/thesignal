@@ -55,7 +55,7 @@ button{font-family:inherit}
 .btn-ham{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:5px;align-items:center}
 .btn-ham svg{width:20px;height:20px}
 
-/* MOBILE NAV — matches index */
+/* MOBILE NAV */
 .m-ov{display:none;position:fixed;inset:0;background:rgba(26,24,20,.55);z-index:400;backdrop-filter:blur(3px)}
 .m-ov.on{display:block}
 .m-nav{position:fixed;top:0;right:0;bottom:0;width:min(300px,88vw);background:var(--paper);z-index:500;transform:translateX(110%);transition:transform .32s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;border-left:1px solid var(--rule2);box-shadow:-10px 0 36px rgba(26,24,20,.16)}
@@ -97,19 +97,12 @@ button{font-family:inherit}
 /* FEATURED IMAGE */
 .art-feat-img{width:100%;max-height:500px;object-fit:cover;display:block;margin-bottom:40px}
 
-/* ARTICLE BODY */
+/* ARTICLE BODY — supports both HTML and markdown */
 .art-body{font-family:var(--fb);font-size:1.08rem;line-height:1.84;color:var(--ink2)}
 .art-body p{margin-bottom:22px}
-
-.art-body p:first-of-type::first-letter{
-  font-family:var(--fd);font-size:4.5rem;font-weight:700;
-  line-height:.8;float:left;margin-right:8px;margin-top:10px;
-  color:var(--red);
-}
-
 .art-body h2{font-family:var(--fd);font-size:1.72rem;font-weight:600;color:var(--ink);margin:40px 0 16px;line-height:1.2}
 .art-body h3{font-family:var(--fd);font-size:1.28rem;font-weight:600;color:var(--ink);margin:30px 0 12px}
-
+.art-body h4{font-family:var(--fd);font-size:1.1rem;font-weight:600;color:var(--ink);margin:26px 0 10px}
 .art-body blockquote{
   margin:36px -24px;padding:28px 36px;
   background:var(--paper-w);
@@ -127,13 +120,23 @@ button{font-family:inherit}
   font-weight:500;line-height:1.45;color:var(--ink);
   margin:0;padding-top:16px;
 }
-.art-body blockquote p::first-letter{font-size:unset;float:none;margin:0;color:inherit;font-weight:inherit}
-
 .art-body ul,.art-body ol{margin:14px 0 20px 26px}
 .art-body li{margin-bottom:4px}
 .art-body a{color:var(--red);text-decoration:underline;text-underline-offset:2px}
 .art-body a:hover{color:var(--red2)}
 .art-body strong{font-weight:600;color:var(--ink)}
+.art-body em{font-style:italic}
+.art-body img{max-width:100%;height:auto;display:block;margin:28px 0}
+.art-body figure{margin:28px 0}
+.art-body figcaption{font-family:var(--fm);font-size:.6rem;color:var(--ink5);margin-top:8px;text-align:center;letter-spacing:.04em}
+.art-body hr{border:none;border-top:1px solid var(--rule);margin:36px 0}
+.art-body pre{background:var(--ink);color:var(--paper);padding:18px 20px;font-family:var(--fm);font-size:.8rem;line-height:1.6;overflow-x:auto;margin:22px 0}
+.art-body code{font-family:var(--fm);font-size:.85em;background:var(--paper-d);padding:2px 5px}
+.art-body pre code{background:transparent;padding:0;font-size:inherit}
+.art-body table{width:100%;border-collapse:collapse;margin:22px 0}
+.art-body th,.art-body td{padding:10px 14px;border:1px solid var(--rule);text-align:left;font-size:.95rem}
+.art-body th{background:var(--paper-w);font-family:var(--fm);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink4);font-weight:500}
+.art-body iframe{max-width:100%;margin:22px 0}
 
 /* SHARE BAR */
 .share-bar{display:flex;align-items:center;gap:10px;margin-top:48px;padding:22px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);flex-wrap:wrap}
@@ -181,7 +184,7 @@ button{font-family:inherit}
 .rel-card:hover .rel-ttl{color:var(--red2)}
 .rel-meta{font-family:var(--fm);font-size:.52rem;color:var(--ink5)}
 
-/* FOOTER — exact match with index */
+/* FOOTER */
 .site-footer{background:var(--paper-w);border-top:1px solid var(--footer-rule);box-shadow:inset 0 1px 0 rgba(255,255,255,.4);padding:56px 0 0}
 .ft-in{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
 .ft-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.4fr;gap:44px;padding-bottom:44px}
@@ -235,7 +238,6 @@ button{font-family:inherit}
 }
 @media(max-width:540px){
   .art-title{font-size:1.75rem}
-  .art-body p:first-of-type::first-letter{font-size:3.5rem}
   .ft-top{grid-template-columns:1fr;gap:24px}
   .ft-bot{flex-direction:column;align-items:flex-start;gap:8px}
 }
@@ -497,10 +499,17 @@ function closeRibbon(e){
   document.getElementById('nextRibbon').classList.remove('show');
 }
 
-function parseContent(raw){
+/* ─── CONTENT RENDERER — Hybrid: detects HTML, falls back to markdown ─── */
+
+function hasHtmlTags(raw){
+  return /<[a-z][\s\S]*>/i.test(raw||'');
+}
+
+function parseMarkdown(raw){
   return (raw||'')
     .replace(/^## (.+)$/gm,'<h2>$1</h2>')
     .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^#### (.+)$/gm,'<h4>$1</h4>')
     .replace(/^> (.+)$/gm,'<blockquote><p>$1</p></blockquote>')
     .replace(/((?:^- .+\n?)+)/gm, function(match) {
       var items = match.trim().split('\n').map(function(line) {
@@ -512,12 +521,31 @@ function parseContent(raw){
     .replace(/\n/g,'<br>');
 }
 
-function wordCount(s){return(s||'').trim().split(/\s+/).length}
+function renderContent(raw){
+  if(!raw)return'';
+  // If content contains HTML tags, output it raw
+  if(hasHtmlTags(raw)){
+    return raw;
+  }
+  // Otherwise parse as markdown (backward compatibility)
+  return '<p>'+parseMarkdown(raw)+'</p>';
+}
+
+function wordCount(raw){
+  // Strip HTML tags and markdown markers for accurate word count
+  var text = (raw||'')
+    .replace(/<[^>]*>/g,' ')
+    .replace(/[#*>\-\[\]()]/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+  return text.split(/\s+/).length;
+}
+
+/* ─── RENDER ARTICLE ─── */
 
 function renderArticle(a){
   var wc=wordCount(a.content);
   var rt=Math.max(1,Math.round(wc/220));
-  var content=parseContent(a.content);
 
   var html='<div class="art-wrap">';
 
@@ -543,7 +571,8 @@ function renderArticle(a){
 
   if(a.image_url)html+='<img src="'+esc(a.image_url)+'" alt="'+esc(a.title)+'" class="art-feat-img" loading="eager">';
 
-  html+='<div class="art-body" id="artBody"><p>'+content+'</p></div>';
+  // Hybrid content renderer — HTML or markdown
+  html+='<div class="art-body" id="artBody">'+renderContent(a.content)+'</div>';
 
   var su=encodeURIComponent(location.href), st=encodeURIComponent(a.title);
   html+='<div class="share-bar">'
