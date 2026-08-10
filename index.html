@@ -240,56 +240,112 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .ft-email::placeholder{color:var(--ink5)}
 .ft-btn{padding:9px 13px;background:var(--ink);color:var(--white);border:none;cursor:pointer;font-family:var(--fm);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;transition:background .2s;white-space:nowrap}
 .ft-btn:hover{background:var(--red)}
-.ft-msg{font-family:var(--fm);font-size:.54rem;margin-top:6px;min-height:16px}
-.ft-bot{border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:12px;flex-wrap:wrap}
-.ft-copy{font-family:var(--fm);font-size:.52rem;letter-spacing:.06em;color:var(--ink5)}
-.ft-legal{display:flex;gap:16px;align-items:center}
-.ft-legal a{font-family:var(--fm);font-size:.52rem;letter-spacing:.06em;color:var(--ink5);transition:color .2s}
-.ft-legal a:hover{color:var(--red)}
+/* ============================================================
+   THE PACIFIC SIGNAL — ELITE COHESION PATCH
+   Fixes: footer/header mismatch, harsh hamburger icon,
+   adds refined "premium print" polish throughout.
+   Paste these overrides after your existing <style> block,
+   or merge the changed rules directly into their originals.
+   ============================================================ */
 
-/* ─── RESPONSIVE ─── */
-@media(max-width:1100px){
-  .spot-grid{grid-template-columns:repeat(2,1fr)}
-  .spot-card:nth-child(2){border-right:none}
-  .spot-card:nth-child(3){border-right:1px solid var(--rule)}
-  .latest-grid{grid-template-columns:repeat(2,1fr)}
-  .art-card:nth-child(2){border-right:none;padding-right:0}
-  .art-card:nth-child(3){border-right:1px solid var(--rule);padding-right:20px}
-  .ft-top{grid-template-columns:1fr 1fr;gap:28px}
-  .mr-list{grid-template-columns:repeat(3,1fr)}
-  .mr-item:nth-child(3){border-right:none}
+/* ---- 1. UNIFY THE PALETTE RELATIONSHIP ----
+   Header/body use --paper. Footer used a near-identical
+   --paper-w, which read as an accident rather than a choice.
+   Fix: push the footer to a deliberately deeper tone and
+   strengthen the divider so the shift feels intentional. */
+
+:root{
+  --paper-w:#EFE9DA;      /* was #F0ECE2 — now clearly deeper than --paper */
+  --footer-rule:#C9C2AF;  /* new — a touch stronger than --rule2 for the seam */
 }
-@media(max-width:860px){
-  .hero-grid{grid-template-columns:1fr}
-  .hero-img,.hero-ph{min-height:240px}
-  .hero-body{border-left:1px solid var(--rule);border-top:none;padding:24px 22px}
-  .feed-grid{grid-template-columns:1fr}
-  .feed-item:nth-child(odd){padding-right:0;border-right:none}
-  .feed-item:nth-child(even){padding-left:0}
-  .feed-item{border-bottom:1px solid var(--rule)!important}
-  .feed-item:last-child{border-bottom:none!important}
-  .mr-list{grid-template-columns:repeat(2,1fr)}
-  .mr-item:nth-child(2){border-right:none}
-  .mr-item:nth-child(3){border-right:1px solid var(--rule)}
+
+.site-footer{
+  background:var(--paper-w);
+  border-top:1px solid var(--footer-rule);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4);
+  padding:60px 0 0;
 }
-@media(max-width:768px){
-  .h-nav{display:none}.btn-sub{display:none}.btn-ham{display:flex}
-  .spot-grid{grid-template-columns:1fr}
-  .spot-card{border-right:none;border-bottom:1px solid var(--rule)}
-  .spot-card:last-child{border-bottom:none}
-  .latest-grid{grid-template-columns:1fr}
-  .art-card{border-right:none;padding-right:0;border-bottom:1px solid var(--rule);padding-bottom:22px}
-  .art-card:last-child{border-bottom:none}
-  .vis-ov{padding:22px 20px}
-  .mr-list{grid-template-columns:1fr 1fr}
+
+/* ---- 2. SOFTEN THE HAMBURGER ICON ----
+   --ink (#1A1814) sat starkly black against the warm cream
+   header. Bring it into the same tonal family as the nav
+   links (--ink3), with a refined hover into gold, matching
+   how .nav-a already behaves. */
+
+.btn-ham{
+  color:var(--ink3);
+  border-radius:50%;
+  transition:color .2s ease, background .2s ease;
 }
-@media(max-width:540px){
-  .ft-top{grid-template-columns:1fr;gap:24px}
-  .ft-bot{flex-direction:column;align-items:flex-start;gap:8px}
-  .mr-list{grid-template-columns:1fr}
-  .mr-item{border-right:none!important;padding:10px 0;border-bottom:1px solid var(--rule)}
-  .mr-item:last-child{border-bottom:none}
+.btn-ham:hover{
+  color:var(--red);
+  background:rgba(180,154,94,.08); /* faint gold wash, not flat gray */
 }
+.btn-ham:active{
+  background:rgba(180,154,94,.14);
+}
+
+/* ---- 3. SAME TREATMENT FOR THE SEARCH ICON ----
+   btn-search already used --ink3 → --red, so it was already
+   correct. This just gives it the matching circular hover
+   so both icons feel like one system. */
+
+.btn-search{
+  border-radius:50%;
+  transition:color .2s ease, background .2s ease;
+}
+.btn-search:hover{
+  background:rgba(180,154,94,.08);
+}
+
+/* ---- 4. MOBILE MENU CLOSE BUTTON — match the same logic ----
+   Currently a flat, low-contrast gray with no hover polish. */
+
+.m-close{
+  border-radius:50%;
+  padding:6px 9px;
+  transition:color .2s ease, background .2s ease;
+}
+.m-close:hover{
+  color:var(--gold-l);
+  background:rgba(255,255,255,.06);
+}
+
+/* ---- 5. FOOTER LINK COLUMNS — small elite touches ----
+   Slightly stronger heading rule + tighter link hover motion
+   for a more considered, less "template" feel. */
+
+.ft-col-ttl{
+  border-bottom:1px solid var(--footer-rule);
+}
+
+.ft-links a{
+  position:relative;
+  display:inline-block;
+  transition:color .2s ease, transform .2s ease;
+}
+.ft-links a:hover{
+  color:var(--red);
+  transform:translateX(2px);
+}
+
+/* ---- 6. NEWSLETTER FORM — align with footer's deeper tone ---- */
+
+.ft-email{
+  background:var(--paper);       /* lighter than footer bg = clear input field */
+  border:1px solid var(--footer-rule);
+}
+.ft-email:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(180,154,94,.12);
+}
+
+/* ---- 7. FOOTER BOTTOM BAR — subtle refinement ---- */
+
+.ft-bot{
+  border-top:1px solid var(--footer-rule);
+}
+
 </style>
 </head>
 <body>
