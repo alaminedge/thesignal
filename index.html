@@ -123,7 +123,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .cat-back{font-family:var(--fm);font-size:.56rem;letter-spacing:.08em;color:var(--gold);display:inline-flex;align-items:center;gap:5px;transition:color .2s}
 .cat-back:hover{color:var(--red)}
 
-/* ─── HERO — Magazine-style: image with headline overlay, excerpt below ─── */
+/* ─── HERO — Magazine-style ─── */
 .hero-sec{margin-bottom:48px}
 .hero-card{display:block;text-decoration:none;color:var(--ink)}
 /* Image wrapper */
@@ -134,13 +134,15 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .hero-ph-m{font-family:var(--fd);font-size:5rem;font-weight:300;font-style:italic;color:var(--rule2)}
 /* Light gradient overlay — just enough for headline readability */
 .hero-img-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,24,20,.55) 0%,rgba(26,24,20,.12) 40%,rgba(26,24,20,0) 70%);pointer-events:none}
-/* Category badge — top-left */
+/* "Featured" badge — top-left */
 .hero-badge{position:absolute;top:24px;left:24px;font-family:var(--fm);font-size:.48rem;letter-spacing:.16em;text-transform:uppercase;padding:6px 10px;background:var(--red);color:var(--white);z-index:2}
-/* Headline — bottom-left on image */
+/* Category eyebrow + Headline — bottom-left on image */
 .hero-ttl-wrap{position:absolute;bottom:0;left:0;right:0;padding:0 0 28px 28px;z-index:2;max-width:780px}
+.hero-eyebrow{font-family:var(--fm);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-l);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:var(--gold-l);opacity:.6}
 .hero-ttl{font-family:var(--fd);font-size:clamp(1.6rem,3.2vw,2.8rem);font-weight:700;line-height:1.14;letter-spacing:-.01em;color:var(--white);text-shadow:0 1px 12px rgba(0,0,0,.4);transition:color .2s}
 .hero-card:hover .hero-ttl{color:var(--gold-l)}
-/* Excerpt + meta + CTA — below image */
+/* Excerpt + meta + CTA — below image on paper */
 .hero-body{padding:28px 28px 20px;max-width:780px}
 .hero-exc{font-family:var(--fb);font-size:1.08rem;color:var(--ink3);line-height:1.7;font-weight:300;margin-bottom:18px}
 .hero-meta{display:flex;align-items:center;font-family:var(--fm);font-size:.56rem;letter-spacing:.05em;color:var(--ink5);flex-wrap:wrap;gap:0;margin-bottom:18px}
@@ -283,6 +285,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   .btn-ham{display:flex}
   .hero-img-wrap,.hero-img,.hero-ph{min-height:300px}
   .hero-ttl-wrap{padding:0 0 18px 18px}
+  .hero-eyebrow{font-size:.46rem;margin-bottom:8px}
   .hero-ttl{font-size:1.4rem}
   .hero-body{padding:18px 18px 14px}
   .hero-exc{font-size:.92rem}
@@ -299,6 +302,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 @media(max-width:540px){
   .hero-img-wrap,.hero-img,.hero-ph{min-height:240px}
   .hero-ttl-wrap{padding:0 0 14px 14px}
+  .hero-eyebrow{font-size:.44rem;margin-bottom:6px}
   .hero-ttl{font-size:1.2rem}
   .hero-body{padding:14px 14px 12px}
   .hero-exc{font-size:.84rem}
@@ -404,6 +408,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
         <div class="hero-img-ov"></div>
         <span class="sk" style="position:absolute;top:24px;left:24px;height:22px;width:72px;background:rgba(255,255,255,.15);z-index:3;border-radius:2px"></span>
         <div class="hero-ttl-wrap">
+          <span class="sk" style="height:10px;width:90px;background:rgba(255,255,255,.18);margin-bottom:10px"></span>
           <span class="sk" style="height:44px;width:88%;background:rgba(255,255,255,.12);margin-bottom:10px"></span>
           <span class="sk" style="height:44px;width:58%;background:rgba(255,255,255,.12)"></span>
         </div>
@@ -668,8 +673,11 @@ function renderHero(h){
     +'<div class="hero-img-wrap">'
     +(h.image_url?'<img src="'+esc(h.image_url)+'" alt="'+esc(h.title)+'" class="hero-img" loading="eager">':'<div class="hero-ph"><span class="hero-ph-m">TPS</span></div>')
     +'<div class="hero-img-ov"></div>'
-    +'<div class="hero-badge">'+esc(h.category_name||'Featured')+'</div>'
-    +'<div class="hero-ttl-wrap"><h2 class="hero-ttl">'+esc(h.title)+'</h2></div>'
+    +'<div class="hero-badge">Featured</div>'
+    +'<div class="hero-ttl-wrap">'
+    +'<div class="hero-eyebrow">'+esc(h.category_name||'Analysis')+'</div>'
+    +'<h2 class="hero-ttl">'+esc(h.title)+'</h2>'
+    +'</div>'
     +'</div>'
     +'<div class="hero-body">'
     +(h.excerpt?'<p class="hero-exc">'+esc(h.excerpt)+'</p>':'')
