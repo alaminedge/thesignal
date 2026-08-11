@@ -123,27 +123,28 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .cat-back{font-family:var(--fm);font-size:.56rem;letter-spacing:.08em;color:var(--gold);display:inline-flex;align-items:center;gap:5px;transition:color .2s}
 .cat-back:hover{color:var(--red)}
 
-/* ─── HERO — Magazine-style ─── */
+/* ─── HERO — Magazine-style, full-bleed image, text column locked to site grid ─── */
 .hero-sec{margin-bottom:48px}
 .hero-card{display:block;text-decoration:none;color:var(--ink)}
-/* Image wrapper */
 .hero-img-wrap{position:relative;overflow:hidden;background:var(--ink);min-height:460px}
 .hero-img{width:100%;height:100%;min-height:460px;object-fit:cover;display:block;transition:transform 1.2s cubic-bezier(.4,0,.2,1),opacity .4s}
 .hero-card:hover .hero-img{transform:scale(1.03)}
 .hero-ph{min-height:460px;width:100%;background:var(--paper-d);display:flex;align-items:center;justify-content:center}
 .hero-ph-m{font-family:var(--fd);font-size:5rem;font-weight:300;font-style:italic;color:var(--rule2)}
-/* Light gradient overlay — just enough for headline readability */
 .hero-img-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,24,20,.55) 0%,rgba(26,24,20,.12) 40%,rgba(26,24,20,0) 70%);pointer-events:none}
-/* "Featured" badge — top-left */
 .hero-badge{position:absolute;top:24px;left:24px;font-family:var(--fm);font-size:.48rem;letter-spacing:.16em;text-transform:uppercase;padding:6px 10px;background:var(--red);color:var(--white);z-index:2}
-/* Category eyebrow + Headline — bottom-left on image */
-.hero-ttl-wrap{position:absolute;bottom:0;left:0;right:0;padding:0 0 28px 28px;z-index:2;max-width:780px}
+/* Text sits full-width but its content is clamped to the same centered column as the rest of the site (.wrap) */
+.hero-ttl-wrap{position:absolute;bottom:0;left:0;right:0;padding-bottom:28px;z-index:2}
+.hero-ttl-inner{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
+.hero-ttl-col{max-width:780px}
 .hero-eyebrow{font-family:var(--fm);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-l);margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:var(--gold-l);opacity:.6}
 .hero-ttl{font-family:var(--fd);font-size:clamp(1.6rem,3.2vw,2.8rem);font-weight:700;line-height:1.14;letter-spacing:-.01em;color:var(--white);text-shadow:0 1px 12px rgba(0,0,0,.4);transition:color .2s}
 .hero-card:hover .hero-ttl{color:var(--gold-l)}
-/* Excerpt + meta + CTA — below image on paper */
-.hero-body{padding:28px 28px 20px;max-width:780px}
+/* Excerpt + meta + CTA — below image on paper, same clamped column */
+.hero-body{padding:28px 0 20px}
+.hero-body-inner{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
+.hero-body-col{max-width:780px}
 .hero-exc{font-family:var(--fb);font-size:1.08rem;color:var(--ink3);line-height:1.7;font-weight:300;margin-bottom:18px}
 .hero-meta{display:flex;align-items:center;font-family:var(--fm);font-size:.56rem;letter-spacing:.05em;color:var(--ink5);flex-wrap:wrap;gap:0;margin-bottom:18px}
 .hero-meta-author{color:var(--ink3);font-weight:500}
@@ -159,7 +160,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .sec-ttl{font-family:var(--fd);font-size:1.2rem;font-weight:600;color:var(--ink)}
 .sec-sub{font-family:var(--fm);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink5)}
 
-/* ─── MOST READ ─── */
+/* ─── MOST READ — sits directly above Latest ─── */
 .mr-sec{padding-bottom:36px;border-bottom:1px solid var(--rule);margin-bottom:42px}
 .mr-list{display:grid;grid-template-columns:repeat(5,1fr);gap:0}
 .mr-item{display:flex;gap:11px;padding:0 18px;text-decoration:none;color:var(--ink);border-right:1px solid var(--rule)}
@@ -171,7 +172,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .mr-ttl{font-family:var(--fd);font-size:.92rem;font-weight:600;line-height:1.3;color:var(--ink);transition:color .2s}
 .mr-item:hover .mr-ttl{color:var(--red2)}
 
-/* ─── INTELLIGENCE FEED ─── */
+/* ─── INTELLIGENCE FEED — vertical list, headline+read-time left / thumbnail right ─── */
 .feed-sec{padding-bottom:8px;border-bottom:1px solid var(--rule);margin-bottom:42px}
 .feed-list{display:flex;flex-direction:column}
 .feed-item{display:grid;grid-template-columns:1fr 128px;align-items:center;gap:28px;padding:30px 0;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--ink)}
@@ -269,9 +270,6 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 }
 @media(max-width:860px){
   .hero-img-wrap,.hero-img,.hero-ph{min-height:360px}
-  .hero-ttl-wrap{padding:0 0 22px 22px}
-  .hero-body{padding:22px 22px 16px}
-  .hero-badge{top:18px;left:18px}
   .mr-list{grid-template-columns:repeat(2,1fr)}
   .mr-item:nth-child(2){border-right:none}
   .mr-item:nth-child(3){border-right:1px solid var(--rule)}
@@ -284,10 +282,8 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   .btn-sub{display:none}
   .btn-ham{display:flex}
   .hero-img-wrap,.hero-img,.hero-ph{min-height:300px}
-  .hero-ttl-wrap{padding:0 0 18px 18px}
   .hero-eyebrow{font-size:.46rem;margin-bottom:8px}
   .hero-ttl{font-size:1.4rem}
-  .hero-body{padding:18px 18px 14px}
   .hero-exc{font-size:.92rem}
   .hero-badge{top:14px;left:14px;font-size:.44rem;padding:4px 8px}
   .spot-grid{grid-template-columns:1fr}
@@ -301,10 +297,8 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 }
 @media(max-width:540px){
   .hero-img-wrap,.hero-img,.hero-ph{min-height:240px}
-  .hero-ttl-wrap{padding:0 0 14px 14px}
   .hero-eyebrow{font-size:.44rem;margin-bottom:6px}
   .hero-ttl{font-size:1.2rem}
-  .hero-body{padding:14px 14px 12px}
   .hero-exc{font-size:.84rem}
   .ft-top{grid-template-columns:1fr;gap:24px}
   .ft-bot{flex-direction:column;align-items:flex-start;gap:8px}
@@ -400,7 +394,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 </div>
 
 <main>
-  <!-- HERO SKELETON -->
+  <!-- HERO SKELETON — full-bleed image, text column clamped to site grid -->
   <section class="hero-sec" id="heroSec">
     <div class="hero-card" style="pointer-events:none">
       <div class="hero-img-wrap">
@@ -408,17 +402,25 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
         <div class="hero-img-ov"></div>
         <span class="sk" style="position:absolute;top:24px;left:24px;height:22px;width:72px;background:rgba(255,255,255,.15);z-index:3;border-radius:2px"></span>
         <div class="hero-ttl-wrap">
-          <span class="sk" style="height:10px;width:90px;background:rgba(255,255,255,.18);margin-bottom:10px"></span>
-          <span class="sk" style="height:44px;width:88%;background:rgba(255,255,255,.12);margin-bottom:10px"></span>
-          <span class="sk" style="height:44px;width:58%;background:rgba(255,255,255,.12)"></span>
+          <div class="hero-ttl-inner">
+            <div class="hero-ttl-col">
+              <span class="sk" style="height:10px;width:90px;background:rgba(255,255,255,.18);margin-bottom:10px"></span>
+              <span class="sk" style="height:44px;width:88%;background:rgba(255,255,255,.12);margin-bottom:10px"></span>
+              <span class="sk" style="height:44px;width:58%;background:rgba(255,255,255,.12)"></span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="hero-body">
-        <span class="sk sk-line"></span>
-        <span class="sk sk-line-med"></span>
-        <span class="sk sk-line-short" style="margin-bottom:18px"></span>
-        <span class="sk" style="height:11px;width:180px;margin-bottom:16px"></span>
-        <span class="sk" style="height:11px;width:130px"></span>
+        <div class="hero-body-inner">
+          <div class="hero-body-col">
+            <span class="sk sk-line"></span>
+            <span class="sk sk-line-med"></span>
+            <span class="sk sk-line-short" style="margin-bottom:18px"></span>
+            <span class="sk" style="height:11px;width:180px;margin-bottom:16px"></span>
+            <span class="sk" style="height:11px;width:130px"></span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -549,6 +551,9 @@ function timeAgo(ds){
   return new Date(ds).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
 }
 
+/* Reading time: use a.reading_time / a.read_minutes if the API supplies one,
+   otherwise fall back to an estimate from word_count, otherwise a soft
+   estimate derived from excerpt length so the label never disappears. */
 function readTime(a){
   var mins=a&&(a.reading_time||a.read_minutes);
   if(!mins&&a&&a.word_count)mins=Math.max(1,Math.round(a.word_count/200));
@@ -561,6 +566,7 @@ function readTime(a){
 
 document.getElementById('ftCopy').innerHTML='&copy; '+new Date().getFullYear()+' The Pacific Signal. All rights reserved.';
 
+/* HEADER SCROLL */
 var hdr=document.getElementById('siteHeader'),lastY=0;
 window.addEventListener('scroll',function(){
   var y=window.scrollY;
@@ -570,9 +576,11 @@ window.addEventListener('scroll',function(){
   lastY=y;
 },{passive:true});
 
+/* MOBILE NAV */
 function openMob(){document.getElementById('mNav').classList.add('on');document.getElementById('mOv').classList.add('on');document.body.style.overflow='hidden'}
 function closeMob(){document.getElementById('mNav').classList.remove('on');document.getElementById('mOv').classList.remove('on');document.body.style.overflow=''}
 
+/* SEARCH */
 var searchTimer=null;
 function openSearch(){
   document.getElementById('searchOv').classList.add('on');
@@ -610,6 +618,7 @@ async function runSearch(q){
   }catch(e){c.innerHTML='<div class="search-empty">Search unavailable. Please try again.</div>'}
 }
 
+/* STATE */
 var pg=1,hasMore=false,isCat=false,curCat='';
 var params=new URLSearchParams(location.search);
 var filterCat=params.get('category');
@@ -631,6 +640,7 @@ if(filterCat){
   loadHome(1);
 }
 
+/* LOADERS */
 async function loadHome(p){
   try{
     var r=await fetch('/api/homepage?page='+(p||1));
@@ -674,16 +684,16 @@ function renderHero(h){
     +(h.image_url?'<img src="'+esc(h.image_url)+'" alt="'+esc(h.title)+'" class="hero-img" loading="eager">':'<div class="hero-ph"><span class="hero-ph-m">TPS</span></div>')
     +'<div class="hero-img-ov"></div>'
     +'<div class="hero-badge">Featured</div>'
-    +'<div class="hero-ttl-wrap">'
+    +'<div class="hero-ttl-wrap"><div class="hero-ttl-inner"><div class="hero-ttl-col">'
     +'<div class="hero-eyebrow">'+esc(h.category_name||'Analysis')+'</div>'
     +'<h2 class="hero-ttl">'+esc(h.title)+'</h2>'
+    +'</div></div></div>'
     +'</div>'
-    +'</div>'
-    +'<div class="hero-body">'
+    +'<div class="hero-body"><div class="hero-body-inner"><div class="hero-body-col">'
     +(h.excerpt?'<p class="hero-exc">'+esc(h.excerpt)+'</p>':'')
     +'<div class="hero-meta"><span class="hero-meta-author">'+esc(h.author||'The Pacific Signal')+'</span><span class="hero-meta-sep">&mdash;</span><span class="hero-meta-time">'+timeAgo(h.published_at||h.created_at)+'</span></div>'
     +'<span class="hero-read">Continue Reading <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-7-7l7 7-7 7"/></svg></span>'
-    +'</div></a>';
+    +'</div></div></div></a>';
 }
 
 function renderMostRead(items){
