@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archive — The Pacific Signal</title>
+<meta name="description" content="Browse and search The Pacific Signal's archive of past analysis and briefings, by region or topic.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,300;1,8..60,400;1,8..60,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F4EE;--paper-w:#EFE9DA;--paper-d:#E8E2D4;
+  --ink:#1A1814;--ink2:#2E2B24;--ink3:#5C5849;--ink4:#8C8878;--ink5:#B0AB9E;
+  --rule:#DDD9CE;--rule2:#CAC5B8;--footer-rule:#C9C2AF;
+  --gold:#B49A5E;--gold-l:#D4BA82;--gold-p:#F2EBD8;
+  --red:#7A1E1E;--red2:#5C1616;
+  --white:#FFFFFF;
+  --shadow-col:26,24,20;
+  --max:1280px;--g:clamp(16px,3vw,32px);
+  --fd:'Cormorant Garamond',Georgia,serif;
+  --fb:'Source Serif 4',Georgia,serif;
+  --fm:'DM Mono',monospace;
+}
+[data-theme="dark"]{
+  --paper:#15130F;--paper-w:#1C1A15;--paper-d:#242119;
+  --ink:#EDE8DC;--ink2:#D8D2C2;--ink3:#A9A290;--ink4:#7C7666;--ink5:#5C574A;
+  --rule:#2C2920;--rule2:#38342A;--footer-rule:#2C2920;
+  --gold:#C7AC72;--gold-l:#E0C994;--gold-p:#2A2413;
+  --red:#C05656;--red2:#D97878;
+  --white:#0F0E0B;
+  --shadow-col:0,0,0;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;min-height:100vh;transition:background .25s ease,color .25s ease}
+html[data-theme="dark"]{color-scheme:dark}
+a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:auto}button{font-family:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
+
+/* PROGRESS BAR */
+.prog{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--gold),var(--red));z-index:9999;transition:width .12s linear;pointer-events:none}
+
+/* HEADER */
+.site-header{position:sticky;top:0;z-index:300;background:var(--paper);border-bottom:1px solid var(--rule);transition:box-shadow .3s ease,transform .38s cubic-bezier(.4,0,.2,1)}
+.site-header.scrolled{box-shadow:0 2px 28px rgba(26,24,20,.08)}
+.site-header.hide{transform:translateY(-100%)}
+.h-bar{max-width:var(--max);margin:0 auto;padding:0 var(--g);height:56px;display:flex;align-items:center;gap:0}
+.h-logo{display:flex;align-items:center;gap:0;flex-shrink:0;text-decoration:none;color:inherit;margin-right:auto}
+.h-logo img{height:32px;width:auto;display:block;flex-shrink:0}
+.h-logo-div{width:1px;height:20px;background:var(--rule2);margin:0 12px;flex-shrink:0}
+.h-logo-text{display:flex;flex-direction:column;gap:1px}
+.h-logo-name{font-family:var(--fd);font-size:1.02rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink);line-height:1}
+.h-logo-tag{font-family:var(--fm);font-size:.46rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink5)}
+.h-nav{display:flex;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 14px}
+.h-nav::-webkit-scrollbar{display:none}
+.nav-a{font-family:var(--fm);font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);white-space:nowrap;padding:0 12px;height:56px;display:flex;align-items:center;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
+.nav-a:hover{color:var(--ink);border-bottom-color:var(--gold-l)}
+.nav-a.on{color:var(--red);border-bottom-color:var(--red);font-weight:500}
+.h-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.btn-search{background:none;border:none;color:var(--ink3);cursor:pointer;padding:7px;display:flex;align-items:center;transition:color .2s}
+.btn-search:hover{color:var(--red)}
+.btn-search svg{width:17px;height:17px}
+.btn-sub{font-family:var(--fm);font-size:.54rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:7px 16px;background:var(--ink);color:var(--white);border:none;cursor:pointer;transition:background .2s;white-space:nowrap;display:inline-block}
+.btn-sub:hover{background:var(--ink2);color:var(--white)}
+.btn-ham{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:5px;align-items:center}
+.btn-ham svg{width:20px;height:20px}
+
+/* SEARCH OVERLAY (global site search) */
+.search-ov{position:fixed;inset:0;background:rgba(26,24,20,.6);z-index:600;display:none;backdrop-filter:blur(3px);padding:80px 20px 0}
+.search-ov.on{display:block}
+.search-panel{max-width:640px;margin:0 auto;background:var(--paper);border:1px solid var(--rule);box-shadow:0 24px 80px rgba(26,24,20,.3)}
+.search-in-row{display:flex;align-items:center;border-bottom:1px solid var(--rule);padding:0 18px}
+.search-in-row svg{width:16px;height:16px;color:var(--ink5);flex-shrink:0}
+.search-input{flex:1;border:none;background:none;outline:none;padding:16px 12px;font-family:var(--fb);font-size:1.05rem;color:var(--ink)}
+.search-input::placeholder{color:var(--ink5)}
+.search-close{background:none;border:none;color:var(--ink5);cursor:pointer;font-size:1rem;padding:8px}
+.search-results{max-height:60vh;overflow-y:auto;padding:8px 0}
+.search-empty{padding:32px 24px;text-align:center;font-family:var(--fb);font-style:italic;color:var(--ink4)}
+.sr-item{display:flex;gap:12px;padding:12px 18px;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--rule)}
+.sr-item:last-child{border-bottom:none}
+.sr-item:hover{background:var(--paper-w)}
+.sr-cat{font-family:var(--fm);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:3px}
+.sr-ttl{font-family:var(--fd);font-size:1rem;font-weight:600;line-height:1.3}
+
+/* FULL-PAGE MENU */
+.fp-menu{position:fixed;inset:0;z-index:500;background:var(--paper);display:none;flex-direction:column;overflow-y:auto}
+.fp-menu.on{display:flex}
+.fp-head{display:flex;align-items:center;justify-content:space-between;padding:16px var(--g);border-bottom:1px solid var(--rule);flex-shrink:0}
+.fp-head img{height:28px}
+.fp-close{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:1.2rem;padding:8px;transition:color .2s}
+.fp-close:hover{color:var(--red)}
+.fp-body{flex:1;max-width:var(--max);width:100%;margin:0 auto;padding:32px var(--g) 24px;display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.fp-group-ttl{font-family:var(--fm);font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+.fp-links{display:flex;flex-direction:column}
+.fp-link{font-family:var(--fd);font-size:1.15rem;font-weight:500;color:var(--ink2);padding:9px 0;border-bottom:1px solid var(--rule);transition:color .18s,padding-left .18s}
+.fp-link:hover{color:var(--red);padding-left:6px}
+.fp-foot{border-top:1px solid var(--rule);padding:20px var(--g);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;flex-shrink:0}
+.theme-toggle{display:inline-flex;border:1px solid var(--rule2);border-radius:999px;padding:3px;gap:2px;background:var(--paper-w)}
+.theme-opt{font-family:var(--fm);font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:999px;border:none;background:none;color:var(--ink4);cursor:pointer;transition:all .2s}
+.theme-opt.on{background:var(--ink);color:var(--white)}
+.fp-sub{font-family:var(--fm);font-size:.58rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:11px 22px;background:var(--ink);color:var(--white);border:none;cursor:pointer;white-space:nowrap;transition:background .2s}
+.fp-sub:hover{background:var(--red)}
+@media(max-width:640px){
+  .fp-body{grid-template-columns:1fr;gap:28px;padding:24px 20px}
+  .fp-link{font-size:1.05rem}
+  .fp-foot{flex-direction:column;align-items:stretch}
+  .fp-sub{width:100%;text-align:center;padding:13px}
+}
+
+/* ARCHIVE PAGE HEAD */
+.arc-hero{padding:34px 0 26px;border-bottom:1px solid var(--rule);margin-bottom:32px}
+.arc-eye{font-family:var(--fm);font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink5);margin-bottom:8px}
+.arc-ttl{font-family:var(--fd);font-size:clamp(1.9rem,4.4vw,3rem);font-weight:600;font-style:italic;color:var(--ink);line-height:1.1;margin-bottom:10px}
+.arc-desc{font-family:var(--fb);font-size:1rem;color:var(--ink3);font-weight:300;max-width:640px}
+
+/* FILTER BAR */
+.filter-bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding-bottom:32px;margin-bottom:8px}
+.filter-sel{font-family:var(--fm);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;padding:11px 14px;background:var(--white);border:1px solid var(--rule2);color:var(--ink2);cursor:pointer;min-width:220px}
+.filter-input-wrap{flex:1;min-width:220px;display:flex;align-items:center;border:1px solid var(--rule2);background:var(--white);padding:0 12px}
+.filter-input-wrap svg{width:14px;height:14px;color:var(--ink5);flex-shrink:0}
+.filter-input{flex:1;border:none;background:none;outline:none;padding:11px 10px;font-family:var(--fb);font-size:.92rem;color:var(--ink)}
+.filter-count{font-family:var(--fm);font-size:.56rem;letter-spacing:.06em;color:var(--ink5);white-space:nowrap}
+
+/* RESULTS — reuse the feed-item pattern from the homepage */
+.arc-list{display:flex;flex-direction:column;padding-bottom:8px}
+.feed-item{display:grid;grid-template-columns:1fr 128px;align-items:center;gap:28px;padding:26px 0;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--ink)}
+.feed-item:last-child{border-bottom:none}
+.feed-body{min-width:0}
+.feed-cat{font-family:var(--fm);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:9px}
+.feed-ttl{font-family:var(--fd);font-size:1.32rem;font-weight:700;line-height:1.22;letter-spacing:-.01em;color:var(--ink);margin-bottom:10px;transition:color .2s}
+.feed-item:hover .feed-ttl{color:var(--red2)}
+.feed-exc{font-family:var(--fb);font-size:.88rem;color:var(--ink3);font-weight:300;line-height:1.55;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.feed-meta{font-family:var(--fm);font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink5)}
+.feed-thumb{width:128px;height:92px;object-fit:cover;background:var(--paper-d);flex-shrink:0;transition:transform .6s cubic-bezier(.4,0,.2,1)}
+.feed-item:hover .feed-thumb{transform:scale(1.045)}
+.feed-thumb-ph{width:128px;height:92px;background:var(--paper-d);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.feed-thumb-ph span{font-family:var(--fd);font-size:1.1rem;font-style:italic;color:var(--rule2)}
+
+.arc-empty{text-align:center;padding:60px 20px;font-family:var(--fb);font-style:italic;color:var(--ink4)}
+
+/* LOAD MORE */
+.load-more{text-align:center;padding:30px 0 60px;display:none}
+.btn-more{font-family:var(--fm);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;padding:10px 36px;background:transparent;color:var(--ink);border:1px solid var(--ink4);cursor:pointer;transition:all .2s}
+.btn-more:hover{background:var(--ink);color:var(--white)}
+.btn-more:disabled{opacity:.35;cursor:not-allowed}
+
+/* SKELETON */
+@keyframes skshimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sk{background:linear-gradient(90deg,var(--paper-d) 25%,var(--paper-w) 50%,var(--paper-d) 75%);background-size:200% 100%;animation:skshimmer 1.6s ease-in-out infinite;border-radius:2px;display:block}
+
+/* FOOTER */
+.site-footer{background:var(--paper-w);border-top:1px solid var(--footer-rule);box-shadow:inset 0 1px 0 rgba(255,255,255,.4);padding:56px 0 0}
+.ft-in{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
+.ft-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.4fr;gap:44px;padding-bottom:44px}
+.ft-logo-row{display:flex;align-items:center;gap:9px;margin-bottom:10px;text-decoration:none;color:var(--ink);width:fit-content}
+.ft-logo-row img{height:26px;opacity:.7}
+.ft-brand-name{font-family:var(--fd);font-size:1rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.ft-brand-desc{font-family:var(--fb);font-size:.88rem;color:var(--ink4);line-height:1.7;font-weight:300;max-width:260px}
+.ft-col-ttl{font-family:var(--fm);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink5);margin-bottom:13px;padding-bottom:8px;border-bottom:1px solid var(--footer-rule)}
+.ft-links{display:flex;flex-direction:column;gap:7px}
+.ft-links a{font-family:var(--fb);font-size:.86rem;color:var(--ink4);font-weight:300;transition:color .2s,transform .2s;display:inline-block}
+.ft-links a:hover{color:var(--red);transform:translateX(2px)}
+.ft-nl-txt{font-family:var(--fb);font-size:.86rem;color:var(--ink4);font-weight:300;margin-bottom:11px;line-height:1.6}
+.ft-form{display:flex}
+.ft-email{flex:1;padding:9px 12px;background:var(--paper);border:1px solid var(--footer-rule);border-right:none;font-family:var(--fb);font-size:.88rem;color:var(--ink);outline:none;transition:border-color .2s}
+.ft-btn{padding:9px 13px;background:var(--ink);color:var(--white);border:none;cursor:pointer;font-family:var(--fm);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;transition:background .2s;white-space:nowrap}
+.ft-msg{font-family:var(--fm);font-size:.54rem;margin-top:6px;min-height:16px}
+.ft-bot{border-top:1px solid var(--footer-rule);display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:12px;flex-wrap:wrap}
+.ft-copy{font-family:var(--fm);font-size:.52rem;letter-spacing:.06em;color:var(--ink5)}
+.ft-legal{display:flex;gap:16px;align-items:center}
+.ft-legal a{font-family:var(--fm);font-size:.52rem;letter-spacing:.06em;color:var(--ink5);transition:color .2s}
+.ft-legal a:hover{color:var(--red)}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .ft-top{grid-template-columns:1fr 1fr;gap:28px}
+}
+@media(max-width:860px){
+  .feed-item{grid-template-columns:1fr 104px;gap:18px;padding:22px 0}
+  .feed-ttl{font-size:1.14rem}
+  .feed-thumb,.feed-thumb-ph{width:104px;height:78px}
+}
+@media(max-width:768px){
+  .h-nav{display:none}
+  .btn-sub{display:none}
+  .btn-ham{display:flex}
+  .arc-hero{padding:22px 0 20px;margin-bottom:22px}
+  .filter-bar{padding-bottom:22px}
+  .filter-sel,.filter-input-wrap{min-width:100%}
+}
+@media(max-width:540px){
+  .ft-top{grid-template-columns:1fr;gap:24px}
+  .ft-bot{flex-direction:column;align-items:flex-start;gap:8px}
+  .feed-item{grid-template-columns:1fr 84px;gap:14px;padding:18px 0}
+  .feed-ttl{font-size:1.02rem;margin-bottom:8px}
+  .feed-thumb,.feed-thumb-ph{width:84px;height:64px}
+  .feed-exc{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="prog" id="prog"></div>
+
+<header class="site-header" id="siteHeader">
+  <div class="h-bar">
+    <a href="/" class="h-logo">
+      <img src="/images/tps.png" alt="The Pacific Signal">
+      <div class="h-logo-div"></div>
+      <div class="h-logo-text">
+        <span class="h-logo-name">The Pacific Signal</span>
+        <span class="h-logo-tag">Beyond the Headlines</span>
+      </div>
+    </a>
+    <nav class="h-nav">
+      <a href="/" class="nav-a">Home</a>
+      <a href="/?category=united-states-canada" class="nav-a">US &amp; Canada</a>
+      <a href="/?category=china-east-asia" class="nav-a">China &amp; East Asia</a>
+      <a href="/?category=europe-uk" class="nav-a">Europe</a>
+      <a href="/?category=middle-east-north-africa" class="nav-a">Middle East</a>
+      <a href="/?category=south-asia" class="nav-a">South Asia</a>
+      <a href="/?category=global-markets-trade" class="nav-a">Markets</a>
+      <a href="/archive.html" class="nav-a on">Archive</a>
+      <a href="javascript:void(0)" class="nav-a" onclick="openMenu()">All Sections &#9662;</a>
+    </nav>
+    <div class="h-right">
+      <button class="btn-search" onclick="openSearch()" aria-label="Search articles">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <a href="/#subscribe" class="btn-sub">Subscribe</a>
+      <button class="btn-ham" onclick="openMenu()" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- SEARCH OVERLAY (global site search, separate from the archive's own filter below) -->
+<div class="search-ov" id="searchOv" onclick="if(event.target===this)closeSearch()">
+  <div class="search-panel">
+    <div class="search-in-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search analysis and briefings…" oninput="onSearchInput()">
+      <button class="search-close" onclick="closeSearch()" aria-label="Close search">&#10005;</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- FULL-PAGE MENU -->
+<div class="fp-menu" id="fpMenu" role="dialog" aria-modal="true" aria-label="Site menu">
+  <div class="fp-head">
+    <img src="/images/tps.png" alt="The Pacific Signal">
+    <button class="fp-close" onclick="closeMenu()" aria-label="Close menu">&#10005;</button>
+  </div>
+  <div class="fp-body">
+    <div>
+      <div class="fp-group-ttl">Regions</div>
+      <div class="fp-links">
+        <a href="/?category=united-states-canada" class="fp-link" onclick="closeMenu()">United States &amp; Canada</a>
+        <a href="/?category=china-east-asia" class="fp-link" onclick="closeMenu()">China &amp; East Asia</a>
+        <a href="/?category=europe-uk" class="fp-link" onclick="closeMenu()">Europe &amp; UK</a>
+        <a href="/?category=russia-post-soviet" class="fp-link" onclick="closeMenu()">Russia &amp; Post-Soviet</a>
+        <a href="/?category=middle-east-north-africa" class="fp-link" onclick="closeMenu()">Middle East &amp; North Africa</a>
+        <a href="/?category=south-asia" class="fp-link" onclick="closeMenu()">South Asia</a>
+        <a href="/?category=southeast-asia-oceania" class="fp-link" onclick="closeMenu()">Southeast Asia &amp; Oceania</a>
+        <a href="/?category=africa" class="fp-link" onclick="closeMenu()">Africa</a>
+        <a href="/?category=latin-america-caribbean" class="fp-link" onclick="closeMenu()">Latin America &amp; Caribbean</a>
+        <a href="/?category=arctic-global-commons" class="fp-link" onclick="closeMenu()">Arctic &amp; Global Commons</a>
+      </div>
+    </div>
+    <div>
+      <div class="fp-group-ttl">Topics</div>
+      <div class="fp-links">
+        <a href="/?category=geopolitics-strategy" class="fp-link" onclick="closeMenu()">Geopolitics &amp; Strategy</a>
+        <a href="/?category=global-markets-trade" class="fp-link" onclick="closeMenu()">Global Markets &amp; Trade</a>
+        <a href="/?category=energy-commodities" class="fp-link" onclick="closeMenu()">Energy &amp; Commodities</a>
+        <a href="/?category=technology-business" class="fp-link" onclick="closeMenu()">Technology &amp; Business</a>
+        <a href="/?category=cybersecurity-digital" class="fp-link" onclick="closeMenu()">Cybersecurity &amp; Digital</a>
+        <a href="/?category=science-health" class="fp-link" onclick="closeMenu()">Science &amp; Health</a>
+        <a href="/?category=climate-environment" class="fp-link" onclick="closeMenu()">Climate &amp; Environment</a>
+        <a href="/?category=democracy-rights" class="fp-link" onclick="closeMenu()">Democracy &amp; Rights</a>
+        <a href="/?category=religion-culture-identity" class="fp-link" onclick="closeMenu()">Religion, Culture &amp; Identity</a>
+        <a href="/?category=arts-media-sports" class="fp-link" onclick="closeMenu()">Arts, Media &amp; Sports</a>
+        <a href="/?category=sports" class="fp-link" onclick="closeMenu()">Sports</a>
+      </div>
+    </div>
+  </div>
+  <div class="fp-foot">
+    <div class="theme-toggle" role="group" aria-label="Theme">
+      <button class="theme-opt" id="themeOptLight" onclick="setTheme('light')">Classic</button>
+      <button class="theme-opt" id="themeOptDark" onclick="setTheme('dark')">Briefing</button>
+    </div>
+    <a href="/#subscribe" class="fp-sub" onclick="closeMenu()">Subscribe Free</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="arc-hero">
+    <div class="arc-eye">The Pacific Signal</div>
+    <h1 class="arc-ttl">Archive</h1>
+    <p class="arc-desc">Past analysis and briefings, organized by region and topic. Older pieces read exactly as they did on the day they were published.</p>
+  </div>
+
+  <div class="filter-bar">
+    <select class="filter-sel" id="catFilter" onchange="resetAndLoad()">
+      <option value="">All Sections</option>
+      <optgroup label="Regions">
+        <option value="united-states-canada">United States &amp; Canada</option>
+        <option value="china-east-asia">China &amp; East Asia</option>
+        <option value="europe-uk">Europe &amp; UK</option>
+        <option value="russia-post-soviet">Russia &amp; Post-Soviet</option>
+        <option value="middle-east-north-africa">Middle East &amp; North Africa</option>
+        <option value="south-asia">South Asia</option>
+        <option value="southeast-asia-oceania">Southeast Asia &amp; Oceania</option>
+        <option value="africa">Africa</option>
+        <option value="latin-america-caribbean">Latin America &amp; Caribbean</option>
+        <option value="arctic-global-commons">Arctic &amp; Global Commons</option>
+      </optgroup>
+      <optgroup label="Topics">
+        <option value="geopolitics-strategy">Geopolitics &amp; Strategy</option>
+        <option value="global-markets-trade">Global Markets &amp; Trade</option>
+        <option value="energy-commodities">Energy &amp; Commodities</option>
+        <option value="technology-business">Technology &amp; Business</option>
+        <option value="cybersecurity-digital">Cybersecurity &amp; Digital</option>
+        <option value="science-health">Science &amp; Health</option>
+        <option value="climate-environment">Climate &amp; Environment</option>
+        <option value="democracy-rights">Democracy &amp; Rights</option>
+        <option value="religion-culture-identity">Religion, Culture &amp; Identity</option>
+        <option value="arts-media-sports">Arts, Media &amp; Sports</option>
+        <option value="sports">Sports</option>
+      </optgroup>
+    </select>
+    <div class="filter-input-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="filter-input" id="qFilter" placeholder="Search the archive…" oninput="onFilterInput()">
+    </div>
+    <span class="filter-count" id="filterCount"></span>
+  </div>
+
+  <div class="arc-list" id="arcList">
+    <div class="sk" style="height:92px;margin-bottom:14px"></div>
+    <div class="sk" style="height:92px;margin-bottom:14px"></div>
+    <div class="sk" style="height:92px;margin-bottom:14px"></div>
+  </div>
+
+  <div class="load-more" id="loadMoreWrap">
+    <button class="btn-more" id="loadMoreBtn" onclick="loadNextPage()">Load More</button>
+  </div>
+</div>
+
+<footer class="site-footer" id="subscribe">
+  <div class="ft-in">
+    <div class="ft-top">
+      <div>
+        <a href="/" class="ft-logo-row">
+          <img src="/images/tps.png" alt="">
+          <span class="ft-brand-name">The Pacific Signal</span>
+        </a>
+        <p class="ft-brand-desc">Independent analysis and explained journalism for the curious mind. We illuminate the forces shaping our world.</p>
+      </div>
+      <div>
+        <div class="ft-col-ttl">Regions</div>
+        <div class="ft-links">
+          <a href="/?category=united-states-canada">United States &amp; Canada</a>
+          <a href="/?category=china-east-asia">China &amp; East Asia</a>
+          <a href="/?category=europe-uk">Europe &amp; UK</a>
+          <a href="/?category=middle-east-north-africa">Middle East</a>
+          <a href="/?category=south-asia">South Asia</a>
+          <a href="/?category=africa">Africa</a>
+          <a href="/?category=latin-america-caribbean">Latin America</a>
+        </div>
+      </div>
+      <div>
+        <div class="ft-col-ttl">Topics</div>
+        <div class="ft-links">
+          <a href="/?category=global-markets-trade">Global Markets</a>
+          <a href="/?category=geopolitics-strategy">Geopolitics</a>
+          <a href="/?category=climate-environment">Climate</a>
+          <a href="/?category=democracy-rights">Democracy</a>
+          <a href="/?category=science-health">Science &amp; Health</a>
+          <a href="/?category=technology-business">Technology</a>
+        </div>
+      </div>
+      <div>
+        <div class="ft-col-ttl">Briefing</div>
+        <p class="ft-nl-txt">The best analysis, delivered free to your inbox each week.</p>
+        <form onsubmit="event.preventDefault();return false">
+          <div class="ft-form">
+            <input type="email" placeholder="Your email" class="ft-email" disabled>
+            <button type="submit" class="ft-btn" disabled>Coming Soon</button>
+          </div>
+        </form>
+        <p class="ft-msg" style="color:var(--ink4)">Newsletter signups aren&rsquo;t open yet &mdash; check back soon.</p>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <span class="ft-copy" id="ftCopy">&copy; The Pacific Signal. All rights reserved.</span>
+      <div class="ft-legal">
+        <a href="/about.html">About</a>
+        <a href="/archive.html">Archive</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/api/rss.xml">RSS</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
+
+function timeAgo(ds){
+  if(!ds)return'';
+  return new Date(ds).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+}
+
+document.getElementById('ftCopy').innerHTML='&copy; '+new Date().getFullYear()+' The Pacific Signal. All rights reserved.';
+
+/* HEADER SCROLL */
+var hdr=document.getElementById('siteHeader'),lastY=0;
+window.addEventListener('scroll',function(){
+  var y=window.scrollY;
+  if(y<80){hdr.classList.remove('hide','scrolled')}
+  else if(y>lastY+5){hdr.classList.add('hide')}
+  else if(y<lastY-3){hdr.classList.remove('hide');hdr.classList.add('scrolled')}
+  lastY=y;
+},{passive:true});
+
+/* FULL-PAGE MENU */
+function openMenu(){document.getElementById('fpMenu').classList.add('on');document.body.style.overflow='hidden'}
+function closeMenu(){document.getElementById('fpMenu').classList.remove('on');document.body.style.overflow=''}
+
+/* THEME */
+function setTheme(mode){
+  document.documentElement.setAttribute('data-theme',mode);
+  try{localStorage.setItem('tps-theme',mode)}catch(e){}
+  var lightBtn=document.getElementById('themeOptLight'),darkBtn=document.getElementById('themeOptDark');
+  if(lightBtn&&darkBtn){lightBtn.classList.toggle('on',mode==='light');darkBtn.classList.toggle('on',mode==='dark')}
+}
+(function initTheme(){
+  var saved=null;
+  try{saved=localStorage.getItem('tps-theme')}catch(e){}
+  var mode=saved||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  setTheme(mode);
+})();
+
+/* GLOBAL SITE SEARCH (header magnifier — separate from the on-page archive filter) */
+var searchTimer=null,searchIndexPromise=null;
+function openSearch(){
+  document.getElementById('searchOv').classList.add('on');
+  document.body.style.overflow='hidden';
+  loadSearchIndex();
+  setTimeout(function(){document.getElementById('searchInput').focus()},50);
+}
+function closeSearch(){
+  document.getElementById('searchOv').classList.remove('on');
+  document.body.style.overflow='';
+  document.getElementById('searchInput').value='';
+  document.getElementById('searchResults').innerHTML='';
+}
+function loadSearchIndex(){
+  if(!searchIndexPromise){searchIndexPromise=fetch('/api/search-index').then(function(r){return r.json()}).catch(function(){return []})}
+  return searchIndexPromise;
+}
+function editDistance(a,b){
+  if(a===b)return 0;
+  var al=a.length,bl=b.length;
+  if(!al)return bl;if(!bl)return al;
+  var row=[];for(var i=0;i<=bl;i++)row[i]=i;
+  for(var x=1;x<=al;x++){
+    var prev=row[0];row[0]=x;
+    for(var y=1;y<=bl;y++){
+      var tmp=row[y];
+      row[y]=a[x-1]===b[y-1]?prev:1+Math.min(prev,row[y],row[y-1]);
+      prev=tmp;
+    }
+  }
+  return row[bl];
+}
+function tokenize(s){return (s||'').toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(Boolean)}
+function fuzzyScore(queryTokens,article){
+  var haystack=tokenize(article.title+' '+(article.excerpt||'')+' '+(article.category_name||''));
+  var score=0;
+  queryTokens.forEach(function(qt){
+    var best=0;
+    haystack.forEach(function(ht){
+      if(ht.indexOf(qt)===0){best=Math.max(best,3);return}
+      if(ht.indexOf(qt)!==-1){best=Math.max(best,2);return}
+      var maxDist=qt.length<=4?1:2;
+      if(editDistance(qt,ht)<=maxDist){best=Math.max(best,1)}
+    });
+    score+=best;
+  });
+  return score;
+}
+async function runSearch(q){
+  var c=document.getElementById('searchResults');
+  c.innerHTML='<div class="search-empty">Searching&hellip;</div>';
+  try{
+    var index=await loadSearchIndex();
+    var queryTokens=tokenize(q);
+    var scored=index.map(function(a){return {a:a,score:fuzzyScore(queryTokens,a)}})
+      .filter(function(x){return x.score>0})
+      .sort(function(x,y){return y.score-x.score})
+      .slice(0,20)
+      .map(function(x){return x.a});
+    if(!scored.length){c.innerHTML='<div class="search-empty">No articles found for &ldquo;'+esc(q)+'&rdquo;.</div>';return}
+    c.innerHTML=scored.map(function(a){
+      return '<a href="/article.html?slug='+esc(a.slug)+'" class="sr-item">'
+        +'<div><div class="sr-cat">'+esc(a.category_name||'')+'</div><div class="sr-ttl">'+esc(a.title)+'</div></div>'
+        +'</a>';
+    }).join('');
+  }catch(e){c.innerHTML='<div class="search-empty">Search unavailable. Please try again.</div>'}
+}
+function onSearchInput(){
+  clearTimeout(searchTimer);
+  var q=document.getElementById('searchInput').value.trim();
+  if(q.length<2){document.getElementById('searchResults').innerHTML='';return}
+  searchTimer=setTimeout(function(){runSearch(q)},150);
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){e.preventDefault();openSearch()}
+  if(e.key==='Escape'){closeSearch();closeMenu()}
+});
+
+/* ══════════════════════════════════════════════════════════════ */
+/* ARCHIVE — talks to /api/archive (category + q + page, all cached) */
+/* ══════════════════════════════════════════════════════════════ */
+
+var arcPage=1,arcLoading=false,filterTimer=null;
+
+function currentFilters(){
+  return {
+    category: document.getElementById('catFilter').value,
+    q: document.getElementById('qFilter').value.trim()
+  };
+}
+
+function onFilterInput(){
+  clearTimeout(filterTimer);
+  filterTimer=setTimeout(resetAndLoad,300);
+}
+
+function resetAndLoad(){
+  arcPage=1;
+  document.getElementById('arcList').innerHTML='<div class="sk" style="height:92px;margin-bottom:14px"></div><div class="sk" style="height:92px;margin-bottom:14px"></div>';
+  loadArchivePage(true);
+}
+
+function feedItemHtml(a){
+  return '<a href="/article.html?slug='+esc(a.slug)+'" class="feed-item">'
+    +'<div class="feed-body">'
+    +'<div class="feed-cat">'+esc(a.category_name||'Analysis')+'</div>'
+    +'<div class="feed-ttl">'+esc(a.title)+'</div>'
+    +(a.excerpt?'<div class="feed-exc">'+esc(a.excerpt)+'</div>':'')
+    +'<div class="feed-meta">'+esc(a.author||'The Pacific Signal')+' &middot; '+timeAgo(a.published_at)+'</div>'
+    +'</div>'
+    +(a.image_url?'<img src="'+esc(a.image_url)+'" alt="" class="feed-thumb" loading="lazy">':'<div class="feed-thumb-ph"><span>TPS</span></div>')
+    +'</a>';
+}
+
+async function loadArchivePage(replace){
+  if(arcLoading)return;
+  arcLoading=true;
+  var f=currentFilters();
+  var qs='?page='+arcPage+(f.category?'&category='+encodeURIComponent(f.category):'')+(f.q?'&q='+encodeURIComponent(f.q):'');
+  try{
+    var r=await fetch('/api/archive'+qs);
+    var d=await r.json();
+    var articles=d.articles||[];
+    var list=document.getElementById('arcList');
+    if(replace)list.innerHTML='';
+    if(!articles.length&&replace){
+      list.innerHTML='<div class="arc-empty">No archived articles match this filter yet.</div>';
+    }else{
+      list.insertAdjacentHTML('beforeend',articles.map(feedItemHtml).join(''));
+    }
+    document.getElementById('filterCount').textContent=articles.length?('Showing '+((arcPage-1)*12+1)+'\u2013'+((arcPage-1)*12+articles.length):'');
+    document.getElementById('loadMoreWrap').style.display=d.hasMore?'block':'none';
+  }catch(e){
+    if(replace)document.getElementById('arcList').innerHTML='<div class="arc-empty">Could not load the archive. Please try again.</div>';
+  }
+  arcLoading=false;
+}
+
+function loadNextPage(){
+  var btn=document.getElementById('loadMoreBtn');
+  btn.textContent='Loading\u2026';btn.disabled=true;
+  arcPage++;
+  loadArchivePage(false).then(function(){btn.textContent='Load More';btn.disabled=false});
+}
+
+/* Preselect category if arriving from a footer/menu link, e.g. /archive.html?category=africa */
+(function initFromUrl(){
+  var params=new URLSearchParams(location.search);
+  var cat=params.get('category');
+  if(cat)document.getElementById('catFilter').value=cat;
+})();
+
+loadArchivePage(true);
+</script>
+</body>
+</html>
