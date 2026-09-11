@@ -10,6 +10,7 @@
 const FALLBACK_SECRET = 'pacific-signal-dev-secret-change-me-in-cloudflare-env';
 const TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 const MASTER_PHRASE_TTL_MS = 5 * 24 * 60 * 60 * 1000; // 5 days
+const ARCHIVE_AFTER_DAYS = 90; // articles older than this are considered "archived"
 
 export async function onRequest(context) {
 
@@ -40,10 +41,10 @@ export async function onRequest(context) {
     }
   }
 
-  function json(data, status) {
+  function json(data, status, extraHeaders) {
     return new Response(JSON.stringify(data), {
       status: status || 200,
-      headers: corsHeaders
+      headers: extraHeaders ? Object.assign({}, corsHeaders, extraHeaders) : corsHeaders
     });
   }
 
@@ -252,11 +253,7 @@ export async function onRequest(context) {
       ).run();
     } catch (e) {}
 
-    try {
-      await db.prepare(
-        "CREATE TABLE IF NOT EXISTS subscribers (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)"
-      ).run();
-    } catch (e) {}
+    // NOTE: no "subscribers" table — the newsletter form is display-only for now.
 
     // Safe migrations for existing databases
     var migrationList = [
@@ -277,7 +274,6 @@ export async function onRequest(context) {
     // Lean indexes — only on columns actually filtered/sorted by in hot paths
     try { await db.prepare("CREATE INDEX IF NOT EXISTS idx_articles_pub ON articles(is_published, published_at)").run(); } catch (e) {}
     try { await db.prepare("CREATE INDEX IF NOT EXISTS idx_articles_block ON articles(display_block, is_published)").run(); } catch (e) {}
-    try { await db.prepare("CREATE INDEX IF NOT EXISTS idx_articles_views ON articles(view_count)").run(); } catch (e) {}
 
     // Seed default admin — password stored as SHA-256 hash
     try {
@@ -359,41 +355,64 @@ export async function onRequest(context) {
       "SELECT a.*, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.display_block IS NULL AND a.is_published = 1 ORDER BY a.published_at DESC LIMIT 9"
     ).all();
 
-    var mostReadResult = await db.prepare(
-      "SELECT a.id, a.title, a.slug, a.view_count, c.name as category_name FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.is_published = 1 ORDER BY a.view_count DESC, a.published_at DESC LIMIT 5"
-    ).all();
-
     return json({
       hero: heroArticle || null,
       feed: feedArticlesResult.results || [],
       visual: visualArticle || null,
       spotlights: spotlightsResult.results || [],
-      latest: latestResult.results || [],
-      most_read: mostReadResult.results || []
-    });
+      latest: latestResult.results || []
+    }, 200, { 'Cache-Control': 'public, max-age=60' });
   }
 
-  // GET /api/most-read — standalone
-  if (path === '/api/most-read' && request.method === 'GET') {
+  // GET /api/search-index — one lightweight, cacheable payload for client-side fuzzy search.
+  // Replaces a live D1 query on every keystroke: the browser fetches this once (cached),
+  // then matches locally (typo-tolerant) with no further D1 reads per search.
+  if (path === '/api/search-index' && request.method === 'GET') {
     if (!db) return json([]);
-    var mr = await db.prepare(
-      "SELECT a.id, a.title, a.slug, a.view_count, c.name as category_name FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.is_published = 1 ORDER BY a.view_count DESC, a.published_at DESC LIMIT 5"
+    var indexResult = await db.prepare(
+      "SELECT a.id, a.title, a.slug, a.excerpt, c.name as category_name FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.is_published = 1 ORDER BY a.published_at DESC LIMIT 800"
     ).all();
-    return json(mr.results || []);
+    return json(indexResult.results || [], 200, { 'Cache-Control': 'public, max-age=300' });
   }
 
-  // GET /api/search?q=...
-  if (path === '/api/search' && request.method === 'GET') {
-    if (!db) return json({ query: '', results: [] });
-    var q = (url.searchParams.get('q') || '').trim();
-    if (!q || q.length < 2) return json({ query: q, results: [] });
+  // GET /api/archive?category=&q=&page= — articles older than the archive cutoff, browsable and searchable
+  if (path === '/api/archive' && request.method === 'GET') {
+    if (!db) return json({ articles: [], page: 1, hasMore: false });
 
-    var likeTerm = '%' + q.replace(/[%_]/g, '') + '%';
-    var searchResult = await db.prepare(
-      "SELECT a.id, a.title, a.slug, a.excerpt, a.image_url, a.author, a.published_at, c.name as category_name FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.is_published = 1 AND (a.title LIKE ? OR a.excerpt LIKE ?) ORDER BY a.published_at DESC LIMIT 20"
-    ).bind(likeTerm, likeTerm).all();
+    var archivePage = parseInt(url.searchParams.get('page') || '1');
+    var archiveLimit = 12;
+    var archiveOffset = (archivePage - 1) * archiveLimit;
+    var archiveCategorySlug = (url.searchParams.get('category') || '').trim();
+    var archiveQuery = (url.searchParams.get('q') || '').trim();
+    var cutoffIso = new Date(Date.now() - ARCHIVE_AFTER_DAYS * 24 * 60 * 60 * 1000).toISOString();
 
-    return json({ query: q, results: searchResult.results || [] });
+    var whereParts = ["a.is_published = 1", "a.published_at < ?"];
+    var bindArgs = [cutoffIso];
+
+    if (archiveCategorySlug) {
+      whereParts.push("c.slug = ?");
+      bindArgs.push(archiveCategorySlug);
+    }
+    if (archiveQuery) {
+      whereParts.push("(a.title LIKE ? OR a.excerpt LIKE ?)");
+      var archiveLike = '%' + archiveQuery.replace(/[%_]/g, '') + '%';
+      bindArgs.push(archiveLike, archiveLike);
+    }
+
+    var archiveSql = "SELECT a.id, a.title, a.slug, a.excerpt, a.image_url, a.author, a.published_at, c.name as category_name, c.slug as category_slug "
+      + "FROM articles a LEFT JOIN categories c ON a.category_id = c.id "
+      + "WHERE " + whereParts.join(' AND ')
+      + " ORDER BY a.published_at DESC LIMIT ? OFFSET ?";
+    bindArgs.push(archiveLimit, archiveOffset);
+
+    var archiveResult = await db.prepare(archiveSql).bind(...bindArgs).all();
+    var archiveArticles = archiveResult.results || [];
+
+    return json({
+      articles: archiveArticles,
+      page: archivePage,
+      hasMore: archiveArticles.length === archiveLimit
+    }, 200, { 'Cache-Control': 'public, max-age=120' });
   }
 
   // GET /api/rss.xml
@@ -445,10 +464,6 @@ export async function onRequest(context) {
 
     if (!article) return err('Article not found', 404);
 
-    try {
-      await db.prepare('UPDATE articles SET view_count = view_count + 1 WHERE id = ?').bind(article.id).run();
-    } catch (e) {}
-
     var relatedArticlesResult = await db.prepare(
       "SELECT id, title, slug, excerpt, image_url, author, published_at FROM articles WHERE category_id = ? AND id != ? AND is_published = 1 ORDER BY published_at DESC LIMIT 3"
     ).bind(article.category_id, article.id).all();
@@ -459,7 +474,7 @@ export async function onRequest(context) {
   if (path === '/api/categories' && request.method === 'GET') {
     if (!db) return json([]);
     var allCategoriesResult = await db.prepare('SELECT * FROM categories ORDER BY name ASC').all();
-    return json(allCategoriesResult.results || []);
+    return json(allCategoriesResult.results || [], 200, { 'Cache-Control': 'public, max-age=600' });
   }
 
   if (request.method === 'GET' && path.match(/^\/api\/category\/[a-z0-9-]+$/)) {
@@ -487,19 +502,8 @@ export async function onRequest(context) {
     });
   }
 
-  if (path === '/api/subscribe' && request.method === 'POST') {
-    var subscriberEmail = body.email;
-    if (!subscriberEmail) return err('Email is required');
-    if (!db) return json({ message: 'Subscribed successfully!' }, 201);
-
-    try {
-      await db.prepare('INSERT INTO subscribers (email) VALUES (?)').bind(subscriberEmail.toLowerCase().trim()).run();
-      return json({ message: 'Subscribed successfully!' }, 201);
-    } catch (e) {
-      if (e.message && e.message.includes('UNIQUE')) return err('This email is already subscribed');
-      return err('Error subscribing. Please try again.');
-    }
-  }
+  // Newsletter is display-only for now ("feature coming soon") — no backend, no storage,
+  // intentionally kept out of scope. The footer form does not call this API.
 
   // ══════════════════════════════════════════════════════════════
   // ADMIN AUTH ROUTES
@@ -785,6 +789,18 @@ export async function onRequest(context) {
       return json({ message: 'Article deleted successfully' });
     }
 
+    // DELETE /admin/articles/bulk — body: { ids: [1,2,3] }. Used by the Archive tab for
+    // "delete selected" / "delete all archived" so N deletes cost one D1 write, not N.
+    if (adminRoutePath === '/articles/bulk' && request.method === 'DELETE') {
+      var bulkIds = Array.isArray(body.ids) ? body.ids.map(function (n) { return parseInt(n); }).filter(function (n) { return !isNaN(n); }) : [];
+      if (!bulkIds.length) return err('No article ids provided');
+      if (!db) return json({ message: 'Deleted (test mode)', count: bulkIds.length });
+
+      var placeholders = bulkIds.map(function () { return '?'; }).join(',');
+      await db.prepare('DELETE FROM articles WHERE id IN (' + placeholders + ')').bind(...bulkIds).run();
+      return json({ message: 'Deleted ' + bulkIds.length + ' article(s)', count: bulkIds.length });
+    }
+
     // ══════════════════════════════════════════════════════════
     // CATEGORIES MANAGEMENT
     // ══════════════════════════════════════════════════════════
@@ -863,27 +879,21 @@ export async function onRequest(context) {
     // ══════════════════════════════════════════════════════════
 
     if (adminRoutePath === '/stats' && request.method === 'GET') {
-      if (!db) return json({ total_articles: 0, published_articles: 0, categories: 0, pinned_articles: 0, total_subscribers: 0 });
+      if (!db) return json({ total_articles: 0, published_articles: 0, categories: 0, pinned_articles: 0, archived_articles: 0 });
 
-      var totalArticlesCount = await db.prepare('SELECT COUNT(*) as count FROM articles').first();
-      var publishedArticlesCount = await db.prepare('SELECT COUNT(*) as count FROM articles WHERE is_published = 1').first();
-      var totalCategoriesCount = await db.prepare('SELECT COUNT(*) as count FROM categories').first();
-      var pinnedArticlesCount = await db.prepare('SELECT COUNT(*) as count FROM articles WHERE is_pinned = 1').first();
-      var totalSubscribersCount = await db.prepare('SELECT COUNT(*) as count FROM subscribers').first();
+      var archiveCutoffIso = new Date(Date.now() - ARCHIVE_AFTER_DAYS * 24 * 60 * 60 * 1000).toISOString();
 
-      return json({
-        total_articles: totalArticlesCount ? totalArticlesCount.count : 0,
-        published_articles: publishedArticlesCount ? publishedArticlesCount.count : 0,
-        categories: totalCategoriesCount ? totalCategoriesCount.count : 0,
-        pinned_articles: pinnedArticlesCount ? pinnedArticlesCount.count : 0,
-        total_subscribers: totalSubscribersCount ? totalSubscribersCount.count : 0
-      });
-    }
+      // Single round-trip instead of 5 separate COUNT(*) queries.
+      var combinedStats = await db.prepare(
+        "SELECT "
+        + "(SELECT COUNT(*) FROM articles) as total_articles, "
+        + "(SELECT COUNT(*) FROM articles WHERE is_published = 1) as published_articles, "
+        + "(SELECT COUNT(*) FROM categories) as categories, "
+        + "(SELECT COUNT(*) FROM articles WHERE is_pinned = 1) as pinned_articles, "
+        + "(SELECT COUNT(*) FROM articles WHERE is_published = 1 AND published_at < ?) as archived_articles"
+      ).bind(archiveCutoffIso).first();
 
-    if (adminRoutePath === '/subscribers' && request.method === 'GET') {
-      if (!db) return json([]);
-      var subscribersListResult = await db.prepare('SELECT * FROM subscribers ORDER BY created_at DESC').all();
-      return json(subscribersListResult.results || []);
+      return json(combinedStats || { total_articles: 0, published_articles: 0, categories: 0, pinned_articles: 0, archived_articles: 0 });
     }
 
     return err('Admin route not found: ' + adminRoutePath, 404);
