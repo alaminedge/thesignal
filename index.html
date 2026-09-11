@@ -26,14 +26,25 @@
   --gold:#B49A5E;--gold-l:#D4BA82;--gold-p:#F2EBD8;
   --red:#7A1E1E;--red2:#5C1616;
   --white:#FFFFFF;
+  --shadow-col:26,24,20;
   --max:1280px;--g:clamp(16px,3vw,32px);
   --fd:'Cormorant Garamond',Georgia,serif;
   --fb:'Source Serif 4',Georgia,serif;
   --fm:'DM Mono',monospace;
 }
+[data-theme="dark"]{
+  --paper:#15130F;--paper-w:#1C1A15;--paper-d:#242119;
+  --ink:#EDE8DC;--ink2:#D8D2C2;--ink3:#A9A290;--ink4:#7C7666;--ink5:#5C574A;
+  --rule:#2C2920;--rule2:#38342A;--footer-rule:#2C2920;
+  --gold:#C7AC72;--gold-l:#E0C994;--gold-p:#2A2413;
+  --red:#C05656;--red2:#D97878;
+  --white:#0F0E0B;
+  --shadow-col:0,0,0;
+}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-body{font-family:var(--fb);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;min-height:100vh}
+body{font-family:var(--fb);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;min-height:100vh;transition:background .25s ease,color .25s ease}
+html[data-theme="dark"]{color-scheme:dark}
 a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:auto}button{font-family:inherit}
 :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 @media(prefers-reduced-motion:reduce){
@@ -99,21 +110,31 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .sr-cat{font-family:var(--fm);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:3px}
 .sr-ttl{font-family:var(--fd);font-size:1rem;font-weight:600;line-height:1.3}
 
-/* MOBILE NAV — light theme */
-.m-ov{display:none;position:fixed;inset:0;background:rgba(26,24,20,.55);z-index:400;backdrop-filter:blur(3px)}
-.m-ov.on{display:block}
-.m-nav{position:fixed;top:0;right:0;bottom:0;width:min(300px,88vw);background:var(--paper);z-index:500;transform:translateX(110%);transition:transform .32s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;border-left:1px solid var(--rule2);box-shadow:-10px 0 36px rgba(26,24,20,.16)}
-.m-nav.on{transform:translateX(0)}
-.m-head{padding:16px 20px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between}
-.m-head img{height:26px}
-.m-close{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:1.1rem;padding:6px;transition:color .2s}
-.m-close:hover{color:var(--red)}
-.m-links{flex:1;overflow-y:auto;padding:6px 0}
-.m-link{display:block;padding:11px 20px;font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);border-left:2px solid transparent;transition:all .18s}
-.m-link:hover{color:var(--red);border-left-color:var(--gold);background:var(--paper-w)}
-.m-foot{padding:16px 20px;border-top:1px solid var(--rule)}
-.m-sub{display:block;text-align:center;padding:11px;font-family:var(--fm);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;background:var(--ink);color:var(--white);transition:background .2s}
-.m-sub:hover{background:var(--red)}
+/* FULL-PAGE MENU — replaces the old side drawer so all sections fit, grouped and legible,
+   on any screen size. Same trigger on mobile (hamburger) and desktop ("Sections" link). */
+.fp-menu{position:fixed;inset:0;z-index:500;background:var(--paper);display:none;flex-direction:column;overflow-y:auto}
+.fp-menu.on{display:flex}
+.fp-head{display:flex;align-items:center;justify-content:space-between;padding:16px var(--g);border-bottom:1px solid var(--rule);flex-shrink:0}
+.fp-head img{height:28px}
+.fp-close{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:1.2rem;padding:8px;transition:color .2s}
+.fp-close:hover{color:var(--red)}
+.fp-body{flex:1;max-width:var(--max);width:100%;margin:0 auto;padding:32px var(--g) 24px;display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.fp-group-ttl{font-family:var(--fm);font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+.fp-links{display:flex;flex-direction:column}
+.fp-link{font-family:var(--fd);font-size:1.15rem;font-weight:500;color:var(--ink2);padding:9px 0;border-bottom:1px solid var(--rule);transition:color .18s,padding-left .18s}
+.fp-link:hover{color:var(--red);padding-left:6px}
+.fp-foot{border-top:1px solid var(--rule);padding:20px var(--g);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;flex-shrink:0}
+.theme-toggle{display:inline-flex;border:1px solid var(--rule2);border-radius:999px;padding:3px;gap:2px;background:var(--paper-w)}
+.theme-opt{font-family:var(--fm);font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:999px;border:none;background:none;color:var(--ink4);cursor:pointer;transition:all .2s}
+.theme-opt.on{background:var(--ink);color:var(--white)}
+.fp-sub{font-family:var(--fm);font-size:.58rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:11px 22px;background:var(--ink);color:var(--white);border:none;cursor:pointer;white-space:nowrap;transition:background .2s}
+.fp-sub:hover{background:var(--red)}
+@media(max-width:640px){
+  .fp-body{grid-template-columns:1fr;gap:28px;padding:24px 20px}
+  .fp-link{font-size:1.05rem}
+  .fp-foot{flex-direction:column;align-items:stretch}
+  .fp-sub{width:100%;text-align:center;padding:13px}
+}
 
 /* CAT BANNER */
 .cat-bn{display:none;border-bottom:1px solid var(--rule);padding:26px 0 20px;margin-bottom:40px}
@@ -150,17 +171,6 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .sec-ttl{font-family:var(--fd);font-size:1.2rem;font-weight:600;color:var(--ink)}
 .sec-sub{font-family:var(--fm);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink5)}
 
-/* ─── MOST READ — sits directly above Latest ─── */
-.mr-sec{padding-bottom:36px;border-bottom:1px solid var(--rule);margin-bottom:42px}
-.mr-list{display:grid;grid-template-columns:repeat(5,1fr);gap:0}
-.mr-item{display:flex;gap:11px;padding:0 18px;text-decoration:none;color:var(--ink);border-right:1px solid var(--rule)}
-.mr-item:last-child{border-right:none}
-.mr-item:first-child{padding-left:0}
-.mr-n{font-family:var(--fd);font-size:2.1rem;font-weight:600;font-style:italic;color:var(--gold-l);line-height:1;flex-shrink:0}
-.mr-body{min-width:0}
-.mr-cat{font-family:var(--fm);font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink5);margin-bottom:4px}
-.mr-ttl{font-family:var(--fd);font-size:.92rem;font-weight:600;line-height:1.3;color:var(--ink);transition:color .2s}
-.mr-item:hover .mr-ttl{color:var(--red2)}
 
 /* ─── INTELLIGENCE FEED — vertical list, headline+read-time left / thumbnail right ─── */
 .feed-sec{padding-bottom:8px;border-bottom:1px solid var(--rule);margin-bottom:42px}
@@ -255,15 +265,10 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   .art-card:nth-child(2){border-right:none;padding-right:0}
   .art-card:nth-child(3){border-right:1px solid var(--rule);padding-right:20px}
   .ft-top{grid-template-columns:1fr 1fr;gap:28px}
-  .mr-list{grid-template-columns:repeat(3,1fr)}
-  .mr-item:nth-child(3){border-right:none}
 }
 @media(max-width:860px){
   .hero-ttl{font-size:clamp(1.6rem,4vw,2.3rem)}
   .hero-exc{font-size:1rem}
-  .mr-list{grid-template-columns:repeat(2,1fr)}
-  .mr-item:nth-child(2){border-right:none}
-  .mr-item:nth-child(3){border-right:1px solid var(--rule)}
   .feed-item{grid-template-columns:1fr 104px;gap:18px;padding:24px 0}
   .feed-ttl{font-size:1.2rem}
   .feed-thumb,.feed-thumb-ph{width:104px;height:78px}
@@ -284,16 +289,12 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   .art-card{border-right:none;padding-right:0;border-bottom:1px solid var(--rule);padding-bottom:22px}
   .art-card:last-child{border-bottom:none}
   .vis-ov{padding:22px 20px}
-  .mr-list{grid-template-columns:1fr 1fr}
 }
 @media(max-width:540px){
   .hero-ttl{font-size:1.3rem}
   .hero-exc{font-size:.86rem}
   .ft-top{grid-template-columns:1fr;gap:24px}
   .ft-bot{flex-direction:column;align-items:flex-start;gap:8px}
-  .mr-list{grid-template-columns:1fr}
-  .mr-item{border-right:none!important;padding:10px 0;border-bottom:1px solid var(--rule)}
-  .mr-item:last-child{border-bottom:none}
   .feed-item{grid-template-columns:1fr 84px;gap:14px;padding:20px 0}
   .feed-ttl{font-size:1.08rem;margin-bottom:8px}
   .feed-cat{margin-bottom:6px}
@@ -324,13 +325,15 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
       <a href="/?category=south-asia" class="nav-a">South Asia</a>
       <a href="/?category=global-markets-trade" class="nav-a">Markets</a>
       <a href="/?category=geopolitics-strategy" class="nav-a">Geopolitics</a>
+      <a href="/archive.html" class="nav-a">Archive</a>
+      <a href="javascript:void(0)" class="nav-a" onclick="openMenu()">All Sections &#9662;</a>
     </nav>
     <div class="h-right">
       <button class="btn-search" onclick="openSearch()" aria-label="Search articles">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </button>
       <a href="#subscribe" class="btn-sub">Subscribe</a>
-      <button class="btn-ham" onclick="openMob()" aria-label="Menu">
+      <button class="btn-ham" onclick="openMenu()" aria-label="Menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
       </button>
     </div>
@@ -349,27 +352,53 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   </div>
 </div>
 
-<!-- MOBILE NAV -->
-<div class="m-ov" id="mOv" onclick="closeMob()"></div>
-<nav class="m-nav" id="mNav">
-  <div class="m-head">
+<!-- FULL-PAGE MENU — all 20 sections, grouped, plus theme choice -->
+<div class="fp-menu" id="fpMenu" role="dialog" aria-modal="true" aria-label="Site menu">
+  <div class="fp-head">
     <img src="/images/tps.png" alt="The Pacific Signal">
-    <button class="m-close" onclick="closeMob()" aria-label="Close menu">&#10005;</button>
+    <button class="fp-close" onclick="closeMenu()" aria-label="Close menu">&#10005;</button>
   </div>
-  <div class="m-links">
-    <a href="/" class="m-link" onclick="closeMob()">Home</a>
-    <a href="/?category=united-states-canada" class="m-link" onclick="closeMob()">US &amp; Canada</a>
-    <a href="/?category=china-east-asia" class="m-link" onclick="closeMob()">China &amp; East Asia</a>
-    <a href="/?category=europe-uk" class="m-link" onclick="closeMob()">Europe &amp; UK</a>
-    <a href="/?category=middle-east-north-africa" class="m-link" onclick="closeMob()">Middle East</a>
-    <a href="/?category=south-asia" class="m-link" onclick="closeMob()">South Asia</a>
-    <a href="/?category=africa" class="m-link" onclick="closeMob()">Africa</a>
-    <a href="/?category=latin-america-caribbean" class="m-link" onclick="closeMob()">Latin America</a>
-    <a href="/?category=global-markets-trade" class="m-link" onclick="closeMob()">Markets</a>
-    <a href="/?category=geopolitics-strategy" class="m-link" onclick="closeMob()">Geopolitics</a>
+  <div class="fp-body">
+    <div>
+      <div class="fp-group-ttl">Regions</div>
+      <div class="fp-links">
+        <a href="/?category=united-states-canada" class="fp-link" onclick="closeMenu()">United States &amp; Canada</a>
+        <a href="/?category=china-east-asia" class="fp-link" onclick="closeMenu()">China &amp; East Asia</a>
+        <a href="/?category=europe-uk" class="fp-link" onclick="closeMenu()">Europe &amp; UK</a>
+        <a href="/?category=russia-post-soviet" class="fp-link" onclick="closeMenu()">Russia &amp; Post-Soviet</a>
+        <a href="/?category=middle-east-north-africa" class="fp-link" onclick="closeMenu()">Middle East &amp; North Africa</a>
+        <a href="/?category=south-asia" class="fp-link" onclick="closeMenu()">South Asia</a>
+        <a href="/?category=southeast-asia-oceania" class="fp-link" onclick="closeMenu()">Southeast Asia &amp; Oceania</a>
+        <a href="/?category=africa" class="fp-link" onclick="closeMenu()">Africa</a>
+        <a href="/?category=latin-america-caribbean" class="fp-link" onclick="closeMenu()">Latin America &amp; Caribbean</a>
+        <a href="/?category=arctic-global-commons" class="fp-link" onclick="closeMenu()">Arctic &amp; Global Commons</a>
+      </div>
+    </div>
+    <div>
+      <div class="fp-group-ttl">Topics</div>
+      <div class="fp-links">
+        <a href="/?category=geopolitics-strategy" class="fp-link" onclick="closeMenu()">Geopolitics &amp; Strategy</a>
+        <a href="/?category=global-markets-trade" class="fp-link" onclick="closeMenu()">Global Markets &amp; Trade</a>
+        <a href="/?category=energy-commodities" class="fp-link" onclick="closeMenu()">Energy &amp; Commodities</a>
+        <a href="/?category=technology-business" class="fp-link" onclick="closeMenu()">Technology &amp; Business</a>
+        <a href="/?category=cybersecurity-digital" class="fp-link" onclick="closeMenu()">Cybersecurity &amp; Digital</a>
+        <a href="/?category=science-health" class="fp-link" onclick="closeMenu()">Science &amp; Health</a>
+        <a href="/?category=climate-environment" class="fp-link" onclick="closeMenu()">Climate &amp; Environment</a>
+        <a href="/?category=democracy-rights" class="fp-link" onclick="closeMenu()">Democracy &amp; Rights</a>
+        <a href="/?category=religion-culture-identity" class="fp-link" onclick="closeMenu()">Religion, Culture &amp; Identity</a>
+        <a href="/?category=arts-media-sports" class="fp-link" onclick="closeMenu()">Arts, Media &amp; Sports</a>
+        <a href="/?category=sports" class="fp-link" onclick="closeMenu()">Sports</a>
+      </div>
+    </div>
   </div>
-  <div class="m-foot"><a href="#subscribe" class="m-sub" onclick="closeMob()">Subscribe Free</a></div>
-</nav>
+  <div class="fp-foot">
+    <div class="theme-toggle" role="group" aria-label="Theme">
+      <button class="theme-opt" id="themeOptLight" onclick="setTheme('light')">Classic</button>
+      <button class="theme-opt" id="themeOptDark" onclick="setTheme('dark')">Briefing</button>
+    </div>
+    <a href="#subscribe" class="fp-sub" onclick="closeMenu()">Subscribe Free</a>
+  </div>
+</div>
 
 <div class="cat-bn" id="catBn">
   <div class="wrap">
@@ -423,18 +452,13 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
     </section>
 
     <section class="spot-sec" id="spotSec">
-      <div class="sec-hd"><span class="sec-ttl">Spotlight Analysis</span></div>
+      <div class="sec-hd"><span class="sec-ttl">In Focus</span></div>
       <div class="spot-grid" id="spotGrid">
         <div class="spot-card" style="pointer-events:none"><span class="sk" style="height:10px;width:80%;margin-bottom:14px"></span><span class="sk sk-title-sm"></span><span class="sk sk-title-sm" style="width:60%;height:18px;margin-top:4px"></span><span class="sk" style="height:9px;width:100px;margin-top:10px"></span></div>
         <div class="spot-card" style="pointer-events:none"><span class="sk" style="height:10px;width:70%;margin-bottom:14px"></span><span class="sk sk-title-sm" style="width:90%"></span><span class="sk sk-title-sm" style="width:55%;height:18px;margin-top:4px"></span><span class="sk" style="height:9px;width:90px;margin-top:10px"></span></div>
         <div class="spot-card" style="pointer-events:none"><span class="sk" style="height:10px;width:85%;margin-bottom:14px"></span><span class="sk sk-title-sm" style="width:75%"></span><span class="sk sk-title-sm" style="width:65%;height:18px;margin-top:4px"></span><span class="sk" style="height:9px;width:110px;margin-top:10px"></span></div>
         <div class="spot-card" style="border-right:none;pointer-events:none"><span class="sk" style="height:10px;width:75%;margin-bottom:14px"></span><span class="sk sk-title-sm" style="width:80%"></span><span class="sk sk-title-sm" style="width:50%;height:18px;margin-top:4px"></span><span class="sk" style="height:9px;width:100px;margin-top:10px"></span></div>
       </div>
-    </section>
-
-    <section class="mr-sec" id="mrSec" style="display:none">
-      <div class="sec-hd"><span class="sec-ttl">Most Read</span><span class="sec-sub">By Readers This Period</span></div>
-      <div class="mr-list" id="mrList"></div>
     </section>
 
     <section class="latest-sec" id="latestSec">
@@ -487,21 +511,22 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
         </div>
       </div>
       <div>
-        <div class="ft-col-ttl">Newsletter</div>
+        <div class="ft-col-ttl">Briefing</div>
         <p class="ft-nl-txt">The best analysis, delivered free to your inbox each week.</p>
-        <form onsubmit="return handleSub(event)">
+        <form onsubmit="event.preventDefault();return false">
           <div class="ft-form">
-            <input type="email" placeholder="Your email" class="ft-email" id="subEmail" required>
-            <button type="submit" class="ft-btn">Subscribe</button>
+            <input type="email" placeholder="Your email" class="ft-email" disabled>
+            <button type="submit" class="ft-btn" disabled>Coming Soon</button>
           </div>
         </form>
-        <p class="ft-msg" id="subMsg"></p>
+        <p class="ft-msg" style="color:var(--ink4)">Newsletter signups aren&rsquo;t open yet &mdash; check back soon.</p>
       </div>
     </div>
     <div class="ft-bot">
       <span class="ft-copy" id="ftCopy">&copy; The Pacific Signal. All rights reserved.</span>
       <div class="ft-legal">
         <a href="/about.html">About</a>
+        <a href="/archive.html">Archive</a>
         <a href="/contact.html">Contact</a>
         <a href="/privacy.html">Privacy</a>
         <a href="/terms.html">Terms</a>
@@ -549,15 +574,30 @@ window.addEventListener('scroll',function(){
   lastY=y;
 },{passive:true});
 
-/* MOBILE NAV */
-function openMob(){document.getElementById('mNav').classList.add('on');document.getElementById('mOv').classList.add('on');document.body.style.overflow='hidden'}
-function closeMob(){document.getElementById('mNav').classList.remove('on');document.getElementById('mOv').classList.remove('on');document.body.style.overflow=''}
+/* FULL-PAGE MENU */
+function openMenu(){document.getElementById('fpMenu').classList.add('on');document.body.style.overflow='hidden'}
+function closeMenu(){document.getElementById('fpMenu').classList.remove('on');document.body.style.overflow=''}
+
+/* THEME — "Classic" (light) / "Briefing" (dark). Defaults to system preference, then remembers choice. */
+function setTheme(mode){
+  document.documentElement.setAttribute('data-theme',mode);
+  try{localStorage.setItem('tps-theme',mode)}catch(e){}
+  var lightBtn=document.getElementById('themeOptLight'),darkBtn=document.getElementById('themeOptDark');
+  if(lightBtn&&darkBtn){lightBtn.classList.toggle('on',mode==='light');darkBtn.classList.toggle('on',mode==='dark')}
+}
+(function initTheme(){
+  var saved=null;
+  try{saved=localStorage.getItem('tps-theme')}catch(e){}
+  var mode=saved||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  setTheme(mode);
+})();
 
 /* SEARCH */
 var searchTimer=null;
 function openSearch(){
   document.getElementById('searchOv').classList.add('on');
   document.body.style.overflow='hidden';
+  loadSearchIndex();
   setTimeout(function(){document.getElementById('searchInput').focus()},50);
 }
 function closeSearch(){
@@ -568,22 +608,73 @@ function closeSearch(){
 }
 document.addEventListener('keydown',function(e){
   if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){e.preventDefault();openSearch()}
-  if(e.key==='Escape')closeSearch();
+  if(e.key==='Escape'){closeSearch();closeMenu()}
 });
 function onSearchInput(){
   clearTimeout(searchTimer);
   var q=document.getElementById('searchInput').value.trim();
   if(q.length<2){document.getElementById('searchResults').innerHTML='';return}
-  searchTimer=setTimeout(function(){runSearch(q)},280);
+  searchTimer=setTimeout(function(){runSearch(q)},150);
 }
+
+/* Fetched once per session and cached — no D1 read per keystroke. */
+var searchIndexPromise=null;
+function loadSearchIndex(){
+  if(!searchIndexPromise){
+    searchIndexPromise=fetch('/api/search-index').then(function(r){return r.json()}).catch(function(){return []});
+  }
+  return searchIndexPromise;
+}
+
+/* Small Levenshtein distance — lets a search tolerate a typo or two. */
+function editDistance(a,b){
+  if(a===b)return 0;
+  var al=a.length,bl=b.length;
+  if(!al)return bl;if(!bl)return al;
+  var row=[];for(var i=0;i<=bl;i++)row[i]=i;
+  for(var x=1;x<=al;x++){
+    var prev=row[0];row[0]=x;
+    for(var y=1;y<=bl;y++){
+      var tmp=row[y];
+      row[y]=a[x-1]===b[y-1]?prev:1+Math.min(prev,row[y],row[y-1]);
+      prev=tmp;
+    }
+  }
+  return row[bl];
+}
+
+function tokenize(s){return (s||'').toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(Boolean)}
+
+function fuzzyScore(queryTokens,article){
+  var haystack=tokenize(article.title+' '+(article.excerpt||'')+' '+(article.category_name||''));
+  var score=0;
+  queryTokens.forEach(function(qt){
+    var best=0;
+    haystack.forEach(function(ht){
+      if(ht.indexOf(qt)===0){best=Math.max(best,3);return} // prefix match, strongest
+      if(ht.indexOf(qt)!==-1){best=Math.max(best,2);return} // substring match
+      var maxDist=qt.length<=4?1:2;
+      if(editDistance(qt,ht)<=maxDist){best=Math.max(best,1)} // typo-tolerant match
+    });
+    score+=best;
+  });
+  return score;
+}
+
 async function runSearch(q){
   var c=document.getElementById('searchResults');
+  c.innerHTML='<div class="search-empty">Searching&hellip;</div>';
   try{
-    var r=await fetch('/api/search?q='+encodeURIComponent(q));
-    var d=await r.json();
-    var results=d.results||[];
-    if(!results.length){c.innerHTML='<div class="search-empty">No articles found for &ldquo;'+esc(q)+'&rdquo;.</div>';return}
-    c.innerHTML=results.map(function(a){
+    var index=await loadSearchIndex();
+    var queryTokens=tokenize(q);
+    var scored=index.map(function(a){return {a:a,score:fuzzyScore(queryTokens,a)}})
+      .filter(function(x){return x.score>0})
+      .sort(function(x,y){return y.score-x.score})
+      .slice(0,20)
+      .map(function(x){return x.a});
+
+    if(!scored.length){c.innerHTML='<div class="search-empty">No articles found for &ldquo;'+esc(q)+'&rdquo;.</div>';return}
+    c.innerHTML=scored.map(function(a){
       return '<a href="/article.html?slug='+esc(a.slug)+'" class="sr-item">'
         +'<div><div class="sr-cat">'+esc(a.category_name||'')+'</div><div class="sr-ttl">'+esc(a.title)+'</div></div>'
         +'</a>';
@@ -605,7 +696,6 @@ if(filterCat){
   document.getElementById('feedSec').style.display='none';
   document.getElementById('visSec').style.display='none';
   document.getElementById('spotSec').style.display='none';
-  document.getElementById('mrSec').style.display='none';
   document.getElementById('latestTtl').textContent=nm;
   document.querySelectorAll('.nav-a').forEach(function(l){l.classList.remove('on')});
   loadCat(filterCat,1);
@@ -623,7 +713,6 @@ async function loadHome(p){
       renderFeed(d.feed||[]);
       renderVisual(d.visual);
       renderSpots(d.spotlights||[]);
-      renderMostRead(d.most_read||[]);
     }
     renderLatest(d.latest||[],p>1);
     hasMore=d.hasMore||(d.latest&&d.latest.length>=12);
@@ -662,18 +751,6 @@ function renderHero(h){
     +'<div class="hero-meta"><span class="hero-meta-author">'+esc(h.author||'The Pacific Signal')+'</span><span class="hero-meta-sep">&mdash;</span><span class="hero-meta-time">'+timeAgo(h.published_at||h.created_at)+'</span></div>'
     +'<span class="hero-read">Continue Reading <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-7-7l7 7-7 7"/></svg></span>'
     +'</a>';
-}
-
-function renderMostRead(items){
-  var sec=document.getElementById('mrSec'),c=document.getElementById('mrList');
-  if(!items.length){sec.style.display='none';return}
-  sec.style.display='block';
-  c.innerHTML=items.map(function(a,i){
-    return '<a href="/article.html?slug='+esc(a.slug)+'" class="mr-item">'
-      +'<span class="mr-n">'+(i+1)+'</span>'
-      +'<div class="mr-body"><div class="mr-cat">'+esc(a.category_name||'')+'</div><div class="mr-ttl">'+esc(a.title)+'</div></div>'
-      +'</a>';
-  }).join('');
 }
 
 function renderFeed(feed){
@@ -735,22 +812,6 @@ function loadMore(){
   btn.textContent='Loading\u2026';btn.disabled=true;
   var pr=isCat?loadCat(curCat,pg+1):loadHome(pg+1);
   pr.then(function(){btn.textContent='Load More Articles';btn.disabled=false;pg++});
-}
-
-async function handleSub(e){
-  e.preventDefault();
-  var email=document.getElementById('subEmail').value.trim();
-  var msg=document.getElementById('subMsg');
-  if(!email)return false;
-  try{
-    var r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
-    var d=await r.json();
-    msg.textContent=r.ok?'Thank you \u2014 you are now subscribed.':(d.error||'Something went wrong.');
-    msg.style.color=r.ok?'var(--gold)':'var(--red)';
-    if(r.ok)document.getElementById('subEmail').value='';
-  }catch(er){msg.textContent='Network error. Please try again.';msg.style.color='var(--red)'}
-  setTimeout(function(){msg.textContent=''},5000);
-  return false;
 }
 </script>
 </body>
