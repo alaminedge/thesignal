@@ -307,6 +307,10 @@ input[type=checkbox]{accent-color:var(--gold);width:13px;height:13px;cursor:poin
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       Categories
     </button>
+    <button class="sb-btn" data-view="archive" onclick="showView('archive')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+      Archive
+    </button>
   </div>
 
   <div class="sb-sec">
@@ -334,6 +338,7 @@ input[type=checkbox]{accent-color:var(--gold);width:13px;height:13px;cursor:poin
 <div class="main">
   <div class="view on" id="view-dashboard"></div>
   <div class="view" id="view-articles"></div>
+  <div class="view" id="view-archive"></div>
   <div class="view" id="view-categories"></div>
   <div class="view" id="view-settings"></div>
   <div class="view" id="view-security"></div>
@@ -769,7 +774,7 @@ function showView(id){
   var v=document.getElementById('view-'+id);if(v)v.classList.add('on');
   var b=document.querySelector('.sb-btn[data-view="'+id+'"]');if(b)b.classList.add('on');
   closeSb();
-  var loaders={dashboard:loadDash,articles:loadArts,categories:loadCats,settings:loadSettings,security:loadSecurity};
+  var loaders={dashboard:loadDash,articles:loadArts,archive:loadArchive,categories:loadCats,settings:loadSettings,security:loadSecurity};
   if(loaders[id])loaders[id]();
 }
 
@@ -793,21 +798,21 @@ var curImg='';
 
 async function loadDash(){
   var r=await api('GET','/admin/stats');
-  var s=r.ok?r.data:{total_articles:0,published_articles:0,categories:0,pinned_articles:0,total_subscribers:0};
+  var s=r.ok?r.data:{total_articles:0,published_articles:0,categories:0,pinned_articles:0,archived_articles:0};
   var h='<div class="pg-head"><h2 class="pg-title">Dashboard</h2></div>';
   h+='<div class="stats-grid">'
     +'<div class="stat-card"><div class="stat-lbl">Total Articles</div><div class="stat-val">'+s.total_articles+'</div></div>'
     +'<div class="stat-card"><div class="stat-lbl">Published</div><div class="stat-val">'+s.published_articles+'</div></div>'
     +'<div class="stat-card"><div class="stat-lbl">Categories</div><div class="stat-val">'+s.categories+'</div></div>'
     +'<div class="stat-card"><div class="stat-lbl">Pinned</div><div class="stat-val">'+s.pinned_articles+'</div></div>'
-    +'<div class="stat-card"><div class="stat-lbl">Subscribers</div><div class="stat-val">'+s.total_subscribers+'</div></div>'
+    +'<div class="stat-card"><div class="stat-lbl">Archived</div><div class="stat-val">'+(s.archived_articles||0)+'</div></div>'
     +'</div>';
   h+='<div class="guide"><div class="guide-ttl">Editorial Quick Guide</div><ul class="guide-list">'
     +'<li>Go to <strong>Articles</strong> to create or manage content.</li>'
     +'<li><strong>Block A (Hero)</strong> — Large featured story at the top of the front page.</li>'
     +'<li><strong>Block B (Feed)</strong> — Numbered list of briefings and analysis.</li>'
     +'<li><strong>Block C (Visual)</strong> — Full-width cinematic image article. Requires an image.</li>'
-    +'<li><strong>Block D (Spotlight)</strong> — Four thematic analysis cards. Set a Spotlight Label.</li>'
+    +'<li><strong>Block D (In Focus)</strong> — Four thematic analysis cards. Set an In Focus Label.</li>'
     +'<li>Articles with no block assigned appear in the <strong>Latest Analysis</strong> grid.</li>'
     +'<li>Pin up to two articles to elevate them as hero fallbacks.</li>'
     +'<li>Visit <strong>Security</strong> to change the admin password from the shared default.</li>'
@@ -835,7 +840,7 @@ async function loadArts(){
       if(a.display_block==='hero'){bl='Hero';bc='bdg-hero'}
       else if(a.display_block==='feed'){bl='Feed';bc='bdg-feed'}
       else if(a.display_block==='visual'){bl='Visual';bc='bdg-visual'}
-      else if(a.display_block==='spotlight'){bl='Spotlight';bc='bdg-spot'}
+      else if(a.display_block==='spotlight'){bl='In Focus';bc='bdg-spot'}
       h+='<tr>'
         +'<td class="em">'+(a.is_pinned?'<span class="bdg bdg-pin" style="margin-right:5px">Pinned</span>':'')+esc(a.title)+'</td>'
         +'<td>'+esc(a.category_name||'&mdash;')+'</td>'
@@ -852,6 +857,80 @@ async function loadArts(){
   }
   h+='</tbody></table></div></div>';
   document.getElementById('view-articles').innerHTML=h;
+}
+
+/* ══════════════════════════════════════════════════════════════ */
+/* ARCHIVE — published articles older than 90 days. Filtered client-side       */
+/* from the same /admin/articles list, so no extra D1 query is introduced.     */
+/* ══════════════════════════════════════════════════════════════ */
+
+var ARCHIVE_AFTER_DAYS=90;
+var selectedArchiveIds=[];
+
+function getArchivedArts(){
+  var cutoff=Date.now()-ARCHIVE_AFTER_DAYS*24*60*60*1000;
+  return allArts.filter(function(a){
+    var d=a.published_at||a.created_at;
+    return a.is_published && d && new Date(d).getTime()<cutoff;
+  });
+}
+
+async function loadArchive(){
+  var cr=await api('GET','/admin/categories');allCats=cr.ok?cr.data:allCats;
+  var r=await api('GET','/admin/articles');allArts=r.ok?r.data:allArts;
+  selectedArchiveIds=[];
+  renderArchive();
+}
+
+function renderArchive(){
+  var archived=getArchivedArts();
+  var h='<div class="pg-head"><h2 class="pg-title">Archive<span class="pg-count">('+archived.length+')</span></h2>'
+    +'<div style="display:flex;gap:8px">'
+    +'<button class="btn btn-ghost" onclick="bulkDeleteArchive(false)">Delete Selected</button>'
+    +'<button class="btn btn-danger" onclick="bulkDeleteArchive(true)">Delete All Archived</button>'
+    +'</div></div>';
+  h+='<p style="font-family:var(--fb,inherit);color:var(--ink4,#8C8878);margin-bottom:14px;font-size:.9rem">Published articles older than '+ARCHIVE_AFTER_DAYS+' days. These still work like any normal article on the live site &mdash; this tab is only for cleanup.</p>';
+  h+='<div class="card"><div class="tbl-wrap"><table>'
+    +'<thead><tr><th style="width:36px"><input type="checkbox" id="archSelAll" onchange="toggleArchiveSelectAll(this.checked)"></th><th>Title</th><th>Category</th><th>Published</th><th>Actions</th></tr></thead><tbody>';
+
+  if(archived.length){
+    archived.forEach(function(a){
+      h+='<tr>'
+        +'<td><input type="checkbox" class="arch-check" data-id="'+a.id+'" onchange="toggleArchiveSelect('+a.id+',this.checked)" '+(selectedArchiveIds.indexOf(a.id)>-1?'checked':'')+'></td>'
+        +'<td class="em">'+esc(a.title)+'</td>'
+        +'<td>'+esc(a.category_name||'&mdash;')+'</td>'
+        +'<td class="mono">'+timeAgo(a.published_at||a.created_at)+'</td>'
+        +'<td style="white-space:nowrap">'
+        +'<a class="btn btn-ghost btn-sm" href="/article.html?slug='+esc(a.slug)+'" target="_blank">View</a> '
+        +'<button class="btn btn-ghost btn-sm" onclick="openArtModal('+a.id+')">Edit</button> '
+        +'<button class="btn btn-danger btn-sm" onclick="deleteArt('+a.id+');setTimeout(loadArchive,300)">Delete</button>'
+        +'</td></tr>';
+    });
+  }else{
+    h+='<tr class="empty-row"><td colspan="5">Nothing archived yet &mdash; articles appear here once they are older than '+ARCHIVE_AFTER_DAYS+' days.</td></tr>';
+  }
+  h+='</tbody></table></div></div>';
+  document.getElementById('view-archive').innerHTML=h;
+}
+
+function toggleArchiveSelect(id,checked){
+  var i=selectedArchiveIds.indexOf(id);
+  if(checked&&i===-1)selectedArchiveIds.push(id);
+  if(!checked&&i>-1)selectedArchiveIds.splice(i,1);
+}
+
+function toggleArchiveSelectAll(checked){
+  selectedArchiveIds=checked?getArchivedArts().map(function(a){return a.id}):[];
+  document.querySelectorAll('.arch-check').forEach(function(cb){cb.checked=checked});
+}
+
+async function bulkDeleteArchive(all){
+  var ids=all?getArchivedArts().map(function(a){return a.id}):selectedArchiveIds.slice();
+  if(!ids.length){toast('Nothing selected.',true);return}
+  if(!confirm('Permanently delete '+ids.length+' archived article(s)? This cannot be undone.'))return;
+  var r=await api('DELETE','/admin/articles/bulk',{ids:ids});
+  if(r.ok){toast('Deleted '+ids.length+' article(s).');loadArchive();loadDash()}
+  else{toast(r.data.error||'Delete failed.',true)}
 }
 
 function openArtModal(id){
@@ -896,10 +975,10 @@ function openArtModal(id){
     +'<option value="hero"'+(a&&a.display_block==='hero'?' selected':'')+'>Block A — Hero Feature</option>'
     +'<option value="feed"'+(a&&a.display_block==='feed'?' selected':'')+'>Block B — Intelligence Feed</option>'
     +'<option value="visual"'+(a&&a.display_block==='visual'?' selected':'')+'>Block C — Visual Showcase</option>'
-    +'<option value="spotlight"'+(a&&a.display_block==='spotlight'?' selected':'')+'>Block D — Spotlight Analysis</option>'
+    +'<option value="spotlight"'+(a&&a.display_block==='spotlight'?' selected':'')+'>Block D — In Focus</option>'
     +'</select></div>'
     +'<div class="fg2" id="_spotWrap" style="display:'+(a&&a.display_block==='spotlight'?'block':'none')+'">'
-    +'<label class="flbl2">Spotlight Label</label>'
+    +'<label class="flbl2">In Focus Label</label>'
     +'<input class="finp2" id="_spotLbl" value="'+esc(a?a.spotlight_label||'':'')+'" placeholder="e.g. Geopolitics Focus"></div>'
     +'</div>';
 
