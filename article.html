@@ -20,9 +20,18 @@
   --fb:'Source Serif 4',Georgia,serif;
   --fm:'DM Mono',monospace;
 }
+[data-theme="dark"]{
+  --paper:#15130F;--paper-w:#1C1A15;--paper-d:#242119;
+  --ink:#EDE8DC;--ink2:#D8D2C2;--ink3:#A9A290;--ink4:#7C7666;--ink5:#5C574A;
+  --rule:#2C2920;--rule2:#38342A;--footer-rule:#2C2920;
+  --gold:#C7AC72;--gold-l:#E0C994;--gold-p:#2A2413;
+  --red:#C05656;--red2:#D97878;
+  --white:#0F0E0B;
+}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-body{font-family:var(--fb);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;min-height:100vh}
+body{font-family:var(--fb);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;min-height:100vh;transition:background .25s ease,color .25s ease}
+html[data-theme="dark"]{color-scheme:dark}
 a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:auto}
 button{font-family:inherit}
 :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
@@ -50,26 +59,55 @@ button{font-family:inherit}
 .nav-a{font-family:var(--fm);font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);white-space:nowrap;padding:0 12px;height:56px;display:flex;align-items:center;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
 .nav-a:hover{color:var(--ink);border-bottom-color:var(--gold-l)}
 .h-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.btn-search{background:none;border:none;color:var(--ink3);cursor:pointer;padding:7px;display:flex;align-items:center;transition:color .2s}
+.btn-search:hover{color:var(--red)}
+.btn-search svg{width:17px;height:17px}
 .btn-sub{font-family:var(--fm);font-size:.54rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:7px 16px;background:var(--ink);color:var(--white);border:none;cursor:pointer;transition:background .2s;white-space:nowrap;display:inline-block}
 .btn-sub:hover{background:var(--ink2);color:var(--white)}
 .btn-ham{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:5px;align-items:center}
 .btn-ham svg{width:20px;height:20px}
 
-/* MOBILE NAV */
-.m-ov{display:none;position:fixed;inset:0;background:rgba(26,24,20,.55);z-index:400;backdrop-filter:blur(3px)}
-.m-ov.on{display:block}
-.m-nav{position:fixed;top:0;right:0;bottom:0;width:min(300px,88vw);background:var(--paper);z-index:500;transform:translateX(110%);transition:transform .32s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;border-left:1px solid var(--rule2);box-shadow:-10px 0 36px rgba(26,24,20,.16)}
-.m-nav.on{transform:translateX(0)}
-.m-head{padding:16px 20px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between}
-.m-head img{height:26px}
-.m-close{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:1.1rem;padding:6px;transition:color .2s}
-.m-close:hover{color:var(--red)}
-.m-links{flex:1;overflow-y:auto;padding:6px 0}
-.m-link{display:block;padding:11px 20px;font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);border-left:2px solid transparent;transition:all .18s}
-.m-link:hover{color:var(--red);border-left-color:var(--gold);background:var(--paper-w)}
-.m-foot{padding:16px 20px;border-top:1px solid var(--rule)}
-.m-sub-btn{display:block;text-align:center;padding:11px;font-family:var(--fm);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;background:var(--ink);color:var(--white);transition:background .2s}
-.m-sub-btn:hover{background:var(--red)}
+/* SEARCH OVERLAY */
+.search-ov{position:fixed;inset:0;background:rgba(26,24,20,.6);z-index:600;display:none;backdrop-filter:blur(3px);padding:80px 20px 0}
+.search-ov.on{display:block}
+.search-panel{max-width:640px;margin:0 auto;background:var(--paper);border:1px solid var(--rule);box-shadow:0 24px 80px rgba(26,24,20,.3)}
+.search-in-row{display:flex;align-items:center;border-bottom:1px solid var(--rule);padding:0 18px}
+.search-in-row svg{width:16px;height:16px;color:var(--ink5);flex-shrink:0}
+.search-input{flex:1;border:none;background:none;outline:none;padding:16px 12px;font-family:var(--fb);font-size:1.05rem;color:var(--ink)}
+.search-input::placeholder{color:var(--ink5)}
+.search-close{background:none;border:none;color:var(--ink5);cursor:pointer;font-size:1rem;padding:8px}
+.search-results{max-height:60vh;overflow-y:auto;padding:8px 0}
+.search-empty{padding:32px 24px;text-align:center;font-family:var(--fb);font-style:italic;color:var(--ink4)}
+.sr-item{display:flex;gap:12px;padding:12px 18px;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--rule)}
+.sr-item:last-child{border-bottom:none}
+.sr-item:hover{background:var(--paper-w)}
+.sr-cat{font-family:var(--fm);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:3px}
+.sr-ttl{font-family:var(--fd);font-size:1rem;font-weight:600;line-height:1.3}
+
+/* FULL-PAGE MENU */
+.fp-menu{position:fixed;inset:0;z-index:500;background:var(--paper);display:none;flex-direction:column;overflow-y:auto}
+.fp-menu.on{display:flex}
+.fp-head{display:flex;align-items:center;justify-content:space-between;padding:16px var(--g);border-bottom:1px solid var(--rule);flex-shrink:0}
+.fp-head img{height:28px}
+.fp-close{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:1.2rem;padding:8px;transition:color .2s}
+.fp-close:hover{color:var(--red)}
+.fp-body{flex:1;max-width:var(--max);width:100%;margin:0 auto;padding:32px var(--g) 24px;display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.fp-group-ttl{font-family:var(--fm);font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+.fp-links{display:flex;flex-direction:column}
+.fp-link{font-family:var(--fd);font-size:1.15rem;font-weight:500;color:var(--ink2);padding:9px 0;border-bottom:1px solid var(--rule);transition:color .18s,padding-left .18s}
+.fp-link:hover{color:var(--red);padding-left:6px}
+.fp-foot{border-top:1px solid var(--rule);padding:20px var(--g);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;flex-shrink:0}
+.theme-toggle{display:inline-flex;border:1px solid var(--rule2);border-radius:999px;padding:3px;gap:2px;background:var(--paper-w)}
+.theme-opt{font-family:var(--fm);font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:999px;border:none;background:none;color:var(--ink4);cursor:pointer;transition:all .2s}
+.theme-opt.on{background:var(--ink);color:var(--white)}
+.fp-sub{font-family:var(--fm);font-size:.58rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:11px 22px;background:var(--ink);color:var(--white);border:none;cursor:pointer;white-space:nowrap;transition:background .2s}
+.fp-sub:hover{background:var(--red)}
+@media(max-width:640px){
+  .fp-body{grid-template-columns:1fr;gap:28px;padding:24px 20px}
+  .fp-link{font-size:1.05rem}
+  .fp-foot{flex-direction:column;align-items:stretch}
+  .fp-sub{width:100%;text-align:center;padding:13px}
+}
 
 /* ARTICLE LAYOUT */
 .art-wrap{max-width:720px;margin:0 auto;padding:48px var(--g) 72px}
@@ -266,36 +304,80 @@ button{font-family:inherit}
       <a href="/?category=south-asia" class="nav-a">South Asia</a>
       <a href="/?category=global-markets-trade" class="nav-a">Markets</a>
       <a href="/?category=geopolitics-strategy" class="nav-a">Geopolitics</a>
+      <a href="/archive.html" class="nav-a">Archive</a>
+      <a href="javascript:void(0)" class="nav-a" onclick="openMenu()">All Sections &#9662;</a>
     </nav>
     <div class="h-right">
+      <button class="btn-search" onclick="openSearch()" aria-label="Search articles">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
       <a href="/#subscribe" class="btn-sub">Subscribe</a>
-      <button class="btn-ham" onclick="openMob()" aria-label="Menu">
+      <button class="btn-ham" onclick="openMenu()" aria-label="Menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
       </button>
     </div>
   </div>
 </header>
 
-<div class="m-ov" id="mOv" onclick="closeMob()"></div>
-<nav class="m-nav" id="mNav">
-  <div class="m-head">
+<!-- SEARCH OVERLAY -->
+<div class="search-ov" id="searchOv" onclick="if(event.target===this)closeSearch()">
+  <div class="search-panel">
+    <div class="search-in-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search analysis and briefings…" oninput="onSearchInput()">
+      <button class="search-close" onclick="closeSearch()" aria-label="Close search">&#10005;</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- FULL-PAGE MENU — all 20 sections, grouped, plus theme choice -->
+<div class="fp-menu" id="fpMenu" role="dialog" aria-modal="true" aria-label="Site menu">
+  <div class="fp-head">
     <img src="/images/tps.png" alt="The Pacific Signal">
-    <button class="m-close" onclick="closeMob()" aria-label="Close menu">&#10005;</button>
+    <button class="fp-close" onclick="closeMenu()" aria-label="Close menu">&#10005;</button>
   </div>
-  <div class="m-links">
-    <a href="/" class="m-link" onclick="closeMob()">Home</a>
-    <a href="/?category=united-states-canada" class="m-link" onclick="closeMob()">US &amp; Canada</a>
-    <a href="/?category=china-east-asia" class="m-link" onclick="closeMob()">China &amp; East Asia</a>
-    <a href="/?category=europe-uk" class="m-link" onclick="closeMob()">Europe &amp; UK</a>
-    <a href="/?category=middle-east-north-africa" class="m-link" onclick="closeMob()">Middle East</a>
-    <a href="/?category=south-asia" class="m-link" onclick="closeMob()">South Asia</a>
-    <a href="/?category=africa" class="m-link" onclick="closeMob()">Africa</a>
-    <a href="/?category=latin-america-caribbean" class="m-link" onclick="closeMob()">Latin America</a>
-    <a href="/?category=global-markets-trade" class="m-link" onclick="closeMob()">Markets</a>
-    <a href="/?category=geopolitics-strategy" class="m-link" onclick="closeMob()">Geopolitics</a>
+  <div class="fp-body">
+    <div>
+      <div class="fp-group-ttl">Regions</div>
+      <div class="fp-links">
+        <a href="/?category=united-states-canada" class="fp-link" onclick="closeMenu()">United States &amp; Canada</a>
+        <a href="/?category=china-east-asia" class="fp-link" onclick="closeMenu()">China &amp; East Asia</a>
+        <a href="/?category=europe-uk" class="fp-link" onclick="closeMenu()">Europe &amp; UK</a>
+        <a href="/?category=russia-post-soviet" class="fp-link" onclick="closeMenu()">Russia &amp; Post-Soviet</a>
+        <a href="/?category=middle-east-north-africa" class="fp-link" onclick="closeMenu()">Middle East &amp; North Africa</a>
+        <a href="/?category=south-asia" class="fp-link" onclick="closeMenu()">South Asia</a>
+        <a href="/?category=southeast-asia-oceania" class="fp-link" onclick="closeMenu()">Southeast Asia &amp; Oceania</a>
+        <a href="/?category=africa" class="fp-link" onclick="closeMenu()">Africa</a>
+        <a href="/?category=latin-america-caribbean" class="fp-link" onclick="closeMenu()">Latin America &amp; Caribbean</a>
+        <a href="/?category=arctic-global-commons" class="fp-link" onclick="closeMenu()">Arctic &amp; Global Commons</a>
+      </div>
+    </div>
+    <div>
+      <div class="fp-group-ttl">Topics</div>
+      <div class="fp-links">
+        <a href="/?category=geopolitics-strategy" class="fp-link" onclick="closeMenu()">Geopolitics &amp; Strategy</a>
+        <a href="/?category=global-markets-trade" class="fp-link" onclick="closeMenu()">Global Markets &amp; Trade</a>
+        <a href="/?category=energy-commodities" class="fp-link" onclick="closeMenu()">Energy &amp; Commodities</a>
+        <a href="/?category=technology-business" class="fp-link" onclick="closeMenu()">Technology &amp; Business</a>
+        <a href="/?category=cybersecurity-digital" class="fp-link" onclick="closeMenu()">Cybersecurity &amp; Digital</a>
+        <a href="/?category=science-health" class="fp-link" onclick="closeMenu()">Science &amp; Health</a>
+        <a href="/?category=climate-environment" class="fp-link" onclick="closeMenu()">Climate &amp; Environment</a>
+        <a href="/?category=democracy-rights" class="fp-link" onclick="closeMenu()">Democracy &amp; Rights</a>
+        <a href="/?category=religion-culture-identity" class="fp-link" onclick="closeMenu()">Religion, Culture &amp; Identity</a>
+        <a href="/?category=arts-media-sports" class="fp-link" onclick="closeMenu()">Arts, Media &amp; Sports</a>
+        <a href="/?category=sports" class="fp-link" onclick="closeMenu()">Sports</a>
+      </div>
+    </div>
   </div>
-  <div class="m-foot"><a href="/#subscribe" class="m-sub-btn" onclick="closeMob()">Subscribe Free</a></div>
-</nav>
+  <div class="fp-foot">
+    <div class="theme-toggle" role="group" aria-label="Theme">
+      <button class="theme-opt" id="themeOptLight" onclick="setTheme('light')">Classic</button>
+      <button class="theme-opt" id="themeOptDark" onclick="setTheme('dark')">Briefing</button>
+    </div>
+    <a href="/#subscribe" class="fp-sub" onclick="closeMenu()">Subscribe Free</a>
+  </div>
+</div>
 
 <div id="artShell">
   <div class="art-wrap" id="artSkeleton">
@@ -400,21 +482,22 @@ button{font-family:inherit}
         </div>
       </div>
       <div>
-        <div class="ft-col-ttl">Newsletter</div>
+        <div class="ft-col-ttl">Briefing</div>
         <p class="ft-nl-txt">The best analysis, delivered free to your inbox each week.</p>
-        <form onsubmit="return handleSub(event)">
+        <form onsubmit="event.preventDefault();return false">
           <div class="ft-form">
-            <input type="email" placeholder="Your email" class="ft-email" id="subEmail" required>
-            <button type="submit" class="ft-btn">Subscribe</button>
+            <input type="email" placeholder="Your email" class="ft-email" disabled>
+            <button type="submit" class="ft-btn" disabled>Coming Soon</button>
           </div>
         </form>
-        <p class="ft-msg" id="subMsg"></p>
+        <p class="ft-msg" style="color:var(--ink4)">Newsletter signups aren&rsquo;t open yet &mdash; check back soon.</p>
       </div>
     </div>
     <div class="ft-bot">
       <span class="ft-copy" id="ftCopy">&copy; The Pacific Signal. All rights reserved.</span>
       <div class="ft-legal">
         <a href="/about.html">About</a>
+        <a href="/archive.html">Archive</a>
         <a href="/contact.html">Contact</a>
         <a href="/privacy.html">Privacy</a>
         <a href="/terms.html">Terms</a>
@@ -453,8 +536,104 @@ window.addEventListener('scroll',function(){
   lastY=y;
 },{passive:true});
 
-function openMob(){document.getElementById('mNav').classList.add('on');document.getElementById('mOv').classList.add('on');document.body.style.overflow='hidden'}
-function closeMob(){document.getElementById('mNav').classList.remove('on');document.getElementById('mOv').classList.remove('on');document.body.style.overflow=''}
+/* FULL-PAGE MENU */
+function openMenu(){document.getElementById('fpMenu').classList.add('on');document.body.style.overflow='hidden'}
+function closeMenu(){document.getElementById('fpMenu').classList.remove('on');document.body.style.overflow=''}
+
+/* THEME — "Classic" (light) / "Briefing" (dark). Defaults to system preference, then remembers choice. */
+function setTheme(mode){
+  document.documentElement.setAttribute('data-theme',mode);
+  try{localStorage.setItem('tps-theme',mode)}catch(e){}
+  var lightBtn=document.getElementById('themeOptLight'),darkBtn=document.getElementById('themeOptDark');
+  if(lightBtn&&darkBtn){lightBtn.classList.toggle('on',mode==='light');darkBtn.classList.toggle('on',mode==='dark')}
+}
+(function initTheme(){
+  var saved=null;
+  try{saved=localStorage.getItem('tps-theme')}catch(e){}
+  var mode=saved||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  setTheme(mode);
+})();
+
+/* SEARCH — fetches a small cached index once, then fuzzy-matches locally (typo-tolerant, no D1 read per keystroke) */
+var searchIndexPromise=null,searchTimer=null;
+function loadSearchIndex(){
+  if(!searchIndexPromise){
+    searchIndexPromise=fetch('/api/search-index').then(function(r){return r.json()}).catch(function(){return []});
+  }
+  return searchIndexPromise;
+}
+function openSearch(){
+  document.getElementById('searchOv').classList.add('on');
+  document.body.style.overflow='hidden';
+  loadSearchIndex();
+  setTimeout(function(){document.getElementById('searchInput').focus()},50);
+}
+function closeSearch(){
+  document.getElementById('searchOv').classList.remove('on');
+  document.body.style.overflow='';
+  document.getElementById('searchInput').value='';
+  document.getElementById('searchResults').innerHTML='';
+}
+function onSearchInput(){
+  clearTimeout(searchTimer);
+  var q=document.getElementById('searchInput').value.trim();
+  if(q.length<2){document.getElementById('searchResults').innerHTML='';return}
+  searchTimer=setTimeout(function(){runSearch(q)},150);
+}
+function editDistance(a,b){
+  if(a===b)return 0;
+  var al=a.length,bl=b.length;
+  if(!al)return bl;if(!bl)return al;
+  var row=[];for(var i=0;i<=bl;i++)row[i]=i;
+  for(var x=1;x<=al;x++){
+    var prev=row[0];row[0]=x;
+    for(var y=1;y<=bl;y++){
+      var tmp=row[y];
+      row[y]=a[x-1]===b[y-1]?prev:1+Math.min(prev,row[y],row[y-1]);
+      prev=tmp;
+    }
+  }
+  return row[bl];
+}
+function tokenize(s){return (s||'').toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(Boolean)}
+function fuzzyScore(queryTokens,article){
+  var haystack=tokenize(article.title+' '+(article.excerpt||'')+' '+(article.category_name||''));
+  var score=0;
+  queryTokens.forEach(function(qt){
+    var best=0;
+    haystack.forEach(function(ht){
+      if(ht.indexOf(qt)===0){best=Math.max(best,3);return}
+      if(ht.indexOf(qt)!==-1){best=Math.max(best,2);return}
+      var maxDist=qt.length<=4?1:2;
+      if(editDistance(qt,ht)<=maxDist){best=Math.max(best,1)}
+    });
+    score+=best;
+  });
+  return score;
+}
+async function runSearch(q){
+  var c=document.getElementById('searchResults');
+  c.innerHTML='<div class="search-empty">Searching&hellip;</div>';
+  try{
+    var index=await loadSearchIndex();
+    var queryTokens=tokenize(q);
+    var scored=index.map(function(a){return {a:a,score:fuzzyScore(queryTokens,a)}})
+      .filter(function(x){return x.score>0})
+      .sort(function(x,y){return y.score-x.score})
+      .slice(0,20)
+      .map(function(x){return x.a});
+    if(!scored.length){c.innerHTML='<div class="search-empty">No articles found for &ldquo;'+esc(q)+'&rdquo;.</div>';return}
+    c.innerHTML=scored.map(function(a){
+      return '<a href="/article.html?slug='+esc(a.slug)+'" class="sr-item">'
+        +'<div><div class="sr-cat">'+esc(a.category_name||'')+'</div><div class="sr-ttl">'+esc(a.title)+'</div></div>'
+        +'</a>';
+    }).join('');
+  }catch(e){c.innerHTML='<div class="search-empty">Search unavailable. Please try again.</div>'}
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){e.preventDefault();openSearch()}
+  if(e.key==='Escape'){closeSearch();closeMenu()}
+});
 
 var prog=document.getElementById('prog');
 window.addEventListener('scroll',function(){
@@ -601,22 +780,6 @@ function renderRelated(rel){
       +'<div class="rel-meta">'+esc(a.author||'The Pacific Signal')+' &nbsp;&middot;&nbsp; <span style="color:var(--gold)">'+timeAgo(a.published_at||a.created_at)+'</span></div>'
       +'</a>';
   }).join('');
-}
-
-async function handleSub(e){
-  e.preventDefault();
-  var email=document.getElementById('subEmail').value.trim();
-  var msg=document.getElementById('subMsg');
-  if(!email)return false;
-  try{
-    var r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
-    var d=await r.json();
-    msg.textContent=r.ok?'Thank you \u2014 you are now subscribed.':(d.error||'Something went wrong.');
-    msg.style.color=r.ok?'var(--gold)':'var(--red)';
-    if(r.ok)document.getElementById('subEmail').value='';
-  }catch(er){msg.textContent='Network error. Please try again.';msg.style.color='var(--red)'}
-  setTimeout(function(){msg.textContent=''},5000);
-  return false;
 }
 </script>
 </body>
