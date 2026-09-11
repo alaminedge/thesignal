@@ -582,7 +582,7 @@ async function loadArchivePage(replace){
     }else{
       list.insertAdjacentHTML('beforeend',articles.map(feedItemHtml).join(''));
     }
-    document.getElementById('filterCount').textContent=articles.length?('Showing '+((arcPage-1)*12+1)+'\u2013'+((arcPage-1)*12+articles.length):'');
+    document.getElementById('filterCount').textContent=articles.length?('Showing '+((arcPage-1)*12+1)+'\u2013'+((arcPage-1)*12+articles.length)):'';
     document.getElementById('loadMoreWrap').style.display=d.hasMore?'block':'none';
   }catch(e){
     if(replace)document.getElementById('arcList').innerHTML='<div class="arc-empty">Could not load the archive. Please try again.</div>';
