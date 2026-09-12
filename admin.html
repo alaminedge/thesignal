@@ -138,6 +138,7 @@ tr:hover td{background:rgba(240,236,226,.4)}
 .bdg-feed{background:var(--green-l);color:var(--green);border:1px solid rgba(30,92,58,.2)}
 .bdg-visual{background:rgba(180,154,94,.1);color:var(--gold);border:1px solid rgba(180,154,94,.22)}
 .bdg-spot{background:rgba(92,88,73,.08);color:var(--ink4);border:1px solid rgba(92,88,73,.18)}
+.bdg-explain{background:rgba(180,154,94,.1);color:#8A6D2E;border:1px solid rgba(180,154,94,.3)}
 .bdg-pin{background:var(--gold-p);color:var(--gold);border:1px solid rgba(180,154,94,.25);font-family:var(--fm);font-size:.46rem;padding:2px 6px}
 
 /* ─── FORMS ─── */
@@ -813,6 +814,7 @@ async function loadDash(){
     +'<li><strong>Block B (Feed)</strong> — Numbered list of briefings and analysis.</li>'
     +'<li><strong>Block C (Visual)</strong> — Full-width cinematic image article. Requires an image.</li>'
     +'<li><strong>Block D (In Focus)</strong> — Four thematic analysis cards. Set an In Focus Label.</li>'
+    +'<li><strong>Block E (Explainer)</strong> — Up to three evergreen background primers. No expiry \u2014 keep these timeless.</li>'
     +'<li>Articles with no block assigned appear in the <strong>Latest Analysis</strong> grid.</li>'
     +'<li>Pin up to two articles to elevate them as hero fallbacks.</li>'
     +'<li>Visit <strong>Security</strong> to change the admin password from the shared default.</li>'
@@ -841,6 +843,7 @@ async function loadArts(){
       else if(a.display_block==='feed'){bl='Feed';bc='bdg-feed'}
       else if(a.display_block==='visual'){bl='Visual';bc='bdg-visual'}
       else if(a.display_block==='spotlight'){bl='In Focus';bc='bdg-spot'}
+      else if(a.display_block==='explainer'){bl='Explainer';bc='bdg-explain'}
       h+='<tr>'
         +'<td class="em">'+(a.is_pinned?'<span class="bdg bdg-pin" style="margin-right:5px">Pinned</span>':'')+esc(a.title)+'</td>'
         +'<td>'+esc(a.category_name||'&mdash;')+'</td>'
@@ -976,6 +979,7 @@ function openArtModal(id){
     +'<option value="feed"'+(a&&a.display_block==='feed'?' selected':'')+'>Block B — Intelligence Feed</option>'
     +'<option value="visual"'+(a&&a.display_block==='visual'?' selected':'')+'>Block C — Visual Showcase</option>'
     +'<option value="spotlight"'+(a&&a.display_block==='spotlight'?' selected':'')+'>Block D — In Focus</option>'
+    +'<option value="explainer"'+(a&&a.display_block==='explainer'?' selected':'')+'>Block E — Explainer</option>'
     +'</select></div>'
     +'<div class="fg2" id="_spotWrap" style="display:'+(a&&a.display_block==='spotlight'?'block':'none')+'">'
     +'<label class="flbl2">In Focus Label</label>'
