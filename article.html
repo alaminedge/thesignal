@@ -183,10 +183,11 @@ button{font-family:inherit}
 .share-btn:hover{border-color:var(--ink);color:var(--ink);background:var(--paper-w)}
 .share-btn svg{width:12px;height:12px}
 
-/* NEXT ARTICLE RIBBON */
+/* NEXT ARTICLE RIBBON — deliberately fixed colors (not theme-linked), so it stays
+   a consistent dark accent bar whether the site is in Classic or Briefing mode */
 .next-ribbon{
   position:fixed;bottom:0;right:0;left:0;
-  background:var(--ink);color:var(--white);
+  background:#1A1814;color:#FFFFFF;
   padding:14px var(--g);
   display:flex;align-items:center;justify-content:space-between;gap:16px;
   transform:translateY(100%);
@@ -196,13 +197,13 @@ button{font-family:inherit}
   border-top:2px solid var(--gold);
 }
 .next-ribbon.show{transform:translateY(0)}
-.next-ribbon:hover{background:var(--ink2)}
+.next-ribbon:hover{background:#2E2B24}
 .next-lbl{font-family:var(--fm);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);flex-shrink:0}
-.next-title{font-family:var(--fd);font-size:1rem;font-weight:500;color:var(--white);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.next-title{font-family:var(--fd);font-size:1rem;font-weight:500;color:#FFFFFF;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .next-arrow{flex-shrink:0;color:var(--gold-l)}
 .next-arrow svg{width:16px;height:16px}
 .next-close{background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:.9rem;padding:4px;flex-shrink:0;transition:color .2s}
-.next-close:hover{color:var(--white)}
+.next-close:hover{color:#FFFFFF}
 
 /* RELATED */
 .related-wrap{background:var(--paper-w);border-top:1px solid var(--rule);padding:52px 0 68px}
