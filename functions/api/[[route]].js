@@ -351,6 +351,10 @@ export async function onRequest(context) {
       "SELECT a.*, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.display_block = 'spotlight' AND a.is_published = 1 ORDER BY a.published_at DESC LIMIT 4"
     ).all();
 
+    var explainersResult = await db.prepare(
+      "SELECT a.*, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.display_block = 'explainer' AND a.is_published = 1 ORDER BY a.published_at DESC LIMIT 3"
+    ).all();
+
     var latestResult = await db.prepare(
       "SELECT a.*, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.display_block IS NULL AND a.is_published = 1 ORDER BY a.published_at DESC LIMIT 9"
     ).all();
@@ -360,6 +364,7 @@ export async function onRequest(context) {
       feed: feedArticlesResult.results || [],
       visual: visualArticle || null,
       spotlights: spotlightsResult.results || [],
+      explainers: explainersResult.results || [],
       latest: latestResult.results || []
     }, 200, { 'Cache-Control': 'public, max-age=60' });
   }
