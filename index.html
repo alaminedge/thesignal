@@ -208,6 +208,17 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
 .spot-card:hover .spot-ttl{color:var(--red2)}
 .spot-meta{font-family:var(--fm);font-size:.52rem;color:var(--ink5)}
 
+/* ─── EXPLAINERS — evergreen background primers, visually distinct from time-sensitive blocks ─── */
+.explain-sec{padding-bottom:42px;border-bottom:1px solid var(--rule);margin-bottom:42px}
+.explain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule)}
+.explain-card{padding:24px 22px;background:var(--paper-w);text-decoration:none;color:var(--ink);display:block;transition:background .18s}
+.explain-card:hover{background:var(--paper-d)}
+.explain-n{font-family:var(--fd);font-size:1.6rem;font-weight:600;font-style:italic;color:var(--gold-l);line-height:1;margin-bottom:12px;display:block}
+.explain-tag{font-family:var(--fm);font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink5);margin-bottom:8px}
+.explain-ttl{font-family:var(--fd);font-size:1.08rem;font-weight:700;line-height:1.3;color:var(--ink);margin-bottom:8px;transition:color .2s}
+.explain-card:hover .explain-ttl{color:var(--red2)}
+.explain-exc{font-family:var(--fb);font-size:.84rem;color:var(--ink4);font-weight:300;line-height:1.55}
+
 /* ─── LATEST ─── */
 .latest-sec{padding-bottom:68px}
 .latest-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
@@ -261,6 +272,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   .spot-grid{grid-template-columns:repeat(2,1fr)}
   .spot-card:nth-child(2){border-right:none}
   .spot-card:nth-child(3){border-right:1px solid var(--rule)}
+  .explain-grid{grid-template-columns:repeat(2,1fr)}
   .latest-grid{grid-template-columns:repeat(2,1fr)}
   .art-card:nth-child(2){border-right:none;padding-right:0}
   .art-card:nth-child(3){border-right:1px solid var(--rule);padding-right:20px}
@@ -285,6 +297,7 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
   .spot-grid{grid-template-columns:1fr}
   .spot-card{border-right:none;border-bottom:1px solid var(--rule)}
   .spot-card:last-child{border-bottom:none}
+  .explain-grid{grid-template-columns:1fr}
   .latest-grid{grid-template-columns:1fr}
   .art-card{border-right:none;padding-right:0;border-bottom:1px solid var(--rule);padding-bottom:22px}
   .art-card:last-child{border-bottom:none}
@@ -459,6 +472,11 @@ a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:aut
         <div class="spot-card" style="pointer-events:none"><span class="sk" style="height:10px;width:85%;margin-bottom:14px"></span><span class="sk sk-title-sm" style="width:75%"></span><span class="sk sk-title-sm" style="width:65%;height:18px;margin-top:4px"></span><span class="sk" style="height:9px;width:110px;margin-top:10px"></span></div>
         <div class="spot-card" style="border-right:none;pointer-events:none"><span class="sk" style="height:10px;width:75%;margin-bottom:14px"></span><span class="sk sk-title-sm" style="width:80%"></span><span class="sk sk-title-sm" style="width:50%;height:18px;margin-top:4px"></span><span class="sk" style="height:9px;width:100px;margin-top:10px"></span></div>
       </div>
+    </section>
+
+    <section class="explain-sec" id="explainSec" style="display:none">
+      <div class="sec-hd"><span class="sec-ttl">Explainers</span><span class="sec-sub">Start Here</span></div>
+      <div class="explain-grid" id="explainGrid"></div>
     </section>
 
     <section class="latest-sec" id="latestSec">
@@ -696,6 +714,7 @@ if(filterCat){
   document.getElementById('feedSec').style.display='none';
   document.getElementById('visSec').style.display='none';
   document.getElementById('spotSec').style.display='none';
+  document.getElementById('explainSec').style.display='none';
   document.getElementById('latestTtl').textContent=nm;
   document.querySelectorAll('.nav-a').forEach(function(l){l.classList.remove('on')});
   loadCat(filterCat,1);
@@ -713,6 +732,7 @@ async function loadHome(p){
       renderFeed(d.feed||[]);
       renderVisual(d.visual);
       renderSpots(d.spotlights||[]);
+      renderExplainers(d.explainers||[]);
     }
     renderLatest(d.latest||[],p>1);
     hasMore=d.hasMore||(d.latest&&d.latest.length>=12);
@@ -788,6 +808,20 @@ function renderSpots(spots){
       +'<div class="spot-lbl">'+esc(a.spotlight_label||a.category_name||'Spotlight')+'</div>'
       +'<div class="spot-ttl">'+esc(a.title)+'</div>'
       +'<div class="spot-meta">'+esc(a.author||'The Pacific Signal')+' &nbsp;&middot;&nbsp; <span class="t-gold">'+timeAgo(a.published_at||a.created_at)+'</span></div>'
+      +'</a>';
+  }).join('');
+}
+
+function renderExplainers(items){
+  var sec=document.getElementById('explainSec'),c=document.getElementById('explainGrid');
+  if(!items.length){sec.style.display='none';return}
+  sec.style.display='block';
+  c.innerHTML=items.map(function(a,i){
+    return '<a href="/article.html?slug='+esc(a.slug)+'" class="explain-card">'
+      +'<span class="explain-n">'+String(i+1).padStart(2,'0')+'</span>'
+      +'<div class="explain-tag">'+esc(a.category_name||'Explainer')+'</div>'
+      +'<div class="explain-ttl">'+esc(a.title)+'</div>'
+      +(a.excerpt?'<div class="explain-exc">'+esc(a.excerpt)+'</div>':'')
       +'</a>';
   }).join('');
 }
