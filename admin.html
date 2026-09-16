@@ -826,18 +826,32 @@ async function loadDash(){
 /* ARTICLES                                                         */
 /* ══════════════════════════════════════════════════════════════ */
 
+var artFilterMode='all';
+
 async function loadArts(){
   var cr=await api('GET','/admin/categories');allCats=cr.ok?cr.data:[];
   var r=await api('GET','/admin/articles');allArts=r.ok?r.data:[];
-  var h='<div class="pg-head"><h2 class="pg-title">Articles<span class="pg-count">('+allArts.length+')</span></h2>'
+  renderArtsTable();
+}
+
+function renderArtsTable(){
+  var pinnedCount=allArts.filter(function(a){return a.is_pinned}).length;
+  var list=artFilterMode==='pinned'?allArts.filter(function(a){return a.is_pinned}):allArts;
+
+  var h='<div class="pg-head"><h2 class="pg-title">Articles<span class="pg-count">('+list.length+')</span></h2>'
+    +'<div style="display:flex;gap:8px;align-items:center">'
+    +'<select class="fsel" id="artFilterSel" style="padding:8px 28px 8px 12px;border:1px solid var(--rule2);background-color:var(--white);font-family:var(--fm);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)" onchange="artFilterMode=this.value;renderArtsTable()">'
+    +'<option value="all"'+(artFilterMode==='all'?' selected':'')+'>All Articles</option>'
+    +'<option value="pinned"'+(artFilterMode==='pinned'?' selected':'')+'>Pinned Only ('+pinnedCount+'/2)</option>'
+    +'</select>'
     +'<button class="btn btn-primary" onclick="openArtModal()">'
     +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'
-    +'New Article</button></div>';
+    +'New Article</button></div></div>';
   h+='<div class="card"><div class="tbl-wrap"><table>'
     +'<thead><tr><th>Title</th><th>Category</th><th>Block</th><th>Status</th><th>Posted</th><th>Actions</th></tr></thead><tbody>';
 
-  if(allArts.length){
-    allArts.forEach(function(a){
+  if(list.length){
+    list.forEach(function(a){
       var bl='&mdash;',bc='';
       if(a.display_block==='hero'){bl='Hero';bc='bdg-hero'}
       else if(a.display_block==='feed'){bl='Feed';bc='bdg-feed'}
@@ -851,15 +865,26 @@ async function loadArts(){
         +'<td><span class="bdg '+(a.is_published?'bdg-live':'bdg-draft')+'">'+(a.is_published?'Live':'Draft')+'</span></td>'
         +'<td class="mono">'+timeAgo(a.published_at||a.created_at)+'</td>'
         +'<td style="white-space:nowrap">'
+        +'<button class="btn btn-ghost btn-sm" onclick="quickTogglePin('+a.id+','+(a.is_pinned?0:1)+')">'+(a.is_pinned?'Unpin':'Pin')+'</button> '
         +'<button class="btn btn-ghost btn-sm" onclick="openArtModal('+a.id+')">Edit</button> '
         +'<button class="btn btn-danger btn-sm" onclick="deleteArt('+a.id+')">Delete</button>'
         +'</td></tr>';
     });
   }else{
-    h+='<tr class="empty-row"><td colspan="6">No articles yet. Click &ldquo;New Article&rdquo; to begin.</td></tr>';
+    h+='<tr class="empty-row"><td colspan="6">'+(artFilterMode==='pinned'?'No pinned articles yet.':'No articles yet. Click &ldquo;New Article&rdquo; to begin.')+'</td></tr>';
   }
   h+='</tbody></table></div></div>';
   document.getElementById('view-articles').innerHTML=h;
+}
+
+async function quickTogglePin(id,newVal){
+  var r=await api('PUT','/admin/articles/'+id,{is_pinned:newVal});
+  if(!r.ok){toast(r.data.error||'Could not update pin status.',true);return}
+  var a=allArts.find(function(x){return x.id===id});
+  if(a)a.is_pinned=newVal;
+  toast(newVal?'Article pinned.':'Article unpinned.');
+  renderArtsTable();
+  loadDash();
 }
 
 /* ══════════════════════════════════════════════════════════════ */
