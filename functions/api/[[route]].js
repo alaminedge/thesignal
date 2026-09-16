@@ -271,6 +271,16 @@ export async function onRequest(context) {
       try { await db.prepare(migrationList[i]).run(); } catch (e) {}
     }
 
+    // One-time cleanup: "Block A — Hero" used to be a separate, higher-priority way to set the
+    // lead story, which silently overrode the Pin checkbox and could leave an old article stuck
+    // as hero forever with no visible control to remove it. Hero selection is now driven only by
+    // Pin, so fold any legacy hero-block articles into that system instead of leaving them orphaned.
+    try {
+      await db.prepare(
+        "UPDATE articles SET is_pinned = 1, display_block = NULL WHERE display_block = 'hero'"
+      ).run();
+    } catch (e) {}
+
     // Lean indexes — only on columns actually filtered/sorted by in hot paths
     try { await db.prepare("CREATE INDEX IF NOT EXISTS idx_articles_pub ON articles(is_published, published_at)").run(); } catch (e) {}
     try { await db.prepare("CREATE INDEX IF NOT EXISTS idx_articles_block ON articles(display_block, is_published)").run(); } catch (e) {}
@@ -330,14 +340,8 @@ export async function onRequest(context) {
     if (!db) return json({ hero: null, feed: [], visual: null, spotlights: [], latest: [] });
 
     var heroArticle = await db.prepare(
-      "SELECT a.*, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.display_block = 'hero' AND a.is_published = 1 ORDER BY a.published_at DESC LIMIT 1"
+      "SELECT a.*, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.is_pinned = 1 AND a.is_published = 1 LIMIT 1"
     ).first();
-
-    if (!heroArticle) {
-      heroArticle = await db.prepare(
-        "SELECT a.*, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.is_pinned = 1 AND a.is_published = 1 ORDER BY a.pin_order ASC LIMIT 1"
-      ).first();
-    }
 
     var feedArticlesResult = await db.prepare(
       "SELECT a.*, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.display_block = 'feed' AND a.is_published = 1 ORDER BY a.published_at DESC LIMIT 8"
@@ -708,13 +712,7 @@ export async function onRequest(context) {
       var assignedPinOrder = 0;
 
       if (newIsPinned) {
-        var currentPinnedCountResult = await db.prepare('SELECT COUNT(*) as count FROM articles WHERE is_pinned = 1').first();
-        if (currentPinnedCountResult && currentPinnedCountResult.count >= 2) {
-          var oldestPinToEvict = await db.prepare('SELECT id FROM articles WHERE is_pinned = 1 ORDER BY pin_order ASC LIMIT 1').first();
-          if (oldestPinToEvict) await db.prepare('UPDATE articles SET is_pinned = 0, pin_order = 0 WHERE id = ?').bind(oldestPinToEvict.id).run();
-        }
-        var maxPinOrderResult = await db.prepare('SELECT MAX(pin_order) as max_order FROM articles WHERE is_pinned = 1').first();
-        assignedPinOrder = (maxPinOrderResult && maxPinOrderResult.max_order !== null) ? maxPinOrderResult.max_order + 1 : 0;
+        await db.prepare('UPDATE articles SET is_pinned = 0, pin_order = 0 WHERE is_pinned = 1').run();
       }
 
       var publishDate = newIsPublished ? new Date().toISOString() : null;
@@ -759,23 +757,11 @@ export async function onRequest(context) {
       if (body.spotlight_label !== undefined) { updateFields.push('spotlight_label = ?'); updateValues.push(body.spotlight_label); }
 
       if (body.is_pinned !== undefined) {
-        var updatedPinOrder = 0;
         if (body.is_pinned) {
-          var existingArticle = await db.prepare('SELECT is_pinned, pin_order FROM articles WHERE id = ?').bind(updateArticleId).first();
-          if (!existingArticle || !existingArticle.is_pinned) {
-            var currentPinCount = await db.prepare('SELECT COUNT(*) as count FROM articles WHERE is_pinned = 1 AND id != ?').bind(updateArticleId).first();
-            if (currentPinCount && currentPinCount.count >= 2) {
-              var oldestPinToEvict2 = await db.prepare('SELECT id FROM articles WHERE is_pinned = 1 AND id != ? ORDER BY pin_order ASC LIMIT 1').bind(updateArticleId).first();
-              if (oldestPinToEvict2) await db.prepare('UPDATE articles SET is_pinned = 0, pin_order = 0 WHERE id = ?').bind(oldestPinToEvict2.id).run();
-            }
-            var currentMaxPin = await db.prepare('SELECT MAX(pin_order) as max_order FROM articles WHERE is_pinned = 1 AND id != ?').bind(updateArticleId).first();
-            updatedPinOrder = (currentMaxPin && currentMaxPin.max_order !== null) ? currentMaxPin.max_order + 1 : 0;
-          } else {
-            updatedPinOrder = existingArticle.pin_order || 0; // already pinned — keep its existing order instead of resetting it to 0
-          }
+          await db.prepare('UPDATE articles SET is_pinned = 0, pin_order = 0 WHERE is_pinned = 1 AND id != ?').bind(updateArticleId).run();
         }
         updateFields.push('is_pinned = ?'); updateValues.push(body.is_pinned ? 1 : 0);
-        updateFields.push('pin_order = ?'); updateValues.push(updatedPinOrder);
+        updateFields.push('pin_order = ?'); updateValues.push(0);
       }
 
       if (body.is_published !== undefined) {
