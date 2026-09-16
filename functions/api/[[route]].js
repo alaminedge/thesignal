@@ -710,7 +710,8 @@ export async function onRequest(context) {
       if (newIsPinned) {
         var currentPinnedCountResult = await db.prepare('SELECT COUNT(*) as count FROM articles WHERE is_pinned = 1').first();
         if (currentPinnedCountResult && currentPinnedCountResult.count >= 2) {
-          await db.prepare('UPDATE articles SET is_pinned = 0, pin_order = 0 WHERE is_pinned = 1 ORDER BY pin_order DESC LIMIT 1').run();
+          var oldestPinToEvict = await db.prepare('SELECT id FROM articles WHERE is_pinned = 1 ORDER BY pin_order ASC LIMIT 1').first();
+          if (oldestPinToEvict) await db.prepare('UPDATE articles SET is_pinned = 0, pin_order = 0 WHERE id = ?').bind(oldestPinToEvict.id).run();
         }
         var maxPinOrderResult = await db.prepare('SELECT MAX(pin_order) as max_order FROM articles WHERE is_pinned = 1').first();
         assignedPinOrder = (maxPinOrderResult && maxPinOrderResult.max_order !== null) ? maxPinOrderResult.max_order + 1 : 0;
@@ -764,10 +765,13 @@ export async function onRequest(context) {
           if (!existingArticle || !existingArticle.is_pinned) {
             var currentPinCount = await db.prepare('SELECT COUNT(*) as count FROM articles WHERE is_pinned = 1 AND id != ?').bind(updateArticleId).first();
             if (currentPinCount && currentPinCount.count >= 2) {
-              await db.prepare('UPDATE articles SET is_pinned = 0, pin_order = 0 WHERE is_pinned = 1 ORDER BY pin_order DESC LIMIT 1').run();
+              var oldestPinToEvict2 = await db.prepare('SELECT id FROM articles WHERE is_pinned = 1 AND id != ? ORDER BY pin_order ASC LIMIT 1').bind(updateArticleId).first();
+              if (oldestPinToEvict2) await db.prepare('UPDATE articles SET is_pinned = 0, pin_order = 0 WHERE id = ?').bind(oldestPinToEvict2.id).run();
             }
             var currentMaxPin = await db.prepare('SELECT MAX(pin_order) as max_order FROM articles WHERE is_pinned = 1 AND id != ?').bind(updateArticleId).first();
             updatedPinOrder = (currentMaxPin && currentMaxPin.max_order !== null) ? currentMaxPin.max_order + 1 : 0;
+          } else {
+            updatedPinOrder = existingArticle.pin_order || 0; // already pinned — keep its existing order instead of resetting it to 0
           }
         }
         updateFields.push('is_pinned = ?'); updateValues.push(body.is_pinned ? 1 : 0);
