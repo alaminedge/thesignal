@@ -760,7 +760,7 @@ async function loadCat(slug,p){
 
 function renderHero(h){
   var c=document.getElementById('heroSec');
-  if(!h){c.innerHTML='<p style="padding:52px 0;text-align:center;font-style:italic;color:var(--ink4);font-family:var(--fb)">No featured article yet.</p>';return}
+  if(!h){c.innerHTML='<p style="padding:52px 0;text-align:center;font-style:italic;color:var(--ink4);font-family:var(--fb)">No hero article yet.</p>';return}
   c.innerHTML='<a href="/article.html?slug='+esc(h.slug)+'" class="hero-card">'
     +'<div class="hero-img-wrap">'
     +(h.image_url?'<img src="'+esc(h.image_url)+'" alt="'+esc(h.title)+'" class="hero-img" loading="eager">':'<div class="hero-ph"><span class="hero-ph-m">TPS</span></div>')
