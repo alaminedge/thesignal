@@ -138,7 +138,15 @@ button{font-family:inherit;cursor:pointer}
 
 /* ── RESPONSIVE (shared) ── */
 @media(max-width:860px){
-  .mast .wrap{height:64px}
+  /* Phone header: logo + name on the LEFT, search + menu icons on the RIGHT */
+  .mast .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:8px}
+  .mast .logo{order:1;justify-content:flex-start;min-width:0;flex:1 1 auto}
+  .mast .logo-t{min-width:0}
+  .mast .logo-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mast-l{order:2;flex:0 0 auto;gap:2px;margin-right:-9px}
+  .mast-l .icon-btn[aria-label="Search"]{order:1}
+  .mast-l .icon-btn[aria-label="Open menu"]{order:2}
+  .mast-r{display:none}
   .logo img{height:34px}
   .logo-name{font-size:1.35rem}
   .logo-tag{display:none}
