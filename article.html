@@ -237,22 +237,28 @@ function currentSlug(){
   if(!slug&&!data)return showState('Article not found','No article was specified.');
   try{
     if(!data){
-      var r=await fetch('/api/article/'+slug);
+      var r=null,tries=0;
+      while(tries<2){
+        try{r=await fetch('/api/article/'+slug,{headers:{'Accept':'application/json'}});break}
+        catch(e){tries++;if(tries>=2)throw e;await new Promise(function(ok){setTimeout(ok,600)})}
+      }
       if(r.status===404)return showState('Article not found','This story may have been moved or removed.');
-      if(!r.ok)throw 0;
+      if(!r.ok)throw new Error('API '+r.status);
       data=await r.json();
     }
+    if(!data||!data.article)throw new Error('No article in response');
     var a=data.article;
     ARTICLE_URL=location.origin+articleUrl(a.slug);
     // Legacy ?slug= links get upgraded to the pretty URL in the address bar
     if(location.pathname.indexOf('/article/')!==0){try{history.replaceState(null,'',articleUrl(a.slug))}catch(e){}}
     document.title=a.title+' \u2014 The Pacific Signal';
     renderArticle(a);
-    markNav(a.category_slug||'__none__');
-    renderRelated(data.related||[],a);
-    loadMostRead(a.slug);
-    startProgress();
+    try{markNav(a.category_slug||'__none__')}catch(e){}
+    try{renderRelated(data.related||[],a)}catch(e){console.error(e)}
+    try{loadMostRead(a.slug)}catch(e){}
+    try{startProgress()}catch(e){}
   }catch(e){
+    try{console.error('Article load failed:',e)}catch(_){}
     showState('Unable to load this article','Please check your connection and try again.');
   }
 })();
