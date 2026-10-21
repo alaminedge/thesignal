@@ -28,6 +28,12 @@ function abs(origin, u) {
   return origin + (u.charAt(0) === '/' ? '' : '/') + u;
 }
 
+function iso(d) {
+  if (!d) return undefined;
+  var t = new Date(String(d).indexOf('T') === -1 ? String(d).replace(' ', 'T') + 'Z' : d);
+  return isNaN(t.getTime()) ? undefined : t.toISOString();
+}
+
 function clip(s, n) {
   s = String(s || '').replace(/\s+/g, ' ').trim();
   return s.length > n ? s.slice(0, n - 1).replace(/\s+\S*$/, '') + '\u2026' : s;
@@ -52,7 +58,7 @@ export async function onRequestGet(context) {
 
   var shell = await loadShell(env, origin, 'article.html');
 
-  var article = null, related = [];
+  var article = null, related = [], dbError = false;
   if (env.SIGNAL_DB && /^[a-z0-9-]+$/.test(slug)) {
     try {
       article = await env.SIGNAL_DB.prepare(
@@ -76,7 +82,7 @@ export async function onRequestGet(context) {
           env.SIGNAL_DB.prepare("UPDATE articles SET view_count = COALESCE(view_count, 0) + 1 WHERE id = ?").bind(article.id).run().catch(function () {})
         );
       }
-    } catch (e) { article = null; }
+    } catch (e) { article = null; dbError = true; }
   }
 
   // Unknown slug: keep the shell (it shows a friendly message) but return a real 404 + noindex.
@@ -102,8 +108,8 @@ export async function onRequestGet(context) {
     headline: clip(article.title, 110),
     description: desc,
     image: [img],
-    datePublished: published ? new Date(published).toISOString() : undefined,
-    dateModified: modified ? new Date(modified).toISOString() : undefined,
+    datePublished: published ? iso(published) : undefined,
+    dateModified: modified ? iso(modified) : undefined,
     articleSection: article.category_name || undefined,
     author: { '@type': 'Person', name: article.author || SITE },
     publisher: { '@type': 'NewsMediaOrganization', name: SITE, logo: { '@type': 'ImageObject', url: origin + '/images/tps.png' } }
@@ -118,7 +124,7 @@ export async function onRequestGet(context) {
     + '<meta property="og:description" content="' + attr(desc) + '">'
     + '<meta property="og:url" content="' + attr(canonical) + '">'
     + '<meta property="og:image" content="' + attr(img) + '">'
-    + (published ? '<meta property="article:published_time" content="' + attr(new Date(published).toISOString()) + '">' : '')
+    + (iso(published) ? '<meta property="article:published_time" content="' + attr(iso(published)) + '">' : '')
     + (article.category_name ? '<meta property="article:section" content="' + attr(article.category_name) + '">' : '')
     + '<meta name="twitter:card" content="summary_large_image">'
     + '<meta name="twitter:title" content="' + attr(article.title) + '">'
