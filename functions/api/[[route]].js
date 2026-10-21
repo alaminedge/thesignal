@@ -359,17 +359,41 @@ export async function onRequest(context) {
       "SELECT a.*, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.display_block = 'explainer' AND a.is_published = 1 ORDER BY a.published_at DESC LIMIT 3"
     ).all();
 
+    var homePage = Math.max(1, parseInt(url.searchParams.get('page') || '1') || 1);
+    var homeLimit = 12;
+    var homeOffset = (homePage - 1) * homeLimit;
+
     var latestResult = await db.prepare(
-      "SELECT a.*, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.display_block IS NULL AND a.is_published = 1 ORDER BY a.published_at DESC LIMIT 9"
-    ).all();
+      "SELECT a.*, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.display_block IS NULL AND a.is_published = 1 ORDER BY a.published_at DESC LIMIT ? OFFSET ?"
+    ).bind(homeLimit, homeOffset).all();
+    var latestRows = latestResult.results || [];
+
+    // Most Read — top articles by views over the last 30 days; falls back to all-time if too few.
+    var mostRead = [];
+    if (homePage === 1) {
+      var recentCutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+      var mostReadResult = await db.prepare(
+        "SELECT a.id, a.title, a.slug, a.published_at, a.view_count, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.is_published = 1 AND a.published_at >= ? AND a.view_count > 0 ORDER BY a.view_count DESC, a.published_at DESC LIMIT 5"
+      ).bind(recentCutoff).all();
+      mostRead = mostReadResult.results || [];
+      if (mostRead.length < 5) {
+        var mostReadAll = await db.prepare(
+          "SELECT a.id, a.title, a.slug, a.published_at, a.view_count, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.is_published = 1 ORDER BY a.view_count DESC, a.published_at DESC LIMIT 5"
+        ).all();
+        mostRead = mostReadAll.results || [];
+      }
+    }
 
     return json({
-      hero: heroArticle || null,
-      feed: feedArticlesResult.results || [],
-      visual: visualArticle || null,
-      spotlights: spotlightsResult.results || [],
-      explainers: explainersResult.results || [],
-      latest: latestResult.results || []
+      hero: homePage === 1 ? (heroArticle || null) : null,
+      feed: homePage === 1 ? (feedArticlesResult.results || []) : [],
+      visual: homePage === 1 ? (visualArticle || null) : null,
+      spotlights: homePage === 1 ? (spotlightsResult.results || []) : [],
+      explainers: homePage === 1 ? (explainersResult.results || []) : [],
+      latest: latestRows,
+      most_read: mostRead,
+      page: homePage,
+      hasMore: latestRows.length === homeLimit
     }, 200, { 'Cache-Control': 'public, max-age=60' });
   }
 
@@ -438,7 +462,7 @@ export async function onRequest(context) {
     var siteTagline = (siteInfo && siteInfo.site_tagline) || 'Beyond the Headlines';
 
     var items = (feedArticles.results || []).map(function (a) {
-      var link = siteOrigin + '/article.html?slug=' + encodeURIComponent(a.slug);
+      var link = siteOrigin + '/article/' + encodeURIComponent(a.slug);
       var pubDate = a.published_at ? new Date(a.published_at).toUTCString() : new Date().toUTCString();
       return '<item>'
         + '<title>' + escapeXml(a.title) + '</title>'
@@ -473,11 +497,27 @@ export async function onRequest(context) {
 
     if (!article) return err('Article not found', 404);
 
-    var relatedArticlesResult = await db.prepare(
-      "SELECT id, title, slug, excerpt, image_url, author, published_at FROM articles WHERE category_id = ? AND id != ? AND is_published = 1 ORDER BY published_at DESC LIMIT 3"
-    ).bind(article.category_id, article.id).all();
+    // Count the view without delaying the response
+    try {
+      var viewUpdate = db.prepare("UPDATE articles SET view_count = COALESCE(view_count, 0) + 1 WHERE id = ?").bind(article.id).run();
+      if (context.waitUntil) context.waitUntil(viewUpdate); else await viewUpdate;
+    } catch (e) {}
 
-    return json({ article: article, related: relatedArticlesResult.results || [] });
+    var relatedArticlesResult = await db.prepare(
+      "SELECT a.id, a.title, a.slug, a.excerpt, a.image_url, a.author, a.published_at, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.category_id = ? AND a.id != ? AND a.is_published = 1 ORDER BY a.published_at DESC LIMIT 4"
+    ).bind(article.category_id, article.id).all();
+    var relatedList = relatedArticlesResult.results || [];
+
+    // Fewer than 4 in the same section? Fill with the newest from elsewhere.
+    if (relatedList.length < 4) {
+      var excludeIds = [article.id].concat(relatedList.map(function (r) { return r.id; }));
+      var fillResult = await db.prepare(
+        "SELECT a.id, a.title, a.slug, a.excerpt, a.image_url, a.author, a.published_at, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.is_published = 1 AND a.id NOT IN (" + excludeIds.map(function () { return '?'; }).join(',') + ") ORDER BY a.published_at DESC LIMIT ?"
+      ).bind(...excludeIds, 4 - relatedList.length).all();
+      relatedList = relatedList.concat(fillResult.results || []);
+    }
+
+    return json({ article: article, related: relatedList }, 200, { 'Cache-Control': 'public, max-age=60' });
   }
 
   if (path === '/api/categories' && request.method === 'GET') {
