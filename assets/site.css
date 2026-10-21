@@ -52,6 +52,8 @@ button{font-family:inherit;cursor:pointer}
 .icon-btn .lbl{display:inline}
 .logo{display:flex;align-items:center;gap:12px;justify-content:center}
 .logo img{height:46px;width:auto}
+/* Logo is dark navy on transparent: turn it near-white in the dark theme so it stays visible */
+[data-theme="dark"] .logo img{filter:brightness(0) invert(.95)}
 .logo-t{display:flex;flex-direction:column;line-height:1;text-align:left}
 .logo-name{font-family:var(--serif);font-weight:800;font-size:1.9rem;letter-spacing:-.015em;color:var(--ink)}
 .logo-tag{font:500 10px var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--ink4);margin-top:5px}
