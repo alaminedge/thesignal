@@ -231,7 +231,7 @@ function currentSlug(){
   return q&&/^[a-z0-9-]+$/.test(q)?q:null;
 }
 
-(async function init(){
+async function init(){
   markNav('__none__');
   var slug=currentSlug(),data=window.__TPS_PRELOAD__||null;
   if(!slug&&!data)return showState('Article not found','No article was specified.');
@@ -261,7 +261,7 @@ function currentSlug(){
     try{console.error('Article load failed:',e)}catch(_){}
     showState('Unable to load this article','Please check your connection and try again.');
   }
-})();
+}
 
 function showState(h,p){
   document.getElementById('artGrid').innerHTML='<div class="state" style="grid-column:1/-1"><h1>'+esc(h)+'</h1><p>'+esc(p)+'</p><a href="/" class="btn-back">Return to the front page</a></div>';
@@ -377,6 +377,8 @@ function startProgress(){
     p.style.width=pct+'%';
   },{passive:true});
 }
+
+init();
 </script>
 </body>
 </html>
