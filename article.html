@@ -4,783 +4,372 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Pacific Signal</title>
-<meta name="description" content="The Pacific Signal — Independent analysis and explained journalism.">
+<!-- Description, canonical, Open Graph, Twitter and NewsArticle JSON-LD are injected per article
+     by functions/article/[slug].js, so they are intentionally not hard-coded here. -->
+<link rel="alternate" type="application/rss+xml" title="The Pacific Signal — RSS" href="/api/rss.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,300;1,8..60,400;1,8..60,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;0,8..60,800;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="icon" href="/images/tps.png">
+<link rel="stylesheet" href="/assets/site.css">
 <style>
-:root{
-  --paper:#F7F4EE;--paper-w:#EFE9DA;--paper-d:#E8E2D4;
-  --ink:#1A1814;--ink2:#2E2B24;--ink3:#5C5849;--ink4:#8C8878;--ink5:#B0AB9E;
-  --rule:#DDD9CE;--rule2:#CAC5B8;--footer-rule:#C9C2AF;
-  --gold:#B49A5E;--gold-l:#D4BA82;--gold-p:#F2EBD8;
-  --red:#7A1E1E;--red2:#5C1616;
-  --white:#FFFFFF;
-  --max:1280px;--g:clamp(16px,3vw,32px);
-  --fd:'Cormorant Garamond',Georgia,serif;
-  --fb:'Source Serif 4',Georgia,serif;
-  --fm:'DM Mono',monospace;
+/* ── ARTICLE LAYOUT ── */
+.art-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:56px;padding-top:26px;align-items:start}
+.crumb{font:500 12px var(--sans);color:var(--ink4);display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.crumb a:hover{color:var(--accent)}
+.crumb .sep{color:var(--rule2)}
+.art-kicker{display:inline-block;margin-bottom:14px;font-size:12px}
+.art-kicker:hover{text-decoration:underline}
+.art-title{font:800 clamp(2.05rem,4.6vw,3.3rem)/1.07 var(--serif);letter-spacing:-.022em;margin-bottom:16px;max-width:880px}
+.art-dek{font:400 clamp(1.15rem,2vw,1.4rem)/1.45 var(--serif);color:var(--ink3);margin-bottom:22px;max-width:760px}
+.art-by{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;padding:14px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:26px}
+.by-l{font:400 13px/1.55 var(--sans);color:var(--ink3)}
+.by-name{font:700 14px var(--sans);color:var(--ink);display:block}
+.by-l .upd{color:var(--ink4)}
+.share{display:flex;gap:6px;align-items:center}
+.sh{width:38px;height:38px;border:1px solid var(--rule2);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:var(--ink2);background:none;transition:all .15s}
+.sh:hover{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.sh svg{width:16px;height:16px}
+.art-fig{margin:0 0 30px}
+.art-fig img{width:100%;max-height:560px;object-fit:cover;background:var(--bg3)}
+
+/* Article body */
+.art-body{font:400 1.2rem/1.72 var(--serif);color:var(--ink2);max-width:700px}
+.art-body>*:first-child{margin-top:0}
+.art-body p{margin-bottom:1.35em}
+.art-body>p:first-of-type{font-size:1.28rem;color:var(--ink)}
+.art-body h2{font:800 1.65rem/1.2 var(--serif);letter-spacing:-.012em;color:var(--ink);margin:2em 0 .6em}
+.art-body h3{font:700 1.3rem/1.25 var(--serif);color:var(--ink);margin:1.7em 0 .5em}
+.art-body h4{font:700 1.1rem/1.3 var(--sans);color:var(--ink);margin:1.5em 0 .5em}
+.art-body a{color:var(--accent);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.art-body a:hover{text-decoration-thickness:2px}
+.art-body strong{font-weight:700;color:var(--ink)}
+.art-body ul,.art-body ol{margin:0 0 1.35em 1.5em}
+.art-body li{margin-bottom:.45em;padding-left:.2em}
+.art-body blockquote{margin:2em 0;padding:4px 0 4px 24px;border-left:4px solid var(--accent)}
+.art-body blockquote p{font:italic 600 1.55rem/1.4 var(--serif);color:var(--ink);margin:0}
+.art-body figure,.art-body img{margin:2em 0}
+.art-body img{width:100%;height:auto}
+.art-body figure img{margin:0}
+.art-body figcaption{font:400 12.5px/1.5 var(--sans);color:var(--ink4);margin-top:9px}
+.art-body hr{border:none;border-top:1px solid var(--rule);margin:2.4em 0}
+.art-body pre{background:var(--bg2);border:1px solid var(--rule);padding:16px 18px;font:400 .85rem/1.6 ui-monospace,Menlo,Consolas,monospace;overflow-x:auto;margin:1.6em 0}
+.art-body code{font:400 .86em ui-monospace,Menlo,Consolas,monospace;background:var(--bg2);padding:2px 5px}
+.art-body pre code{background:none;padding:0}
+.art-body table{width:100%;border-collapse:collapse;margin:1.8em 0;font:400 .95rem var(--sans);display:block;overflow-x:auto}
+.art-body th,.art-body td{padding:10px 14px;border:1px solid var(--rule);text-align:left}
+.art-body th{background:var(--bg2);font-weight:700;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3)}
+.art-body iframe,.art-body video{max-width:100%;margin:1.6em 0}
+
+.art-foot{max-width:700px;margin-top:38px;padding-top:20px;border-top:2px solid var(--strong);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.art-foot .lbl{font:700 11px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.copied{font:600 12px var(--sans);color:var(--accent);margin-left:8px;opacity:0;transition:opacity .2s}
+.copied.on{opacity:1}
+
+/* Sidebar */
+.side{position:sticky;top:70px}
+.side .sec-hd{border-top-width:2px}
+.side .sec-ttl{font-size:1.05rem}
+.mr{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--rule);align-items:flex-start}
+.mr:last-child{border-bottom:none}
+.mr-n{font:800 2rem/1 var(--serif);color:var(--accent);min-width:26px}
+.mr-ttl{font:700 .98rem/1.3 var(--serif)}
+.mr:hover .mr-ttl{color:var(--accent)}
+.mr .kicker{display:block;font-size:10px;margin-bottom:5px;color:var(--ink4)}
+
+/* More from section */
+.more-wrap{margin-top:56px}
+.rel{display:grid;grid-template-columns:repeat(4,1fr)}
+.rc{display:block;padding:0 20px;border-right:1px solid var(--rule)}
+.rc:first-child{padding-left:0}
+.rc:last-child{border-right:none;padding-right:0}
+.rc-img{aspect-ratio:3/2;overflow:hidden;background:var(--bg3);margin-bottom:12px}
+.rc-img img{width:100%;height:100%;object-fit:cover}
+.rc .kicker{display:block;margin-bottom:7px;font-size:10px}
+.rc-ttl{font:700 1.08rem/1.28 var(--serif);margin-bottom:8px}
+.rc:hover .rc-ttl{color:var(--accent)}
+
+.state{text-align:center;padding:90px 20px}
+.state h1{font:800 2.2rem var(--serif);margin-bottom:10px}
+.state p{font:400 1.05rem var(--sans);color:var(--ink3);margin-bottom:22px}
+.btn-back{display:inline-block;font:700 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:12px 26px;background:var(--ink);color:var(--on-ink)}
+
+@media(max-width:1000px){
+  .art-grid{grid-template-columns:1fr;gap:10px}
+  .side{position:static;margin-top:44px}
+  .rel{grid-template-columns:1fr 1fr;row-gap:28px}
+  .rc:nth-child(2){border-right:none;padding-right:0}
+  .rc:nth-child(3){padding-left:0}
 }
-[data-theme="dark"]{
-  --paper:#15130F;--paper-w:#1C1A15;--paper-d:#242119;
-  --ink:#EDE8DC;--ink2:#D8D2C2;--ink3:#A9A290;--ink4:#7C7666;--ink5:#5C574A;
-  --rule:#2C2920;--rule2:#38342A;--footer-rule:#2C2920;
-  --gold:#C7AC72;--gold-l:#E0C994;--gold-p:#2A2413;
-  --red:#C05656;--red2:#D97878;
-  --white:#0F0E0B;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-body{font-family:var(--fb);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;min-height:100vh;transition:background .25s ease,color .25s ease}
-html[data-theme="dark"]{color-scheme:dark}
-a{color:inherit;text-decoration:none}img{display:block;max-width:100%;height:auto}
-button{font-family:inherit}
-:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-@media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
-}
-
-/* PROGRESS */
-.prog{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--gold),var(--red));z-index:9999;transition:width .1s linear;pointer-events:none}
-
-/* HEADER */
-.site-header{position:sticky;top:0;z-index:300;background:var(--paper);border-bottom:1px solid var(--rule);transition:box-shadow .3s,transform .38s cubic-bezier(.4,0,.2,1)}
-.site-header.scrolled{box-shadow:0 2px 28px rgba(26,24,20,.08)}
-.site-header.hide{transform:translateY(-100%)}
-.h-bar{max-width:var(--max);margin:0 auto;padding:0 var(--g);height:56px;display:flex;align-items:center;gap:0}
-.h-logo{display:flex;align-items:center;gap:0;flex-shrink:0;text-decoration:none;color:inherit;margin-right:auto}
-.h-logo img{height:32px;width:auto;display:block;flex-shrink:0}
-.h-logo-div{width:1px;height:20px;background:var(--rule2);margin:0 12px;flex-shrink:0}
-.h-logo-text{display:flex;flex-direction:column;gap:1px}
-.h-logo-name{font-family:var(--fd);font-size:1.02rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink);line-height:1}
-.h-logo-tag{font-family:var(--fm);font-size:.46rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink5)}
-.h-nav{display:flex;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 14px}
-.h-nav::-webkit-scrollbar{display:none}
-.nav-a{font-family:var(--fm);font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);white-space:nowrap;padding:0 12px;height:56px;display:flex;align-items:center;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
-.nav-a:hover{color:var(--ink);border-bottom-color:var(--gold-l)}
-.h-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.btn-search{background:none;border:none;color:var(--ink3);cursor:pointer;padding:7px;display:flex;align-items:center;transition:color .2s}
-.btn-search:hover{color:var(--red)}
-.btn-search svg{width:17px;height:17px}
-.btn-sub{font-family:var(--fm);font-size:.54rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:7px 16px;background:var(--ink);color:var(--white);border:none;cursor:pointer;transition:background .2s;white-space:nowrap;display:inline-block}
-.btn-sub:hover{background:var(--ink2);color:var(--white)}
-.btn-ham{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:5px;align-items:center}
-.btn-ham svg{width:20px;height:20px}
-
-/* SEARCH OVERLAY */
-.search-ov{position:fixed;inset:0;background:rgba(26,24,20,.6);z-index:600;display:none;backdrop-filter:blur(3px);padding:80px 20px 0}
-.search-ov.on{display:block}
-.search-panel{max-width:640px;margin:0 auto;background:var(--paper);border:1px solid var(--rule);box-shadow:0 24px 80px rgba(26,24,20,.3)}
-.search-in-row{display:flex;align-items:center;border-bottom:1px solid var(--rule);padding:0 18px}
-.search-in-row svg{width:16px;height:16px;color:var(--ink5);flex-shrink:0}
-.search-input{flex:1;border:none;background:none;outline:none;padding:16px 12px;font-family:var(--fb);font-size:1.05rem;color:var(--ink)}
-.search-input::placeholder{color:var(--ink5)}
-.search-close{background:none;border:none;color:var(--ink5);cursor:pointer;font-size:1rem;padding:8px}
-.search-results{max-height:60vh;overflow-y:auto;padding:8px 0}
-.search-empty{padding:32px 24px;text-align:center;font-family:var(--fb);font-style:italic;color:var(--ink4)}
-.sr-item{display:flex;gap:12px;padding:12px 18px;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--rule)}
-.sr-item:last-child{border-bottom:none}
-.sr-item:hover{background:var(--paper-w)}
-.sr-cat{font-family:var(--fm);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:3px}
-.sr-ttl{font-family:var(--fd);font-size:1rem;font-weight:600;line-height:1.3}
-
-/* FULL-PAGE MENU */
-.fp-menu{position:fixed;inset:0;z-index:500;background:var(--paper);display:none;flex-direction:column;overflow-y:auto}
-.fp-menu.on{display:flex}
-.fp-head{display:flex;align-items:center;justify-content:space-between;padding:16px var(--g);border-bottom:1px solid var(--rule);flex-shrink:0}
-.fp-head img{height:28px}
-.fp-close{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:1.2rem;padding:8px;transition:color .2s}
-.fp-close:hover{color:var(--red)}
-.fp-body{flex:1;max-width:var(--max);width:100%;margin:0 auto;padding:32px var(--g) 24px;display:grid;grid-template-columns:1fr 1fr;gap:40px}
-.fp-group-ttl{font-family:var(--fm);font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
-.fp-links{display:flex;flex-direction:column}
-.fp-link{font-family:var(--fd);font-size:1.15rem;font-weight:500;color:var(--ink2);padding:9px 0;border-bottom:1px solid var(--rule);transition:color .18s,padding-left .18s}
-.fp-link:hover{color:var(--red);padding-left:6px}
-.fp-foot{border-top:1px solid var(--rule);padding:20px var(--g);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;flex-shrink:0}
-.theme-toggle{display:inline-flex;border:1px solid var(--rule2);border-radius:999px;padding:3px;gap:2px;background:var(--paper-w)}
-.theme-opt{font-family:var(--fm);font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:999px;border:none;background:none;color:var(--ink4);cursor:pointer;transition:all .2s}
-.theme-opt.on{background:var(--ink);color:var(--white)}
-.fp-sub{font-family:var(--fm);font-size:.58rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:11px 22px;background:var(--ink);color:var(--white);border:none;cursor:pointer;white-space:nowrap;transition:background .2s}
-.fp-sub:hover{background:var(--red)}
-@media(max-width:640px){
-  .fp-body{grid-template-columns:1fr;gap:28px;padding:24px 20px}
-  .fp-link{font-size:1.05rem}
-  .fp-foot{flex-direction:column;align-items:stretch}
-  .fp-sub{width:100%;text-align:center;padding:13px}
-}
-
-/* ARTICLE LAYOUT */
-.art-wrap{max-width:720px;margin:0 auto;padding:48px var(--g) 72px}
-
-/* BREADCRUMB */
-.breadcrumb{font-family:var(--fm);font-size:.55rem;letter-spacing:.08em;color:var(--ink5);margin-bottom:26px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.breadcrumb a{color:var(--red);transition:color .2s}
-.breadcrumb a:hover{color:var(--red2)}
-.bc-sep{color:var(--rule2)}
-
-/* ARTICLE HEADER */
-.art-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:18px}
-.art-cat{font-family:var(--fm);font-size:.56rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--red)}
-.art-eye-line{flex:1;height:1px;background:var(--rule)}
-.art-title{font-family:var(--fd);font-size:clamp(2rem,5vw,3.1rem);font-weight:600;line-height:1.14;letter-spacing:-.01em;color:var(--ink);margin-bottom:18px}
-.art-standfirst{font-family:var(--fb);font-size:1.15rem;font-weight:300;font-style:italic;color:var(--ink3);line-height:1.65;margin-bottom:24px;padding-left:16px;border-left:3px solid var(--gold)}
-.art-byline{display:flex;align-items:center;gap:0;padding:14px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:34px;flex-wrap:wrap}
-.byline-author{font-family:var(--fb);font-size:.95rem;font-weight:500;color:var(--ink2)}
-.byline-sep{margin:0 10px;color:var(--rule2);font-family:var(--fm);font-size:.6rem}
-.byline-date{font-family:var(--fm);font-size:.58rem;letter-spacing:.06em;color:var(--ink4)}
-.byline-time{font-family:var(--fm);font-size:.58rem;letter-spacing:.06em;color:var(--gold);font-weight:500}
-.byline-read{font-family:var(--fm);font-size:.58rem;color:var(--ink5);display:flex;align-items:center;gap:5px}
-.byline-read svg{width:12px;height:12px}
-
-/* FEATURED IMAGE */
-.art-feat-img{width:100%;max-height:500px;object-fit:cover;display:block;margin-bottom:40px}
-
-/* ARTICLE BODY — supports both HTML and markdown */
-.art-body{font-family:var(--fb);font-size:1.08rem;line-height:1.84;color:var(--ink2)}
-.art-body p{margin-bottom:22px}
-.art-body h2{font-family:var(--fd);font-size:1.72rem;font-weight:600;color:var(--ink);margin:40px 0 16px;line-height:1.2}
-.art-body h3{font-family:var(--fd);font-size:1.28rem;font-weight:600;color:var(--ink);margin:30px 0 12px}
-.art-body h4{font-family:var(--fd);font-size:1.1rem;font-weight:600;color:var(--ink);margin:26px 0 10px}
-.art-body blockquote{
-  margin:36px -24px;padding:28px 36px;
-  background:var(--paper-w);
-  border-left:none;border-top:1px solid var(--rule2);border-bottom:1px solid var(--rule2);
-  position:relative;
-}
-.art-body blockquote::before{
-  content:'\201C';
-  font-family:var(--fd);font-size:5rem;font-weight:700;
-  color:var(--gold);line-height:1;
-  position:absolute;top:-10px;left:28px;
-}
-.art-body blockquote p{
-  font-family:var(--fd);font-size:1.55rem;font-style:italic;
-  font-weight:500;line-height:1.45;color:var(--ink);
-  margin:0;padding-top:16px;
-}
-.art-body ul,.art-body ol{margin:14px 0 20px 26px}
-.art-body li{margin-bottom:4px}
-.art-body a{color:var(--red);text-decoration:underline;text-underline-offset:2px}
-.art-body a:hover{color:var(--red2)}
-.art-body strong{font-weight:600;color:var(--ink)}
-.art-body em{font-style:italic}
-.art-body img{max-width:100%;height:auto;display:block;margin:28px 0}
-.art-body figure{margin:28px 0}
-.art-body figcaption{font-family:var(--fm);font-size:.6rem;color:var(--ink5);margin-top:8px;text-align:center;letter-spacing:.04em}
-.art-body hr{border:none;border-top:1px solid var(--rule);margin:36px 0}
-.art-body pre{background:var(--ink);color:var(--paper);padding:18px 20px;font-family:var(--fm);font-size:.8rem;line-height:1.6;overflow-x:auto;margin:22px 0}
-.art-body code{font-family:var(--fm);font-size:.85em;background:var(--paper-d);padding:2px 5px}
-.art-body pre code{background:transparent;padding:0;font-size:inherit}
-.art-body table{width:100%;border-collapse:collapse;margin:22px 0}
-.art-body th,.art-body td{padding:10px 14px;border:1px solid var(--rule);text-align:left;font-size:.95rem}
-.art-body th{background:var(--paper-w);font-family:var(--fm);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink4);font-weight:500}
-.art-body iframe{max-width:100%;margin:22px 0}
-
-/* SHARE BAR */
-.share-bar{display:flex;align-items:center;gap:10px;margin-top:48px;padding:22px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);flex-wrap:wrap}
-.share-lbl{font-family:var(--fm);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink5);margin-right:4px}
-.share-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 15px;border:1px solid var(--rule);color:var(--ink3);font-family:var(--fm);font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;background:var(--white);transition:all .2s}
-.share-btn:hover{border-color:var(--ink);color:var(--ink);background:var(--paper-w)}
-.share-btn svg{width:12px;height:12px}
-
-/* NEXT ARTICLE RIBBON — deliberately fixed colors (not theme-linked), so it stays
-   a consistent dark accent bar whether the site is in Classic or Briefing mode */
-.next-ribbon{
-  position:fixed;bottom:0;right:0;left:0;
-  background:#1A1814;color:#FFFFFF;
-  padding:14px var(--g);
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
-  transform:translateY(100%);
-  transition:transform .45s cubic-bezier(.4,0,.2,1);
-  z-index:200;
-  text-decoration:none;
-  border-top:2px solid var(--gold);
-}
-.next-ribbon.show{transform:translateY(0)}
-.next-ribbon:hover{background:#2E2B24}
-.next-lbl{font-family:var(--fm);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);flex-shrink:0}
-.next-title{font-family:var(--fd);font-size:1rem;font-weight:500;color:#FFFFFF;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.next-arrow{flex-shrink:0;color:var(--gold-l)}
-.next-arrow svg{width:16px;height:16px}
-.next-close{background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:.9rem;padding:4px;flex-shrink:0;transition:color .2s}
-.next-close:hover{color:#FFFFFF}
-
-/* RELATED */
-.related-wrap{background:var(--paper-w);border-top:1px solid var(--rule);padding:52px 0 68px}
-.related-in{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
-.related-hd{display:flex;align-items:baseline;gap:10px;margin-bottom:28px;padding-bottom:9px;border-bottom:2px solid var(--ink)}
-.related-ttl{font-family:var(--fd);font-size:1.2rem;font-weight:600;color:var(--ink)}
-.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
-.rel-card{display:block;text-decoration:none;color:var(--ink);padding-right:24px;border-right:1px solid var(--rule);transition:transform .22s}
-.rel-card:last-child{border-right:none;padding-right:0;padding-left:24px}
-.rel-card:nth-child(2){padding:0 24px}
-.rel-card:hover{transform:translateY(-2px)}
-.rel-img{width:100%;height:144px;object-fit:cover;background:var(--paper-d);display:block;margin-bottom:12px}
-.rel-ph{width:100%;height:144px;background:var(--paper-d);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
-.rel-ph span{font-family:var(--fd);font-size:1.7rem;font-style:italic;color:var(--rule2)}
-.rel-cat{font-family:var(--fm);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:5px}
-.rel-ttl{font-family:var(--fd);font-size:.98rem;font-weight:600;line-height:1.35;color:var(--ink);margin-bottom:6px;transition:color .2s}
-.rel-card:hover .rel-ttl{color:var(--red2)}
-.rel-meta{font-family:var(--fm);font-size:.52rem;color:var(--ink5)}
-
-/* FOOTER */
-.site-footer{background:var(--paper-w);border-top:1px solid var(--footer-rule);box-shadow:inset 0 1px 0 rgba(255,255,255,.4);padding:56px 0 0}
-.ft-in{max-width:var(--max);margin:0 auto;padding:0 var(--g)}
-.ft-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.4fr;gap:44px;padding-bottom:44px}
-.ft-logo-row{display:flex;align-items:center;gap:9px;margin-bottom:10px;text-decoration:none;color:var(--ink);width:fit-content}
-.ft-logo-row img{height:26px;opacity:.7}
-.ft-brand-name{font-family:var(--fd);font-size:1rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
-.ft-brand-desc{font-family:var(--fb);font-size:.88rem;color:var(--ink4);line-height:1.7;font-weight:300;max-width:260px}
-.ft-col-ttl{font-family:var(--fm);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink5);margin-bottom:13px;padding-bottom:8px;border-bottom:1px solid var(--footer-rule)}
-.ft-links{display:flex;flex-direction:column;gap:7px}
-.ft-links a{font-family:var(--fb);font-size:.86rem;color:var(--ink4);font-weight:300;transition:color .2s,transform .2s;display:inline-block}
-.ft-links a:hover{color:var(--red);transform:translateX(2px)}
-.ft-nl-txt{font-family:var(--fb);font-size:.86rem;color:var(--ink4);font-weight:300;margin-bottom:11px;line-height:1.6}
-.ft-form{display:flex}
-.ft-email{flex:1;padding:9px 12px;background:var(--paper);border:1px solid var(--footer-rule);border-right:none;font-family:var(--fb);font-size:.88rem;color:var(--ink);outline:none;transition:border-color .2s}
-.ft-email:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(180,154,94,.12)}
-.ft-email::placeholder{color:var(--ink5)}
-.ft-btn{padding:9px 13px;background:var(--ink);color:var(--white);border:none;cursor:pointer;font-family:var(--fm);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;transition:background .2s;white-space:nowrap}
-.ft-btn:hover{background:var(--red)}
-.ft-msg{font-family:var(--fm);font-size:.54rem;margin-top:6px;min-height:16px}
-.ft-bot{border-top:1px solid var(--footer-rule);display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:12px;flex-wrap:wrap}
-.ft-copy{font-family:var(--fm);font-size:.52rem;letter-spacing:.06em;color:var(--ink5)}
-.ft-legal{display:flex;gap:16px;align-items:center}
-.ft-legal a{font-family:var(--fm);font-size:.52rem;letter-spacing:.06em;color:var(--ink5);transition:color .2s}
-.ft-legal a:hover{color:var(--red)}
-
-/* SKELETON */
-@keyframes skshimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.sk{background:linear-gradient(90deg,var(--paper-d) 25%,var(--paper-w) 50%,var(--paper-d) 75%);background-size:200% 100%;animation:skshimmer 1.6s ease-in-out infinite;border-radius:2px;display:block}
-.sk-line{height:14px;margin-bottom:9px}
-.sk-line-med{height:14px;margin-bottom:9px;width:75%}
-.sk-line-short{height:14px;margin-bottom:9px;width:50%}
-
-/* STATES */
-.state-error{text-align:center;padding:80px 20px}
-.state-error h2{font-family:var(--fd);font-size:2.2rem;font-weight:500;color:var(--ink);margin-bottom:12px}
-.state-error p{font-family:var(--fb);color:var(--ink4);font-style:italic;margin-bottom:22px}
-.btn-back{display:inline-block;font-family:var(--fm);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:10px 24px;background:var(--ink);color:var(--white);transition:background .2s}
-.btn-back:hover{background:var(--ink2);color:var(--white)}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-  .h-nav{display:none}.btn-sub{display:none}.btn-ham{display:flex}
-  .art-body blockquote{margin:28px 0;padding:22px 24px}
-  .art-body blockquote::before{font-size:4rem;top:-6px;left:18px}
+@media(max-width:560px){
+  .art-body{font-size:1.1rem;line-height:1.7}
+  .art-body>p:first-of-type{font-size:1.15rem}
   .art-body blockquote p{font-size:1.3rem}
-  .related-grid{grid-template-columns:1fr;gap:24px}
-  .rel-card{border-right:none;padding:0!important;border-bottom:1px solid var(--rule);padding-bottom:22px!important}
-  .rel-card:last-child{border-bottom:none}
-  .ft-top{grid-template-columns:1fr 1fr;gap:28px}
-  .next-title{font-size:.9rem}
+  .rel{grid-template-columns:1fr}
+  .rc{padding:0 0 22px;border-right:none;border-bottom:1px solid var(--rule)}
+  .rc:last-child{border-bottom:none}
+  .art-by{align-items:flex-start}
 }
-@media(max-width:540px){
-  .art-title{font-size:1.75rem}
-  .ft-top{grid-template-columns:1fr;gap:24px}
-  .ft-bot{flex-direction:column;align-items:flex-start;gap:8px}
+@media print{
+  .util,.mast,.nav,.site-footer,.side,.share,.art-foot,.more-wrap,.prog{display:none!important}
+  .art-grid{display:block}.art-body{max-width:none;font-size:12pt}
 }
 </style>
 </head>
 <body>
-
+<a href="#main" class="skip">Skip to content</a>
 <div class="prog" id="prog"></div>
 
-<header class="site-header" id="siteHeader">
-  <div class="h-bar">
-    <a href="/" class="h-logo">
-      <img src="/images/tps.png" alt="The Pacific Signal">
-      <div class="h-logo-div"></div>
-      <div class="h-logo-text">
-        <span class="h-logo-name">The Pacific Signal</span>
-        <span class="h-logo-tag">Beyond the Headlines</span>
-      </div>
-    </a>
-    <nav class="h-nav">
-      <a href="/" class="nav-a">Home</a>
-      <a href="/?category=united-states-canada" class="nav-a">US &amp; Canada</a>
-      <a href="/?category=china-east-asia" class="nav-a">China &amp; East Asia</a>
-      <a href="/?category=europe-uk" class="nav-a">Europe</a>
-      <a href="/?category=middle-east-north-africa" class="nav-a">Middle East</a>
-      <a href="/?category=south-asia" class="nav-a">South Asia</a>
-      <a href="/?category=global-markets-trade" class="nav-a">Markets</a>
-      <a href="/?category=geopolitics-strategy" class="nav-a">Geopolitics</a>
-      <a href="/archive.html" class="nav-a">Archive</a>
-      <a href="javascript:void(0)" class="nav-a" onclick="openMenu()">All Sections &#9662;</a>
-    </nav>
-    <div class="h-right">
-      <button class="btn-search" onclick="openSearch()" aria-label="Search articles">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      </button>
-      <a href="/#subscribe" class="btn-sub">Subscribe</a>
-      <button class="btn-ham" onclick="openMenu()" aria-label="Menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
-      </button>
-    </div>
-  </div>
-</header>
+<div class="util"><div class="wrap">
+  <span class="util-date" id="utilDate"></span>
+  <div class="util-links"><a href="/about.html">About</a><a href="/archive.html">Archive</a><a href="/api/rss.xml">RSS</a></div>
+</div></div>
 
-<!-- SEARCH OVERLAY -->
+<header class="mast"><div class="wrap">
+  <div class="mast-l">
+    <button class="icon-btn" onclick="openMenu()" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg><span class="lbl">Menu</span></button>
+    <button class="icon-btn" onclick="openSearch()" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="lbl">Search</span></button>
+  </div>
+  <a href="/" class="logo" aria-label="The Pacific Signal — home">
+    <img src="/images/tps.png" alt="" width="46" height="46">
+    <span class="logo-t"><span class="logo-name">The Pacific Signal</span><span class="logo-tag">Beyond the Headlines</span></span>
+  </a>
+  <div class="mast-r"><a href="/#subscribe" class="btn-sub">Subscribe</a></div>
+</div></header>
+
+<nav class="nav" id="siteNav" aria-label="Sections"><div class="wrap">
+  <div class="nav-scroll"><a href="/" class="nav-a" data-nav="home">Home</a><a href="/section/united-states-canada" class="nav-a" data-nav="united-states-canada">US &amp; Canada</a><a href="/section/china-east-asia" class="nav-a" data-nav="china-east-asia">China &amp; East Asia</a><a href="/section/europe-uk" class="nav-a" data-nav="europe-uk">Europe</a><a href="/section/russia-post-soviet" class="nav-a" data-nav="russia-post-soviet">Russia</a><a href="/section/middle-east-north-africa" class="nav-a" data-nav="middle-east-north-africa">Middle East</a><a href="/section/south-asia" class="nav-a" data-nav="south-asia">South Asia</a><a href="/section/africa" class="nav-a" data-nav="africa">Africa</a><a href="/section/latin-america-caribbean" class="nav-a" data-nav="latin-america-caribbean">Latin America</a><a href="/section/global-markets-trade" class="nav-a" data-nav="global-markets-trade">Markets</a><a href="/section/energy-commodities" class="nav-a" data-nav="energy-commodities">Energy</a><a href="/section/technology-business" class="nav-a" data-nav="technology-business">Technology</a><a href="/section/geopolitics-strategy" class="nav-a" data-nav="geopolitics-strategy">Geopolitics</a></div>
+  <button class="nav-more" onclick="openMenu()">All sections <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></button>
+</div></nav>
+
 <div class="search-ov" id="searchOv" onclick="if(event.target===this)closeSearch()">
-  <div class="search-panel">
+  <div class="search-panel" role="dialog" aria-label="Search">
     <div class="search-in-row">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" class="search-input" id="searchInput" placeholder="Search analysis and briefings…" oninput="onSearchInput()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search The Pacific Signal" oninput="onSearchInput()" autocomplete="off">
       <button class="search-close" onclick="closeSearch()" aria-label="Close search">&#10005;</button>
     </div>
     <div class="search-results" id="searchResults"></div>
   </div>
 </div>
 
-<!-- FULL-PAGE MENU — all 20 sections, grouped, plus theme choice -->
 <div class="fp-menu" id="fpMenu" role="dialog" aria-modal="true" aria-label="Site menu">
   <div class="fp-head">
-    <img src="/images/tps.png" alt="The Pacific Signal">
+    <a href="/" class="logo"><img src="/images/tps.png" alt="" height="34"><span class="logo-name">The Pacific Signal</span></a>
     <button class="fp-close" onclick="closeMenu()" aria-label="Close menu">&#10005;</button>
   </div>
   <div class="fp-body">
-    <div>
-      <div class="fp-group-ttl">Regions</div>
-      <div class="fp-links">
-        <a href="/?category=united-states-canada" class="fp-link" onclick="closeMenu()">United States &amp; Canada</a>
-        <a href="/?category=china-east-asia" class="fp-link" onclick="closeMenu()">China &amp; East Asia</a>
-        <a href="/?category=europe-uk" class="fp-link" onclick="closeMenu()">Europe &amp; UK</a>
-        <a href="/?category=russia-post-soviet" class="fp-link" onclick="closeMenu()">Russia &amp; Post-Soviet</a>
-        <a href="/?category=middle-east-north-africa" class="fp-link" onclick="closeMenu()">Middle East &amp; North Africa</a>
-        <a href="/?category=south-asia" class="fp-link" onclick="closeMenu()">South Asia</a>
-        <a href="/?category=southeast-asia-oceania" class="fp-link" onclick="closeMenu()">Southeast Asia &amp; Oceania</a>
-        <a href="/?category=africa" class="fp-link" onclick="closeMenu()">Africa</a>
-        <a href="/?category=latin-america-caribbean" class="fp-link" onclick="closeMenu()">Latin America &amp; Caribbean</a>
-        <a href="/?category=arctic-global-commons" class="fp-link" onclick="closeMenu()">Arctic &amp; Global Commons</a>
-      </div>
-    </div>
-    <div>
-      <div class="fp-group-ttl">Topics</div>
-      <div class="fp-links">
-        <a href="/?category=geopolitics-strategy" class="fp-link" onclick="closeMenu()">Geopolitics &amp; Strategy</a>
-        <a href="/?category=global-markets-trade" class="fp-link" onclick="closeMenu()">Global Markets &amp; Trade</a>
-        <a href="/?category=energy-commodities" class="fp-link" onclick="closeMenu()">Energy &amp; Commodities</a>
-        <a href="/?category=technology-business" class="fp-link" onclick="closeMenu()">Technology &amp; Business</a>
-        <a href="/?category=cybersecurity-digital" class="fp-link" onclick="closeMenu()">Cybersecurity &amp; Digital</a>
-        <a href="/?category=science-health" class="fp-link" onclick="closeMenu()">Science &amp; Health</a>
-        <a href="/?category=climate-environment" class="fp-link" onclick="closeMenu()">Climate &amp; Environment</a>
-        <a href="/?category=democracy-rights" class="fp-link" onclick="closeMenu()">Democracy &amp; Rights</a>
-        <a href="/?category=religion-culture-identity" class="fp-link" onclick="closeMenu()">Religion, Culture &amp; Identity</a>
-        <a href="/?category=arts-media-sports" class="fp-link" onclick="closeMenu()">Arts, Media &amp; Sports</a>
-        <a href="/?category=sports" class="fp-link" onclick="closeMenu()">Sports</a>
-      </div>
-    </div>
+    <div><div class="fp-ttl">Regions</div><a href="/section/united-states-canada" class="fp-link">United States &amp; Canada</a><a href="/section/china-east-asia" class="fp-link">China &amp; East Asia</a><a href="/section/europe-uk" class="fp-link">Europe &amp; UK</a><a href="/section/russia-post-soviet" class="fp-link">Russia &amp; Post-Soviet</a><a href="/section/middle-east-north-africa" class="fp-link">Middle East &amp; North Africa</a><a href="/section/south-asia" class="fp-link">South Asia</a><a href="/section/southeast-asia-oceania" class="fp-link">Southeast Asia &amp; Oceania</a><a href="/section/africa" class="fp-link">Africa</a><a href="/section/latin-america-caribbean" class="fp-link">Latin America &amp; Caribbean</a><a href="/section/arctic-global-commons" class="fp-link">Arctic &amp; Global Commons</a></div>
+    <div><div class="fp-ttl">Topics</div><a href="/section/geopolitics-strategy" class="fp-link">Geopolitics &amp; Strategy</a><a href="/section/global-markets-trade" class="fp-link">Global Markets &amp; Trade</a><a href="/section/energy-commodities" class="fp-link">Energy &amp; Commodities</a><a href="/section/technology-business" class="fp-link">Technology &amp; Business</a><a href="/section/cybersecurity-digital" class="fp-link">Cybersecurity &amp; Digital</a><a href="/section/science-health" class="fp-link">Science &amp; Health</a><a href="/section/climate-environment" class="fp-link">Climate &amp; Environment</a><a href="/section/democracy-rights" class="fp-link">Democracy &amp; Rights</a><a href="/section/religion-culture-identity" class="fp-link">Religion, Culture &amp; Identity</a><a href="/section/arts-media-sports" class="fp-link">Arts, Media &amp; Sports</a><a href="/section/sports" class="fp-link">Sports</a></div>
   </div>
   <div class="fp-foot">
     <div class="theme-toggle" role="group" aria-label="Theme">
       <button class="theme-opt" id="themeOptLight" onclick="setTheme('light')">Classic</button>
       <button class="theme-opt" id="themeOptDark" onclick="setTheme('dark')">Briefing</button>
     </div>
-    <a href="/#subscribe" class="fp-sub" onclick="closeMenu()">Subscribe Free</a>
+    <a href="/#subscribe" class="btn-sub" onclick="closeMenu()">Subscribe</a>
   </div>
 </div>
 
-<div id="artShell">
-  <div class="art-wrap" id="artSkeleton">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:26px">
-      <span class="sk" style="height:10px;width:60px"></span>
-      <span class="sk" style="height:10px;width:8px"></span>
-      <span class="sk" style="height:10px;width:80px"></span>
+<main id="main">
+  <div class="wrap">
+    <div class="art-grid" id="artGrid">
+      <article id="artCol">
+        <span class="sk" style="height:12px;width:200px;margin-bottom:22px"></span>
+        <span class="sk" style="height:12px;width:90px;margin-bottom:16px"></span>
+        <span class="sk" style="height:46px;margin-bottom:12px"></span>
+        <span class="sk" style="height:46px;width:70%;margin-bottom:20px"></span>
+        <span class="sk" style="height:18px;width:85%;margin-bottom:26px"></span>
+        <span class="sk" style="height:50px;margin-bottom:26px"></span>
+        <span class="sk" style="aspect-ratio:16/9;margin-bottom:30px"></span>
+        <span class="sk" style="height:16px;margin-bottom:12px;max-width:700px"></span>
+        <span class="sk" style="height:16px;margin-bottom:12px;max-width:700px"></span>
+        <span class="sk" style="height:16px;width:60%;margin-bottom:12px"></span>
+      </article>
+      <aside class="side" id="side" style="display:none">
+        <div class="sec-hd"><span class="sec-ttl">Most Read</span></div>
+        <div id="mostList"></div>
+      </aside>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px">
-      <span class="sk" style="height:10px;width:90px"></span>
-      <span class="sk" style="height:1px;flex:1"></span>
-    </div>
-    <span class="sk" style="height:52px;width:92%;display:block;margin-bottom:12px"></span>
-    <span class="sk" style="height:52px;width:76%;display:block;margin-bottom:12px"></span>
-    <span class="sk" style="height:52px;width:58%;display:block;margin-bottom:22px"></span>
-    <div style="padding-left:16px;border-left:3px solid var(--rule2);margin-bottom:24px">
-      <span class="sk sk-line"></span>
-      <span class="sk sk-line-med"></span>
-    </div>
-    <div style="display:flex;gap:14px;padding:14px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:34px">
-      <span class="sk" style="height:12px;width:130px"></span>
-      <span class="sk" style="height:12px;width:90px"></span>
-      <span class="sk" style="height:12px;width:70px"></span>
-    </div>
-    <div class="sk" style="width:100%;height:420px;display:block;margin-bottom:40px;border-radius:0"></div>
-    <span class="sk sk-line"></span>
-    <span class="sk sk-line"></span>
-    <span class="sk sk-line-med"></span>
-    <span class="sk sk-line"></span>
-    <span class="sk sk-line-short" style="margin-bottom:22px"></span>
-    <span class="sk sk-line"></span>
-    <span class="sk sk-line"></span>
-    <span class="sk sk-line-med"></span>
-    <span class="sk sk-line"></span>
-    <span class="sk sk-line-short" style="margin-bottom:22px"></span>
-    <span class="sk" style="height:28px;width:55%;display:block;margin:36px 0 16px"></span>
-    <span class="sk sk-line"></span>
-    <span class="sk sk-line"></span>
-    <span class="sk sk-line-med"></span>
-    <span class="sk sk-line"></span>
-    <span class="sk sk-line-short" style="margin-bottom:22px"></span>
-    <span class="sk sk-line"></span>
-    <span class="sk sk-line-med"></span>
-    <span class="sk sk-line"></span>
-    <span class="sk sk-line-short" style="margin-bottom:22px"></span>
-    <span class="sk" style="height:28px;width:48%;display:block;margin:36px 0 16px"></span>
-    <span class="sk sk-line"></span>
-    <span class="sk sk-line"></span>
-    <span class="sk sk-line-med"></span>
-    <span class="sk sk-line"></span>
-    <span class="sk sk-line-short" style="margin-bottom:22px"></span>
+    <section class="more-wrap" id="moreWrap" style="display:none">
+      <div class="sec-hd"><span class="sec-ttl" id="moreTtl">More from The Pacific Signal</span></div>
+      <div class="rel" id="relGrid"></div>
+    </section>
   </div>
-</div>
+</main>
 
-<div id="relatedWrap" style="display:none">
-  <div class="related-wrap">
-    <div class="related-in">
-      <div class="related-hd"><span class="related-ttl">Related Analysis</span></div>
-      <div class="related-grid" id="relGrid"></div>
+<footer class="site-footer" id="subscribe"><div class="wrap">
+  <div class="ft-top">
+    <div class="ft-brand">
+      <a href="/" class="logo" style="justify-content:flex-start"><img src="/images/tps.png" alt="" height="34"><span class="logo-name">The Pacific Signal</span></a>
+      <p class="ft-desc">Independent analysis and explained journalism on the forces shaping our world.</p>
+    </div>
+    <div><div class="ft-col-ttl">Regions</div><div class="ft-links"><a href="/section/united-states-canada">United States &amp; Canada</a><a href="/section/china-east-asia">China &amp; East Asia</a><a href="/section/europe-uk">Europe &amp; UK</a><a href="/section/middle-east-north-africa">Middle East &amp; North Africa</a><a href="/section/south-asia">South Asia</a><a href="/section/africa">Africa</a><a href="/section/latin-america-caribbean">Latin America &amp; Caribbean</a></div></div>
+    <div><div class="ft-col-ttl">Topics</div><div class="ft-links"><a href="/section/global-markets-trade">Global Markets &amp; Trade</a><a href="/section/geopolitics-strategy">Geopolitics &amp; Strategy</a><a href="/section/climate-environment">Climate &amp; Environment</a><a href="/section/democracy-rights">Democracy &amp; Rights</a><a href="/section/science-health">Science &amp; Health</a><a href="/section/technology-business">Technology &amp; Business</a></div></div>
+    <div>
+      <div class="ft-col-ttl">The Briefing</div>
+      <p class="ft-nl">The best of our reporting and analysis, free in your inbox each week.</p>
+      <form onsubmit="event.preventDefault();return false"><div class="ft-form"><input type="email" class="ft-email" placeholder="Email address" aria-label="Email address" disabled><button type="submit" class="ft-btn" disabled>Coming soon</button></div></form>
+      <p class="ft-msg">Newsletter sign-ups are not open yet.</p>
     </div>
   </div>
-</div>
-
-<a class="next-ribbon" id="nextRibbon" href="#">
-  <span class="next-lbl">Up Next</span>
-  <span class="next-title" id="nextTitle">&#x2014;</span>
-  <span class="next-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-7-7l7 7-7 7"/></svg></span>
-  <button class="next-close" id="nextClose" onclick="closeRibbon(event)">&#10005;</button>
-</a>
-
-<footer class="site-footer" id="subscribe">
-  <div class="ft-in">
-    <div class="ft-top">
-      <div>
-        <a href="/" class="ft-logo-row">
-          <img src="/images/tps.png" alt="">
-          <span class="ft-brand-name">The Pacific Signal</span>
-        </a>
-        <p class="ft-brand-desc">Independent analysis and explained journalism for the curious mind. We illuminate the forces shaping our world.</p>
-      </div>
-      <div>
-        <div class="ft-col-ttl">Regions</div>
-        <div class="ft-links">
-          <a href="/?category=united-states-canada">United States &amp; Canada</a>
-          <a href="/?category=china-east-asia">China &amp; East Asia</a>
-          <a href="/?category=europe-uk">Europe &amp; UK</a>
-          <a href="/?category=middle-east-north-africa">Middle East</a>
-          <a href="/?category=south-asia">South Asia</a>
-          <a href="/?category=africa">Africa</a>
-          <a href="/?category=latin-america-caribbean">Latin America</a>
-        </div>
-      </div>
-      <div>
-        <div class="ft-col-ttl">Topics</div>
-        <div class="ft-links">
-          <a href="/?category=global-markets-trade">Global Markets</a>
-          <a href="/?category=geopolitics-strategy">Geopolitics</a>
-          <a href="/?category=climate-environment">Climate</a>
-          <a href="/?category=democracy-rights">Democracy</a>
-          <a href="/?category=science-health">Science &amp; Health</a>
-          <a href="/?category=technology-business">Technology</a>
-        </div>
-      </div>
-      <div>
-        <div class="ft-col-ttl">Briefing</div>
-        <p class="ft-nl-txt">The best analysis, delivered free to your inbox each week.</p>
-        <form onsubmit="event.preventDefault();return false">
-          <div class="ft-form">
-            <input type="email" placeholder="Your email" class="ft-email" disabled>
-            <button type="submit" class="ft-btn" disabled>Coming Soon</button>
-          </div>
-        </form>
-        <p class="ft-msg" style="color:var(--ink4)">Newsletter signups aren&rsquo;t open yet &mdash; check back soon.</p>
-      </div>
-    </div>
-    <div class="ft-bot">
-      <span class="ft-copy" id="ftCopy">&copy; The Pacific Signal. All rights reserved.</span>
-      <div class="ft-legal">
-        <a href="/about.html">About</a>
-        <a href="/archive.html">Archive</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="/terms.html">Terms</a>
-        <a href="/api/rss.xml">RSS</a>
-      </div>
-    </div>
+  <div class="ft-bot">
+    <span class="ft-copy" id="ftCopy">&copy; The Pacific Signal. All rights reserved.</span>
+    <div class="ft-legal"><a href="/about.html">About</a><a href="/archive.html">Archive</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/api/rss.xml">RSS</a></div>
   </div>
-</footer>
+</div></footer>
 
+<script src="/assets/site.js"></script>
 <script>
-function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
+var ARTICLE_URL='';
 
-function timeAgo(ds){
-  if(!ds)return'';
-  var diff=Math.floor((Date.now()-new Date(ds).getTime())/1000);
-  if(diff<60)return'Just now';
-  if(diff<3600){var m=Math.floor(diff/60);return m+' min'+(m>1?'s':'')+' ago'}
-  if(diff<86400){var h=Math.floor(diff/3600);return h+' hr'+(h>1?'s':'')+' ago'}
-  if(diff<604800){var dd=Math.floor(diff/86400);return dd+' day'+(dd>1?'s':'')+' ago'}
-  return new Date(ds).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})
+/* ── Which article? /article/<slug> (pretty) or legacy /article.html?slug=<slug> ── */
+function currentSlug(){
+  var m=location.pathname.match(/^\/article\/([a-z0-9-]+)\/?$/);
+  if(m)return m[1];
+  var q=new URLSearchParams(location.search).get('slug');
+  return q&&/^[a-z0-9-]+$/.test(q)?q:null;
 }
 
-function fmtFull(ds){
-  if(!ds)return'';
-  return new Date(ds).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})
-}
-
-document.getElementById('ftCopy').innerHTML='&copy; '+new Date().getFullYear()+' The Pacific Signal. All rights reserved.';
-
-var hdr=document.getElementById('siteHeader'),lastY=0;
-window.addEventListener('scroll',function(){
-  var y=window.scrollY;
-  if(y<80){hdr.classList.remove('hide','scrolled')}
-  else if(y>lastY+5){hdr.classList.add('hide')}
-  else if(y<lastY-3){hdr.classList.remove('hide');hdr.classList.add('scrolled')}
-  lastY=y;
-},{passive:true});
-
-/* FULL-PAGE MENU */
-function openMenu(){document.getElementById('fpMenu').classList.add('on');document.body.style.overflow='hidden'}
-function closeMenu(){document.getElementById('fpMenu').classList.remove('on');document.body.style.overflow=''}
-
-/* THEME — "Classic" (light) / "Briefing" (dark). Defaults to system preference, then remembers choice. */
-function setTheme(mode){
-  document.documentElement.setAttribute('data-theme',mode);
-  try{localStorage.setItem('tps-theme',mode)}catch(e){}
-  var lightBtn=document.getElementById('themeOptLight'),darkBtn=document.getElementById('themeOptDark');
-  if(lightBtn&&darkBtn){lightBtn.classList.toggle('on',mode==='light');darkBtn.classList.toggle('on',mode==='dark')}
-}
-(function initTheme(){
-  var saved=null;
-  try{saved=localStorage.getItem('tps-theme')}catch(e){}
-  var mode=saved||(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
-  setTheme(mode);
+(async function init(){
+  markNav('__none__');
+  var slug=currentSlug(),data=window.__TPS_PRELOAD__||null;
+  if(!slug&&!data)return showState('Article not found','No article was specified.');
+  try{
+    if(!data){
+      var r=await fetch('/api/article/'+slug);
+      if(r.status===404)return showState('Article not found','This story may have been moved or removed.');
+      if(!r.ok)throw 0;
+      data=await r.json();
+    }
+    var a=data.article;
+    ARTICLE_URL=location.origin+articleUrl(a.slug);
+    // Legacy ?slug= links get upgraded to the pretty URL in the address bar
+    if(location.pathname.indexOf('/article/')!==0){try{history.replaceState(null,'',articleUrl(a.slug))}catch(e){}}
+    document.title=a.title+' \u2014 The Pacific Signal';
+    renderArticle(a);
+    markNav(a.category_slug||'__none__');
+    renderRelated(data.related||[],a);
+    loadMostRead(a.slug);
+    startProgress();
+  }catch(e){
+    showState('Unable to load this article','Please check your connection and try again.');
+  }
 })();
 
-/* SEARCH — fetches a small cached index once, then fuzzy-matches locally (typo-tolerant, no D1 read per keystroke) */
-var searchIndexPromise=null,searchTimer=null;
-function loadSearchIndex(){
-  if(!searchIndexPromise){
-    searchIndexPromise=fetch('/api/search-index').then(function(r){return r.json()}).catch(function(){return []});
-  }
-  return searchIndexPromise;
-}
-function openSearch(){
-  document.getElementById('searchOv').classList.add('on');
-  document.body.style.overflow='hidden';
-  loadSearchIndex();
-  setTimeout(function(){document.getElementById('searchInput').focus()},50);
-}
-function closeSearch(){
-  document.getElementById('searchOv').classList.remove('on');
-  document.body.style.overflow='';
-  document.getElementById('searchInput').value='';
-  document.getElementById('searchResults').innerHTML='';
-}
-function onSearchInput(){
-  clearTimeout(searchTimer);
-  var q=document.getElementById('searchInput').value.trim();
-  if(q.length<2){document.getElementById('searchResults').innerHTML='';return}
-  searchTimer=setTimeout(function(){runSearch(q)},150);
-}
-function editDistance(a,b){
-  if(a===b)return 0;
-  var al=a.length,bl=b.length;
-  if(!al)return bl;if(!bl)return al;
-  var row=[];for(var i=0;i<=bl;i++)row[i]=i;
-  for(var x=1;x<=al;x++){
-    var prev=row[0];row[0]=x;
-    for(var y=1;y<=bl;y++){
-      var tmp=row[y];
-      row[y]=a[x-1]===b[y-1]?prev:1+Math.min(prev,row[y],row[y-1]);
-      prev=tmp;
-    }
-  }
-  return row[bl];
-}
-function tokenize(s){return (s||'').toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(Boolean)}
-function fuzzyScore(queryTokens,article){
-  var haystack=tokenize(article.title+' '+(article.excerpt||'')+' '+(article.category_name||''));
-  var score=0;
-  queryTokens.forEach(function(qt){
-    var best=0;
-    haystack.forEach(function(ht){
-      if(ht.indexOf(qt)===0){best=Math.max(best,3);return}
-      if(ht.indexOf(qt)!==-1){best=Math.max(best,2);return}
-      var maxDist=qt.length<=4?1:2;
-      if(editDistance(qt,ht)<=maxDist){best=Math.max(best,1)}
-    });
-    score+=best;
-  });
-  return score;
-}
-async function runSearch(q){
-  var c=document.getElementById('searchResults');
-  c.innerHTML='<div class="search-empty">Searching&hellip;</div>';
-  try{
-    var index=await loadSearchIndex();
-    var queryTokens=tokenize(q);
-    var scored=index.map(function(a){return {a:a,score:fuzzyScore(queryTokens,a)}})
-      .filter(function(x){return x.score>0})
-      .sort(function(x,y){return y.score-x.score})
-      .slice(0,20)
-      .map(function(x){return x.a});
-    if(!scored.length){c.innerHTML='<div class="search-empty">No articles found for &ldquo;'+esc(q)+'&rdquo;.</div>';return}
-    c.innerHTML=scored.map(function(a){
-      return '<a href="/article.html?slug='+esc(a.slug)+'" class="sr-item">'
-        +'<div><div class="sr-cat">'+esc(a.category_name||'')+'</div><div class="sr-ttl">'+esc(a.title)+'</div></div>'
-        +'</a>';
-    }).join('');
-  }catch(e){c.innerHTML='<div class="search-empty">Search unavailable. Please try again.</div>'}
-}
-document.addEventListener('keydown',function(e){
-  if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){e.preventDefault();openSearch()}
-  if(e.key==='Escape'){closeSearch();closeMenu()}
-});
-
-var prog=document.getElementById('prog');
-window.addEventListener('scroll',function(){
-  var artBody=document.getElementById('artBody');
-  if(!artBody)return;
-  var st=window.scrollY,ah=artBody.offsetHeight,at=artBody.offsetTop;
-  var pct=Math.min(100,Math.max(0,((st-at)/(ah-window.innerHeight))*100));
-  prog.style.width=pct+'%';
-  if(pct>70&&!ribbonClosed)document.getElementById('nextRibbon').classList.add('show');
-},{passive:true});
-
-var slug=new URLSearchParams(location.search).get('slug');
-var ribbonClosed=false;
-
-if(!slug){
-  document.getElementById('artShell').innerHTML='<div class="art-wrap state-error"><h2>Article Not Found</h2><p>No article was specified.</p><a href="/" class="btn-back">Return to Front Page</a></div>';
-}else{
-  loadArticle(slug);
+function showState(h,p){
+  document.getElementById('artGrid').innerHTML='<div class="state" style="grid-column:1/-1"><h1>'+esc(h)+'</h1><p>'+esc(p)+'</p><a href="/" class="btn-back">Return to the front page</a></div>';
 }
 
-async function loadArticle(slug){
-  try{
-    var r=await fetch('/api/article/'+slug);
-    if(!r.ok)throw new Error();
-    var d=await r.json();
-    document.title=d.article.title+' — The Pacific Signal';
-    renderArticle(d.article);
-    if(d.related&&d.related.length){
-      renderRelated(d.related);
-      var ribbon=document.getElementById('nextRibbon');
-      ribbon.href='/article.html?slug='+d.related[0].slug;
-      document.getElementById('nextTitle').textContent=d.related[0].title;
-    }
-  }catch(e){
-    document.getElementById('artShell').innerHTML='<div class="art-wrap state-error"><h2>Article Not Found</h2><p>This article may have been removed.</p><a href="/" class="btn-back">Return to Front Page</a></div>';
-  }
+/* ── Content: HTML from the editor, or Markdown ── */
+function hasHtml(raw){return /<[a-z][\s\S]*>/i.test(raw||'')}
+function inlineMd(s){
+  return s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g,'<img src="$2" alt="$1" loading="lazy">')
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,'<a href="$2" rel="noopener">$1</a>')
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/(^|[^*])\*([^*\n]+)\*/g,'$1<em>$2</em>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>');
 }
-
-function closeRibbon(e){
-  e.preventDefault();e.stopPropagation();
-  ribbonClosed=true;
-  document.getElementById('nextRibbon').classList.remove('show');
+function mdToHtml(raw){
+  var safe=String(raw||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  return safe.split(/\n{2,}/).map(function(b){
+    b=b.trim();if(!b)return'';
+    var m;
+    if((m=b.match(/^(#{2,4}) (.+)$/)))return'<h'+m[1].length+'>'+inlineMd(m[2])+'</h'+m[1].length+'>';
+    if(/^---+$/.test(b))return'<hr>';
+    if(/^&gt; /.test(b)||/^> /.test(b))return'<blockquote><p>'+inlineMd(b.replace(/^(&gt;|>) ?/gm,'').replace(/\n/g,' '))+'</p></blockquote>';
+    if(/^[-*] /.test(b))return'<ul>'+b.split('\n').map(function(l){return'<li>'+inlineMd(l.replace(/^[-*] /,''))+'</li>'}).join('')+'</ul>';
+    if(/^\d+\. /.test(b))return'<ol>'+b.split('\n').map(function(l){return'<li>'+inlineMd(l.replace(/^\d+\. /,''))+'</li>'}).join('')+'</ol>';
+    return'<p>'+inlineMd(b).replace(/\n/g,'<br>')+'</p>';
+  }).join('');
 }
+function renderContent(raw){return hasHtml(raw)?raw:mdToHtml(raw)}
+function wordCount(raw){return ((raw||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().split(' ').filter(Boolean).length)||1}
 
-/* ─── CONTENT RENDERER — Hybrid: detects HTML, falls back to markdown ─── */
-
-function hasHtmlTags(raw){
-  return /<[a-z][\s\S]*>/i.test(raw||'');
+/* ── Article ── */
+var ICON={
+ x:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.852L1.745 2.25H8.2l4.259 5.63L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
+ fb:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.45 18.63.07 12 .07S0 5.45 0 12.07c0 5.99 4.39 10.95 10.13 11.85v-8.39H7.08v-3.46h3.05V9.43c0-3.01 1.79-4.67 4.53-4.67 1.31 0 2.69.23 2.69.23v2.95h-1.51c-1.49 0-1.96.93-1.96 1.87v2.25h3.33l-.53 3.46h-2.8v8.39C19.61 23.02 24 18.06 24 12.07z"/></svg>',
+ wa:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.27-.47-2.42-1.49-.89-.8-1.5-1.78-1.67-2.08-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35zM12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88zM20.52 3.45A11.8 11.8 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.48-8.41z"/></svg>',
+ mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>',
+ link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg>'
+};
+function shareHtml(a){
+  var u=encodeURIComponent(ARTICLE_URL),t=encodeURIComponent(a.title);
+  return '<div class="share" role="group" aria-label="Share this article">'
+   +'<a class="sh" target="_blank" rel="noopener" aria-label="Share on X" href="https://twitter.com/intent/tweet?url='+u+'&text='+t+'">'+ICON.x+'</a>'
+   +'<a class="sh" target="_blank" rel="noopener" aria-label="Share on Facebook" href="https://www.facebook.com/sharer/sharer.php?u='+u+'">'+ICON.fb+'</a>'
+   +'<a class="sh" target="_blank" rel="noopener" aria-label="Share on WhatsApp" href="https://wa.me/?text='+t+'%20'+u+'">'+ICON.wa+'</a>'
+   +'<a class="sh" aria-label="Share by email" href="mailto:?subject='+t+'&body='+u+'">'+ICON.mail+'</a>'
+   +'<button class="sh" aria-label="Copy link" onclick="copyLink(this)">'+ICON.link+'</button><span class="copied" role="status"></span>'
+   +'</div>';
 }
-
-function parseMarkdown(raw){
-  return (raw||'')
-    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
-    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
-    .replace(/^#### (.+)$/gm,'<h4>$1</h4>')
-    .replace(/^> (.+)$/gm,'<blockquote><p>$1</p></blockquote>')
-    .replace(/((?:^- .+\n?)+)/gm, function(match) {
-      var items = match.trim().split('\n').map(function(line) {
-        return '<li>' + line.replace(/^- /, '') + '</li>';
-      }).join('');
-      return '<ul>' + items + '</ul>';
-    })
-    .replace(/\n\n+/g,'</p><p>')
-    .replace(/\n/g,'<br>');
+function copyLink(btn){
+  var done=function(){var s=btn.parentNode.querySelector('.copied');s.textContent='Link copied';s.classList.add('on');setTimeout(function(){s.classList.remove('on')},2000)};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(ARTICLE_URL).then(done);
+  else{var i=document.createElement('input');i.value=ARTICLE_URL;document.body.appendChild(i);i.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(i)}
 }
-
-function renderContent(raw){
-  if(!raw)return'';
-  // If content contains HTML tags, output it raw
-  if(hasHtmlTags(raw)){
-    return raw;
-  }
-  // Otherwise parse as markdown (backward compatibility)
-  return '<p>'+parseMarkdown(raw)+'</p>';
-}
-
-function wordCount(raw){
-  // Strip HTML tags and markdown markers for accurate word count
-  var text = (raw||'')
-    .replace(/<[^>]*>/g,' ')
-    .replace(/[#*>\-\[\]()]/g,' ')
-    .replace(/\s+/g,' ')
-    .trim();
-  return text.split(/\s+/).length;
-}
-
-/* ─── RENDER ARTICLE ─── */
 
 function renderArticle(a){
-  var wc=wordCount(a.content);
-  var rt=Math.max(1,Math.round(wc/220));
+  var pub=a.published_at||a.created_at;
+  var rt=Math.max(1,Math.round(wordCount(a.content)/230));
+  var upd='';
+  if(a.updated_at&&pub&&(new Date(a.updated_at)-new Date(pub))>10*60*1000)
+    upd='<br><span class="upd">Updated '+fmtDate(a.updated_at)+', '+fmtTime(a.updated_at)+'</span>';
 
-  var html='<div class="art-wrap">';
-
-  html+='<div class="breadcrumb">'
-    +'<a href="/">Front Page</a>';
-  if(a.category_name&&a.category_slug)html+='<span class="bc-sep">/</span><a href="/?category='+esc(a.category_slug)+'">'+esc(a.category_name)+'</a>';
-  html+='</div>';
-
-  html+='<div class="art-eyebrow"><span class="art-cat">'+esc(a.category_name||'Analysis')+'</span><div class="art-eye-line"></div></div>';
-  html+='<h1 class="art-title">'+esc(a.title)+'</h1>';
-
-  if(a.excerpt)html+='<p class="art-standfirst">'+esc(a.excerpt)+'</p>';
-
-  html+='<div class="art-byline">'
-    +'<span class="byline-author">'+esc(a.author||'The Pacific Signal')+'</span>'
-    +'<span class="byline-sep">&mdash;</span>'
-    +'<span class="byline-date">'+fmtFull(a.published_at||a.created_at)+'</span>'
-    +'<span class="byline-sep">&middot;</span>'
-    +'<span class="byline-time">'+timeAgo(a.published_at||a.created_at)+'</span>'
-    +'<span class="byline-sep">&middot;</span>'
-    +'<span class="byline-read"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>'+rt+' min read</span>'
-    +'</div>';
-
-  if(a.image_url)html+='<img src="'+esc(a.image_url)+'" alt="'+esc(a.title)+'" class="art-feat-img" loading="eager">';
-
-  // Hybrid content renderer — HTML or markdown
-  html+='<div class="art-body" id="artBody">'+renderContent(a.content)+'</div>';
-
-  var su=encodeURIComponent(location.href), st=encodeURIComponent(a.title);
-  html+='<div class="share-bar">'
-    +'<span class="share-lbl">Share</span>'
-    +'<a href="https://twitter.com/intent/tweet?url='+su+'&text='+st+'" target="_blank" rel="noopener" class="share-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.852L1.745 2.25H8.2l4.259 5.63L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X / Twitter</a>'
-    +'<a href="https://www.facebook.com/sharer/sharer.php?u='+su+'" target="_blank" rel="noopener" class="share-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg> Facebook</a>'
-    +'<button class="share-btn" id="copyBtn" onclick="copyLink()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="1"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Link</button>'
-    +'</div></div>';
-
-  document.getElementById('artShell').innerHTML=html;
+  var h='<div class="crumb"><a href="/">Home</a>';
+  if(a.category_name&&a.category_slug)h+='<span class="sep">/</span><a href="'+sectionUrl(a.category_slug)+'">'+esc(a.category_name)+'</a>';
+  h+='</div>';
+  if(a.category_name)h+='<a class="kicker art-kicker" href="'+sectionUrl(a.category_slug||'')+'">'+esc(a.category_name)+'</a><br>';
+  h+='<h1 class="art-title">'+esc(a.title)+'</h1>';
+  if(a.excerpt)h+='<p class="art-dek">'+esc(a.excerpt)+'</p>';
+  h+='<div class="art-by"><div class="by-l"><span class="by-name">By '+esc(a.author||'The Pacific Signal')+'</span>'
+    +'<time datetime="'+esc(pub||'')+'">'+fmtDate(pub)+', '+fmtTime(pub)+'</time> &middot; '+rt+' min read'+upd+'</div>'+shareHtml(a)+'</div>';
+  if(a.image_url)h+='<figure class="art-fig"><img src="'+esc(a.image_url)+'" alt="'+esc(a.title)+'" fetchpriority="high" decoding="async"></figure>';
+  h+='<div class="art-body" id="artBody">'+renderContent(a.content)+'</div>';
+  h+='<div class="art-foot"><span class="lbl">Share this story</span>'+shareHtml(a)+'</div>';
+  document.getElementById('artCol').innerHTML=h;
+  // Links inside article body: external links open safely in a new tab
+  document.querySelectorAll('#artBody a[href^="http"]').forEach(function(l){
+    if(l.hostname!==location.hostname){l.target='_blank';l.rel='noopener'}
+  });
 }
 
-function copyLink(){
-  navigator.clipboard.writeText(location.href);
-  var b=document.getElementById('copyBtn');
-  if(b){b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied';setTimeout(function(){b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="13" height="13" rx="1"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Link'},2200)}
-}
-
-function renderRelated(rel){
-  document.getElementById('relatedWrap').style.display='block';
-  document.getElementById('relGrid').innerHTML=rel.map(function(a,i){
-    return '<a href="/article.html?slug='+esc(a.slug)+'" class="rel-card" '+(i===1?'style="padding:0 24px"':'')+'>'
-      +(a.image_url?'<img src="'+esc(a.image_url)+'" alt="'+esc(a.title)+'" class="rel-img" loading="lazy">':'<div class="rel-ph"><span>TPS</span></div>')
-      +'<div class="rel-cat">'+esc(a.category_name||'Analysis')+'</div>'
-      +'<div class="rel-ttl">'+esc(a.title)+'</div>'
-      +'<div class="rel-meta">'+esc(a.author||'The Pacific Signal')+' &nbsp;&middot;&nbsp; <span style="color:var(--gold)">'+timeAgo(a.published_at||a.created_at)+'</span></div>'
-      +'</a>';
+function renderRelated(rel,a){
+  if(!rel.length)return;
+  document.getElementById('moreWrap').style.display='block';
+  document.getElementById('moreTtl').textContent=a.category_name?'More from '+a.category_name:'More from The Pacific Signal';
+  document.getElementById('relGrid').innerHTML=rel.slice(0,4).map(function(x){
+    return '<a href="'+articleUrl(x.slug)+'" class="rc"><div class="rc-img">'
+      +(x.image_url?'<img src="'+esc(x.image_url)+'" alt="" loading="lazy" decoding="async">':'<div class="ph">TPS</div>')+'</div>'
+      +'<span class="kicker">'+esc(x.category_name||'')+'</span>'
+      +'<div class="rc-ttl">'+esc(x.title)+'</div>'
+      +'<span class="meta">'+timeAgo(x.published_at||x.created_at)+'</span></a>';
   }).join('');
+}
+
+async function loadMostRead(currentSlug){
+  try{
+    var r=await fetch('/api/homepage?page=1');var d=await r.json();
+    var list=(d.most_read||[]).filter(function(x){return x.slug!==currentSlug}).slice(0,5);
+    if(!list.length)return;
+    document.getElementById('side').style.display='block';
+    document.getElementById('mostList').innerHTML=list.map(function(x,i){
+      return '<a href="'+articleUrl(x.slug)+'" class="mr"><span class="mr-n">'+(i+1)+'</span><div>'
+        +'<span class="kicker">'+esc(x.category_name||'')+'</span><div class="mr-ttl">'+esc(x.title)+'</div></div></a>';
+    }).join('');
+  }catch(e){}
+}
+
+/* Reading progress */
+function startProgress(){
+  var p=document.getElementById('prog');
+  window.addEventListener('scroll',function(){
+    var b=document.getElementById('artBody');if(!b)return;
+    var r=b.getBoundingClientRect(),total=r.height-window.innerHeight*.5;
+    var pct=Math.min(100,Math.max(0,(-r.top/Math.max(total,1))*100));
+    p.style.width=pct+'%';
+  },{passive:true});
 }
 </script>
 </body>
