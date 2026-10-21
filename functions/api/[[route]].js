@@ -412,15 +412,20 @@ export async function onRequest(context) {
   if (path === '/api/archive' && request.method === 'GET') {
     if (!db) return json({ articles: [], page: 1, hasMore: false });
 
-    var archivePage = parseInt(url.searchParams.get('page') || '1');
+    var archivePage = Math.max(1, parseInt(url.searchParams.get('page') || '1') || 1);
     var archiveLimit = 12;
     var archiveOffset = (archivePage - 1) * archiveLimit;
     var archiveCategorySlug = (url.searchParams.get('category') || '').trim();
     var archiveQuery = (url.searchParams.get('q') || '').trim();
     var cutoffIso = new Date(Date.now() - ARCHIVE_AFTER_DAYS * 24 * 60 * 60 * 1000).toISOString();
 
-    var whereParts = ["a.is_published = 1", "a.published_at < ?"];
-    var bindArgs = [cutoffIso];
+    var whereParts = ["a.is_published = 1"];
+    var bindArgs = [];
+    // ?all=1 lists every published story; without it only stories older than the cutoff.
+    if (url.searchParams.get('all') !== '1') {
+      whereParts.push("a.published_at < ?");
+      bindArgs.push(cutoffIso);
+    }
 
     if (archiveCategorySlug) {
       whereParts.push("c.slug = ?");
