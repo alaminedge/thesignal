@@ -228,6 +228,21 @@ function currentSlug(){
   return q&&/^[a-z0-9-]+$/.test(q)?q:null;
 }
 
+/* Count one read per reader, per article, per day, after ~5 seconds on the page. */
+function recordView(slug){
+  var key='tps-view:'+slug,today=new Date().toISOString().slice(0,10);
+  try{if(localStorage.getItem(key)===today)return}catch(e){}
+  function send(){
+    try{localStorage.setItem(key,today)}catch(e){}
+    try{fetch('/api/view/'+encodeURIComponent(slug),{method:'POST',keepalive:true})}catch(e){}
+  }
+  setTimeout(function(){
+    if(document.visibilityState==='visible')return send();
+    document.addEventListener('visibilitychange',function once(){
+      if(document.visibilityState==='visible'){document.removeEventListener('visibilitychange',once);send()}
+    });
+  },5000);
+}
 async function init(){
   markNav('__none__');
   var slug=currentSlug(),data=window.__TPS_PRELOAD__||null;
@@ -250,6 +265,7 @@ async function init(){
     if(location.pathname.indexOf('/article/')!==0){try{history.replaceState(null,'',articleUrl(a.slug))}catch(e){}}
     document.title=a.title+' \u2014 The Pacific Signal';
     renderArticle(a);
+    try{recordView(a.slug||slug)}catch(e){}
     try{markNav(a.category_slug||'__none__')}catch(e){}
     try{renderRelated(data.related||[],a)}catch(e){console.error(e)}
     try{loadMostRead(a.slug)}catch(e){}
