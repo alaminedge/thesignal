@@ -491,6 +491,20 @@ export async function onRequest(context) {
     return xmlResponse(rss);
   }
 
+  // POST /api/view/<slug> — records one read. The article page calls it once per reader per
+  // article per day, after the reader has stayed on the page a few seconds. Bots are ignored.
+  if (request.method === 'POST' && path.match(/^\/api\/view\/[a-z0-9-]+$/)) {
+    if (!db) return new Response(null, { status: 204 });
+    var ua = request.headers.get('User-Agent') || '';
+    var purpose = (request.headers.get('Purpose') || request.headers.get('Sec-Purpose') || '').toLowerCase();
+    var isBot = !ua || /bot|crawl|spider|slurp|preview|fetch|headless|lighthouse|monitor|uptime|curl|wget|python|java\/|go-http|httpclient|axios|node-|facebookexternalhit|whatsapp|telegram|discord|pingdom|gtmetrix/i.test(ua);
+    if (isBot || purpose.indexOf('prefetch') !== -1) return new Response(null, { status: 204 });
+    try {
+      await db.prepare("UPDATE articles SET view_count = COALESCE(view_count, 0) + 1 WHERE slug = ? AND is_published = 1").bind(path.split('/')[3]).run();
+    } catch (e) {}
+    return new Response(null, { status: 204 });
+  }
+
   if (request.method === 'GET' && path.match(/^\/api\/article\/[a-z0-9-]+$/)) {
     if (!db) return err('Article not found', 404);
 
@@ -501,12 +515,6 @@ export async function onRequest(context) {
     ).bind(requestedSlug).first();
 
     if (!article) return err('Article not found', 404);
-
-    // Count the view without delaying the response
-    try {
-      var viewUpdate = db.prepare("UPDATE articles SET view_count = COALESCE(view_count, 0) + 1 WHERE id = ?").bind(article.id).run();
-      if (context.waitUntil) context.waitUntil(viewUpdate); else await viewUpdate;
-    } catch (e) {}
 
     var relatedArticlesResult = await db.prepare(
       "SELECT a.id, a.title, a.slug, a.excerpt, a.image_url, a.author, a.published_at, c.name as category_name, c.slug as category_slug FROM articles a LEFT JOIN categories c ON a.category_id = c.id WHERE a.category_id = ? AND a.id != ? AND a.is_published = 1 ORDER BY a.published_at DESC LIMIT 4"
