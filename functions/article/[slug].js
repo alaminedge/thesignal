@@ -77,10 +77,7 @@ export async function onRequestGet(context) {
           ).bind(...ids, 4 - related.length).all();
           related = related.concat(fill.results || []);
         }
-        // Count the view without delaying the response
-        context.waitUntil(
-          env.SIGNAL_DB.prepare("UPDATE articles SET view_count = COALESCE(view_count, 0) + 1 WHERE id = ?").bind(article.id).run().catch(function () {})
-        );
+        // Views are counted by the page itself (POST /api/view/<slug>), once per reader per day.
       }
     } catch (e) { article = null; dbError = true; }
   }
@@ -91,7 +88,7 @@ export async function onRequestGet(context) {
     h404.set('Cache-Control', 'no-store');
     return new HTMLRewriter()
       .on('head', { element: function (el) { el.append('<meta name="robots" content="noindex">', { html: true }); } })
-      .transform(new Response(shell.body, { status: 404, headers: h404 }));
+      .transform(new Response(shell.body, { status: dbError ? 200 : 404, headers: h404 }));
   }
 
   var canonical = origin + '/article/' + article.slug;
