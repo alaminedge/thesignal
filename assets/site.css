@@ -7,7 +7,7 @@
   --rule:#E2E2DE;--rule2:#C9C9C4;--strong:#121212;
   --accent:#A4161A;--accent2:#7F1013;--accent-bg:#FBEDED;
   --on-ink:#FFFFFF;
-  --max:1240px;--g:clamp(16px,3vw,28px);
+  --max:1376px;--g:clamp(16px,3vw,28px);
   --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
   --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
 }
