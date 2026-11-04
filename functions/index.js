@@ -5,7 +5,7 @@
 // Enabled by adding "/" to _routes.json. If anything fails, the plain static page is served unchanged.
 
 var IMG_PROXY = 'https://wsrv.nl/'; // keep in sync with TPS_IMG_PROXY in assets/site.js
-var HERO_WIDTHS = [480, 800, 1200];
+var HERO_WIDTHS = [420, 640, 960, 1280];
 
 function attr(s) {
   return String(s == null ? '' : s)
@@ -40,7 +40,7 @@ export async function onRequestGet(context) {
 
   if (hero && hero.image_url && /^https?:\/\//i.test(hero.image_url)) {
     var srcset = HERO_WIDTHS.map(function (w) { return proxied(hero.image_url, w) + ' ' + w + 'w'; }).join(', ');
-    html += '<link rel="preload" as="image" fetchpriority="high" href="' + attr(proxied(hero.image_url, 800)) + '"'
+    html += '<link rel="preload" as="image" fetchpriority="high" href="' + attr(proxied(hero.image_url, 640)) + '"'
       + ' imagesrcset="' + attr(srcset) + '" imagesizes="(min-width:1000px) 640px, 100vw">';
   }
   html += '<script>window.__homeData=' + JSON.stringify(data)
