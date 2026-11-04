@@ -1,6 +1,28 @@
 /* The Pacific Signal — shared core behaviour (index + article). Plain JS, no build step. */
 function esc(s){var d=document.createElement('div');d.textContent=String(s==null?'':s);return d.innerHTML}
 
+
+/* Image optimisation — serves resized WebP via a free image proxy; falls back to the original URL on error.
+   To turn it off, set TPS_IMG_PROXY = ''. */
+var TPS_IMG_PROXY='https://wsrv.nl/';
+function imgSrc(u,w){
+  if(!u||!TPS_IMG_PROXY||!/^https?:\/\//i.test(u))return u||'';
+  return TPS_IMG_PROXY+'?url='+encodeURIComponent(u)+'&w='+w+'&q=72&output=webp';
+}
+function imgSrcset(u,ws){
+  if(!u||!TPS_IMG_PROXY||!/^https?:\/\//i.test(u))return '';
+  return ws.map(function(w){return imgSrc(u,w)+' '+w+'w'}).join(', ');
+}
+/* Builds an <img> with srcset, size hints and a safe fallback */
+function imgTag(u,ws,sizes,opt){
+  opt=opt||{};
+  var ss=imgSrcset(u,ws),e=esc(u);
+  return '<img src="'+esc(imgSrc(u,ws[ws.length>1?1:0]))+'"'+(ss?' srcset="'+esc(ss)+'" sizes="'+sizes+'"':'')
+    +' data-o="'+e+'" alt="" width="600" height="400"'
+    +(opt.eager?' loading="eager" fetchpriority="high"':' loading="lazy"')+' decoding="async"'
+    +(ss?' onerror="this.onerror=null;this.removeAttribute(\'srcset\');this.src=this.dataset.o"':'')+'>';
+}
+
 /* Pretty URL builders */
 function articleUrl(slug){return '/article/'+encodeURIComponent(slug)}
 function sectionUrl(slug){return '/section/'+encodeURIComponent(slug)}
