@@ -18,7 +18,7 @@ function imgTag(u,ws,sizes,opt){
   opt=opt||{};
   var ss=imgSrcset(u,ws),e=esc(u);
   return '<img src="'+esc(imgSrc(u,ws[ws.length>1?1:0]))+'"'+(ss?' srcset="'+esc(ss)+'" sizes="'+sizes+'"':'')
-    +' data-o="'+e+'" alt="" width="600" height="400"'
+    +' data-o="'+e+'" alt="'+esc(opt.alt||'')+'"'+(opt.noDims?'':' width="600" height="400"')
     +(opt.eager?' loading="eager" fetchpriority="high"':' loading="lazy"')+' decoding="async"'
     +(ss?' onerror="this.onerror=null;this.removeAttribute(\'srcset\');this.src=this.dataset.o"':'')+'>';
 }
