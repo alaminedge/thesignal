@@ -461,33 +461,16 @@ function initAuth() {
 }
 
 function checkMasterPhraseStatus() {
-  fetch('/api/admin/login', {
+  fetch('/api/admin/master-status', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-    body: JSON.stringify({ username: admin ? admin.username : '', password: '' })
-  }).then(function(r) { return r.json(); }).then(function(d) {
-    // We expect an error (since we sent empty password), but master_phrase_set tells us what we need
-    // Actually, let's use a dedicated check — we'll just try to validate and see
-    // Since login requires password, let's check differently
-    // We already know admin token is valid from initAuth, so check master phrase status
-    // Use validate-master-token endpoint
-    if (d.master_phrase_set !== undefined) {
-      if (d.master_phrase_set) {
-        showAuthStep('verifyMaster');
-      } else {
-        showAuthStep('setMaster');
-      }
-    } else {
-      // Fallback: try validate master token
-      validateMasterToken().then(function(v) {
-        if (v) {
-          showApp();
-        } else {
-          // Assume master phrase needs setting if we got here with valid admin token
-          showAuthStep('setMaster');
-        }
-      });
-    }
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
+  }).then(function(r) {
+    if (r.status === 401) { clearAllAuth(); showAuthStep('login'); return null; }
+    return r.json();
+  }).then(function(d) {
+    if (!d) return;
+    // Already set -> only ask to VERIFY; never show "Set" again
+    showAuthStep(d.master_phrase_set ? 'verifyMaster' : 'setMaster');
   }).catch(function() {
     showAuthStep('login');
   });
