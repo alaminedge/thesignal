@@ -672,6 +672,15 @@ export async function onRequest(context) {
     });
   }
 
+  // GET/POST /api/admin/master-status — is a master phrase already set? (admin token required)
+  if (path === '/api/admin/master-status' && (request.method === 'GET' || request.method === 'POST')) {
+    var statusAdmin = await getAdminUser(request);
+    if (!statusAdmin) return err('Unauthorized — Please sign in', 401);
+    if (!db) return err('Database not configured', 500);
+    var statusRecord = await db.prepare("SELECT id FROM master_phrase WHERE id = 1").first();
+    return json({ master_phrase_set: !!statusRecord });
+  }
+
   // POST /api/admin/validate-master-token — check if existing master token is still valid
   if (path === '/api/admin/validate-master-token' && request.method === 'POST') {
     var currentAdmin = await getAdminUser(request);
