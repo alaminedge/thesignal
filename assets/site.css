@@ -3,7 +3,7 @@
    One accent colour. White paper. Hairline rules. */
 :root{
   --bg:#FFFFFF;--bg2:#F6F6F4;--bg3:#EEEEEA;
-  --ink:#121212;--ink2:#2B2B2B;--ink3:#555555;--ink4:#767676;--ink5:#A3A3A3;
+  --ink:#121212;--ink2:#2B2B2B;--ink3:#555555;--ink4:#6B6B6B;--ink5:#A3A3A3;
   --rule:#E2E2DE;--rule2:#C9C9C4;--strong:#121212;
   --accent:#A4161A;--accent2:#7F1013;--accent-bg:#FBEDED;
   --on-ink:#FFFFFF;
@@ -59,6 +59,9 @@ button{font-family:inherit;cursor:pointer}
 .logo-tag{font:500 10px var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--ink4);margin-top:5px}
 .btn-sub{font:700 12px var(--sans);letter-spacing:.04em;padding:10px 18px;background:var(--accent);color:#fff;border-radius:2px;white-space:nowrap}
 .btn-sub:hover{background:var(--accent2);color:#fff}
+/* dark theme: accent is light, so filled badges/buttons use a deeper red to keep white text readable (WCAG AA) */
+[data-theme="dark"] .btn-sub,[data-theme="dark"] .btn-cta,[data-theme="dark"] .vis-ov .kicker{background:#C23338;color:#fff}
+[data-theme="dark"] .btn-sub:hover,[data-theme="dark"] .btn-cta:hover{background:#A4161A;color:#fff}
 
 /* ── SECTION NAV (sticky) ── */
 .nav{position:sticky;top:0;z-index:300;background:var(--bg);border-top:3px solid var(--strong);border-bottom:1px solid var(--rule);transition:box-shadow .2s}
@@ -117,8 +120,12 @@ button{font-family:inherit;cursor:pointer}
 .sec-ttl{font:800 1.25rem/1.1 var(--serif);letter-spacing:-.005em}
 .sec-sub{font:600 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink4)}
 .ph{background:var(--bg3);display:flex;align-items:center;justify-content:center;color:var(--ink5);font:800 1.1rem var(--serif);letter-spacing:.06em;width:100%;height:100%;min-height:100%}
-@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.sk{background:linear-gradient(90deg,var(--bg3) 25%,var(--bg2) 50%,var(--bg3) 75%);background-size:200% 100%;animation:sk 1.5s ease-in-out infinite;display:block;border-radius:2px}
+@keyframes sk{0%,100%{opacity:1}50%{opacity:.55}}
+.sk{background:var(--bg3);animation:sk 1.5s ease-in-out infinite;display:block;border-radius:2px}
+@media(prefers-reduced-motion:reduce){.sk{animation:none}}
+/* While stories load: keep page tall enough that the footer stays below the fold (no layout shift) */
+.is-loading{min-height:100vh}
+.is-loading #latestSec{display:none}
 
 /* ── FOOTER ── */
 .site-footer{background:var(--bg2);border-top:3px solid var(--strong);margin-top:64px;padding:48px 0 0}
