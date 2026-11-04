@@ -1067,12 +1067,35 @@ async function deleteArt(id){
 /* IMGBB                                                            */
 /* ══════════════════════════════════════════════════════════════ */
 
+/* Shrink photos in the browser before upload: max 1600px, WebP ~82% (keeps pages fast) */
+function compressImage(file){
+  return new Promise(function(resolve){
+    var MAX=1600;
+    if(!/^image\/(jpeg|png|webp)$/.test(file.type)){resolve(file);return}
+    var url=URL.createObjectURL(file),img=new Image();
+    img.onload=function(){
+      URL.revokeObjectURL(url);
+      var w=img.naturalWidth,h=img.naturalHeight,sc=Math.min(1,MAX/Math.max(w,h));
+      if(sc===1&&file.size<200*1024){resolve(file);return}
+      var c=document.createElement('canvas');c.width=Math.round(w*sc);c.height=Math.round(h*sc);
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      c.toBlob(function(b){
+        if(b&&b.size<file.size){resolve(new File([b],file.name.replace(/\.[^.]+$/,'')+'.webp',{type:'image/webp'}))}
+        else{resolve(file)}
+      },'image/webp',0.82);
+    };
+    img.onerror=function(){URL.revokeObjectURL(url);resolve(file)};
+    img.src=url;
+  });
+}
+
 async function uploadImg(){
   var fi=document.getElementById('fileIn'),file=fi.files[0];
   if(!file)return;
   if(file.size>32*1024*1024){alert('File too large. Max 32MB.');return}
   document.getElementById('upProg').style.display='block';
   document.getElementById('upBar').style.width='35%';
+  file=await compressImage(file);
   var fd=new FormData();fd.append('image',file);
   try{
     document.getElementById('upBar').style.width='65%';

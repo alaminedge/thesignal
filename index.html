@@ -18,7 +18,21 @@
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;0,8..60,800;1,8..60,400&display=swap" rel="stylesheet"></noscript>
 <link rel="icon" type="image/png" href="/images/tps-192.png">
 <link rel="apple-touch-icon" href="/images/tps-192.png">
-<link rel="stylesheet" href="/assets/site.css">
+<link rel="preconnect" href="https://i.ibb.co">
+<script>
+/* Start the homepage request immediately and preload the lead image the moment its URL is known */
+(function(){
+  if(/^\/section\//.test(location.pathname)||/[?&]category=/.test(location.search))return;
+  var p=fetch('/api/homepage?page=1').then(function(r){if(!r.ok)throw 0;return r.json()});
+  p.catch(function(){});
+  window.__home=p;
+  p.then(function(d){
+    var h=d.hero||(d.latest&&d.latest[0]);
+    if(h&&h.image_url){var l=document.createElement('link');l.rel='preload';l.as='image';l.href=h.image_url;l.setAttribute('fetchpriority','high');document.head.appendChild(l)}
+  }).catch(function(){});
+})();
+</script>
+<link rel="stylesheet" href="/assets/site.css?v=20261104">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"The Pacific Signal","url":"https://thepacificsignal.com","description":"Independent news, analysis and explained journalism on the forces shaping our world.","logo":"https://thepacificsignal.com/images/tps.png"}
 </script>
@@ -287,7 +301,7 @@
   </div>
 </div></footer>
 
-<script src="/assets/site.js"></script>
+<script src="/assets/site.js?v=20261104"></script>
 <script>
 var pg=1,secSlug=null,secName='';
 function img(a,cls){return a.image_url?'<img src="'+esc(a.image_url)+'" alt="" width="600" height="400" loading="lazy" decoding="async">':'<div class="ph">TPS</div>'}
@@ -321,9 +335,13 @@ if(secSlug){
 function doneLoading(){var m=document.getElementById('main');if(m)m.classList.remove('is-loading')}
 async function loadHome(p){
   try{
-    var r=await fetch('/api/homepage?page='+p);
-    if(!r.ok)throw 0;
-    var d=await r.json();
+    var d=null;
+    if(p===1&&window.__home){try{d=await window.__home}catch(e){d=null}window.__home=null}
+    if(!d){
+      var r=await fetch('/api/homepage?page='+p);
+      if(!r.ok)throw 0;
+      d=await r.json();
+    }
     var latest=d.latest||[];
     if(p===1){
       var hero=d.hero;
