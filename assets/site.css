@@ -157,6 +157,10 @@ button{font-family:inherit;cursor:pointer}
   .fp-head .logo-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .fp-close{margin-left:-9px}
   .mast-r{display:none}
+  /* Slimmer rules on phones: lighter, more refined look */
+  .nav{border-top-width:2px}
+  .sec-hd{border-top-width:2px}
+  .site-footer{border-top-width:2px}
   .logo img{height:34px}
   .logo-name{font-size:1.35rem}
   .logo-tag{display:none}
