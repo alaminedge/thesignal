@@ -18,7 +18,7 @@
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;0,8..60,800;1,8..60,400&display=swap" rel="stylesheet"></noscript>
 <link rel="icon" type="image/png" href="/images/tps-192.png">
 <link rel="apple-touch-icon" href="/images/tps-192.png">
-<link rel="preconnect" href="https://i.ibb.co">
+<link rel="preconnect" href="https://wsrv.nl" crossorigin>
 <script>
 /* Start the homepage request immediately and preload the lead image the moment its URL is known */
 (function(){
@@ -28,11 +28,17 @@
   window.__home=p;
   p.then(function(d){
     var h=d.hero||(d.latest&&d.latest[0]);
-    if(h&&h.image_url){var l=document.createElement('link');l.rel='preload';l.as='image';l.href=h.image_url;l.setAttribute('fetchpriority','high');document.head.appendChild(l)}
+    if(h&&h.image_url&&/^https?:\/\//i.test(h.image_url)){
+      var P='https://wsrv.nl/?url='+encodeURIComponent(h.image_url)+'&q=72&output=webp&w=',W=[480,800,1200];
+      var l=document.createElement('link');l.rel='preload';l.as='image';l.href=P+'800';
+      l.setAttribute('imagesrcset',W.map(function(w){return P+w+' '+w+'w'}).join(', '));
+      l.setAttribute('imagesizes','(min-width:1000px) 640px, 100vw');
+      l.setAttribute('fetchpriority','high');document.head.appendChild(l);
+    }
   }).catch(function(){});
 })();
 </script>
-<link rel="stylesheet" href="/assets/site.css?v=20261104">
+<link rel="stylesheet" href="/assets/site.css?v=20261105">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"The Pacific Signal","url":"https://thepacificsignal.com","description":"Independent news, analysis and explained journalism on the forces shaping our world.","logo":"https://thepacificsignal.com/images/tps.png"}
 </script>
@@ -301,10 +307,10 @@
   </div>
 </div></footer>
 
-<script src="/assets/site.js?v=20261104"></script>
+<script src="/assets/site.js?v=20261105"></script>
 <script>
 var pg=1,secSlug=null,secName='';
-function img(a,cls){return a.image_url?'<img src="'+esc(a.image_url)+'" alt="" width="600" height="400" loading="lazy" decoding="async">':'<div class="ph">TPS</div>'}
+function img(a,eager){return a.image_url?imgTag(a.image_url,[360,600,900],'(min-width:1000px) 300px, (min-width:600px) 33vw, 100vw',{eager:eager}):'<div class="ph">TPS</div>'}
 function when(a){return timeAgo(a.published_at||a.created_at)}
 function by(a){return '<span class="meta"><b>'+esc(a.author||'The Pacific Signal')+'</b> &middot; '+when(a)+'</span>'}
 
@@ -390,12 +396,11 @@ function renderHero(h){
   var c=document.getElementById('heroSec');
   if(!h){c.innerHTML='<p class="empty">No stories published yet.</p>';document.getElementById('leadGrid').style.display='none';return}
   c.innerHTML='<a href="'+articleUrl(h.slug)+'" class="hero">'
-    +'<div class="hero-img">'+img(h)+'</div>'
+    +'<div class="hero-img">'+(h.image_url?imgTag(h.image_url,[480,800,1200],'(min-width:1000px) 640px, 100vw',{eager:true}):'<div class="ph">TPS</div>')+'</div>'
     +'<span class="kicker">'+esc(h.category_name||'Analysis')+'</span>'
     +'<h2 class="hero-ttl">'+esc(h.title)+'</h2>'
     +(h.excerpt?'<p class="hero-exc">'+esc(h.excerpt)+'</p>':'')
     +by(h)+'</a>';
-  var hi=c.querySelector('img');if(hi){hi.loading='eager';hi.setAttribute('fetchpriority','high')}
 }
 function renderTop(feed,hero,latest){
   var c=document.getElementById('topList');
@@ -409,7 +414,7 @@ function renderTop(feed,hero,latest){
       +'<span class="kicker">'+esc(a.category_name||'')+'</span>'
       +'<div class="story-ttl">'+esc(a.title)+'</div>'
       +'<span class="meta">'+when(a)+'</span></div>'
-      +(a.image_url?'<div class="story-img"><img src="'+esc(a.image_url)+'" alt="" width="600" height="400" loading="lazy" decoding="async"></div>':'')
+      +(a.image_url?'<div class="story-img">'+imgTag(a.image_url,[184,276],'92px')+'</div>':'')
       +'</a>';
   }).join('');
 }
@@ -426,7 +431,7 @@ function renderVisual(v){
   var c=document.getElementById('visSec');
   if(!v||!v.image_url){c.style.display='none';return}
   c.style.display='block';
-  c.innerHTML='<a href="'+articleUrl(v.slug)+'" class="vis-card"><img src="'+esc(v.image_url)+'" alt="" width="600" height="400" loading="lazy" decoding="async">'
+  c.innerHTML='<a href="'+articleUrl(v.slug)+'" class="vis-card">'+imgTag(v.image_url,[800,1200,1600],'100vw')
     +'<div class="vis-ov"><span class="kicker">'+esc(v.category_name||'Feature')+'</span>'
     +'<div class="vis-ttl">'+esc(v.title)+'</div>'
     +'<div class="vis-meta">'+esc(v.author||'The Pacific Signal')+' &middot; '+when(v)+'</div></div></a>';
