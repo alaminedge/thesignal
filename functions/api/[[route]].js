@@ -12,7 +12,33 @@ const TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 const MASTER_PHRASE_TTL_MS = 5 * 24 * 60 * 60 * 1000; // 5 days
 const ARCHIVE_AFTER_DAYS = 90; // articles older than this are considered "archived"
 
+// Public read-only endpoints are cached at the edge for 60s (same TTL as their Cache-Control),
+// so most visitors never wait for the multi-query D1 lookups. Everything else bypasses the cache.
 export async function onRequest(context) {
+  var req = context.request;
+  if (req.method === 'GET') {
+    var cu = new URL(req.url);
+    if (cu.pathname === '/api/homepage' || cu.pathname.indexOf('/api/category/') === 0) {
+      var edge = null;
+      try { edge = caches.default; } catch (e) { edge = null; }
+      if (edge) {
+        var cacheKey = new Request(cu.toString(), { method: 'GET' });
+        try {
+          var hit = await edge.match(cacheKey);
+          if (hit) return hit;
+        } catch (e) {}
+        var fresh = await handleApi(context);
+        if (fresh.status === 200) {
+          try { context.waitUntil(edge.put(cacheKey, fresh.clone())); } catch (e) {}
+        }
+        return fresh;
+      }
+    }
+  }
+  return handleApi(context);
+}
+
+async function handleApi(context) {
 
   const { request, env } = context;
 
