@@ -23,22 +23,23 @@
 /* Start the homepage request immediately and preload the lead image the moment its URL is known */
 (function(){
   if(/^\/section\//.test(location.pathname)||/[?&]category=/.test(location.search))return;
+  if(window.__homeData){window.__home=Promise.resolve(window.__homeData);return}  /* data inlined by functions/index.js */
   var p=fetch('/api/homepage?page=1').then(function(r){if(!r.ok)throw 0;return r.json()});
   p.catch(function(){});
   window.__home=p;
   p.then(function(d){
     var h=d.hero||(d.latest&&d.latest[0]);
     if(h&&h.image_url&&/^https?:\/\//i.test(h.image_url)){
-      var P='https://wsrv.nl/?url='+encodeURIComponent(h.image_url)+'&q=72&output=webp&w=',W=[480,800,1200];
-      var l=document.createElement('link');l.rel='preload';l.as='image';l.href=P+'800';
-      l.setAttribute('imagesrcset',W.map(function(w){return P+w+' '+w+'w'}).join(', '));
+      var P=function(w){return 'https://wsrv.nl/?url='+encodeURIComponent(h.image_url)+'&w='+w+'&q=72&output=webp'},W=[480,800,1200];
+      var l=document.createElement('link');l.rel='preload';l.as='image';l.href=P(800);
+      l.setAttribute('imagesrcset',W.map(function(w){return P(w)+' '+w+'w'}).join(', '));
       l.setAttribute('imagesizes','(min-width:1000px) 640px, 100vw');
       l.setAttribute('fetchpriority','high');document.head.appendChild(l);
     }
   }).catch(function(){});
 })();
 </script>
-<link rel="stylesheet" href="/assets/site.css?v=20261105">
+<link rel="stylesheet" href="/assets/site.css?v=20261106">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"The Pacific Signal","url":"https://thepacificsignal.com","description":"Independent news, analysis and explained journalism on the forces shaping our world.","logo":"https://thepacificsignal.com/images/tps.png"}
 </script>
@@ -307,7 +308,7 @@
   </div>
 </div></footer>
 
-<script src="/assets/site.js?v=20261105"></script>
+<script src="/assets/site.js?v=20261106"></script>
 <script>
 var pg=1,secSlug=null,secName='';
 function img(a,eager){return a.image_url?imgTag(a.image_url,[360,600,900],'(min-width:1000px) 300px, (min-width:600px) 33vw, 100vw',{eager:eager}):'<div class="ph">TPS</div>'}
