@@ -13,7 +13,7 @@
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;0,8..60,800;1,8..60,400&display=swap" rel="stylesheet"></noscript>
 <link rel="icon" type="image/png" href="/images/tps-192.png">
 <link rel="apple-touch-icon" href="/images/tps-192.png">
-<link rel="stylesheet" href="/assets/site.css?v=20261104">
+<link rel="stylesheet" href="/assets/site.css?v=20261106">
 <style>
 /* ── ARTICLE LAYOUT ── */
 .art-grid{display:grid;grid-template-columns:minmax(0,760px) 300px;justify-content:center;gap:56px;padding-top:26px;align-items:start}
@@ -221,7 +221,7 @@
   </div>
 </div></footer>
 
-<script src="/assets/site.js?v=20261104"></script>
+<script src="/assets/site.js?v=20261106"></script>
 <script>
 var ARTICLE_URL='';
 
@@ -349,7 +349,7 @@ function renderArticle(a){
   if(a.excerpt)h+='<p class="art-dek">'+esc(a.excerpt)+'</p>';
   h+='<div class="art-by"><div class="by-l"><span class="by-name">By '+esc(a.author||'The Pacific Signal')+'</span>'
     +'<time datetime="'+esc(pub||'')+'">'+fmtDate(pub)+', '+fmtTime(pub)+'</time> &middot; '+rt+' min read'+upd+'</div>'+shareHtml(a)+'</div>';
-  if(a.image_url)h+='<figure class="art-fig"><img src="'+esc(a.image_url)+'" alt="'+esc(a.title)+'" fetchpriority="high" decoding="async"></figure>';
+  if(a.image_url)h+='<figure class="art-fig">'+imgTag(a.image_url,[480,800,1200],'(min-width:1000px) 760px, 100vw',{eager:true,alt:a.title,noDims:true})+'</figure>';
   h+='<div class="art-body" id="artBody">'+renderContent(a.content)+'</div>';
   h+='<div class="art-foot"><span class="lbl">Share this story</span>'+shareHtml(a)+'</div>';
   document.getElementById('artCol').innerHTML=h;
@@ -365,7 +365,7 @@ function renderRelated(rel,a){
   document.getElementById('moreTtl').textContent=a.category_name?'More from '+a.category_name:'More from The Pacific Signal';
   document.getElementById('relGrid').innerHTML=rel.slice(0,4).map(function(x){
     return '<a href="'+articleUrl(x.slug)+'" class="rc"><div class="rc-img">'
-      +(x.image_url?'<img src="'+esc(x.image_url)+'" alt="" loading="lazy" decoding="async">':'<div class="ph">TPS</div>')+'</div>'
+      +(x.image_url?imgTag(x.image_url,[320,480,720],'(min-width:1000px) 280px, (min-width:600px) 50vw, 100vw',{noDims:true}):'<div class="ph">TPS</div>')+'</div>'
       +'<span class="kicker">'+esc(x.category_name||'')+'</span>'
       +'<div class="rc-ttl">'+esc(x.title)+'</div>'
       +'<span class="meta">'+timeAgo(x.published_at||x.created_at)+'</span></a>';
