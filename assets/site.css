@@ -97,7 +97,8 @@ button{font-family:inherit;cursor:pointer}
 .fp-menu.on{display:flex}
 .fp-head{display:flex;align-items:center;justify-content:space-between;padding:14px var(--g);border-bottom:1px solid var(--rule)}
 .fp-head .logo-name{font-size:1.4rem}
-.fp-close{background:none;border:none;color:var(--ink);font-size:1.3rem;padding:8px}
+.fp-head{justify-content:flex-start;gap:8px}
+.fp-close{order:-1;background:none;border:none;color:var(--ink);font-size:1.3rem;line-height:1;padding:9px;width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;border-radius:3px}
 .fp-body{flex:1;max-width:var(--max);width:100%;margin:0 auto;padding:30px var(--g);display:grid;grid-template-columns:1fr 1fr;gap:44px;align-content:start}
 .fp-ttl{font:700 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);padding-bottom:10px;border-bottom:2px solid var(--strong);margin-bottom:4px}
 .fp-link{display:block;font:700 1.12rem var(--serif);padding:11px 0;border-bottom:1px solid var(--rule)}
@@ -140,14 +141,17 @@ button{font-family:inherit;cursor:pointer}
 
 /* ── RESPONSIVE (shared) ── */
 @media(max-width:860px){
-  /* Phone header: logo + name on the LEFT, search + menu icons on the RIGHT */
-  .mast .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:8px}
+  /* Phone header (CNN style): Menu on the LEFT, logo next to it, Search on the RIGHT */
+  .mast .wrap{display:flex;align-items:center;justify-content:flex-start;height:64px;gap:8px}
+  .mast-l{display:contents}
+  .mast-l .icon-btn[aria-label="Open menu"]{order:0;margin-left:-9px}
   .mast .logo{order:1;justify-content:flex-start;min-width:0;flex:1 1 auto}
+  .mast-l .icon-btn[aria-label="Search"]{order:2;margin-right:-9px}
   .mast .logo-t{min-width:0}
   .mast .logo-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .mast-l{order:2;flex:0 0 auto;gap:2px;margin-right:-9px}
-  .mast-l .icon-btn[aria-label="Search"]{order:1}
-  .mast-l .icon-btn[aria-label="Open menu"]{order:2}
+  /* Open-menu header: same height/padding so the X sits exactly where the bars were */
+  .fp-head{height:64px;padding-top:0;padding-bottom:0}
+  .fp-close{margin-left:-9px}
   .mast-r{display:none}
   .logo img{height:34px}
   .logo-name{font-size:1.35rem}
