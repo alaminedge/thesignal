@@ -4,4 +4,4 @@ Disallow: /admin.html
 Disallow: /signin.html
 Disallow: /api/admin/
 
-Sitemap: https://thepacificsignal.com/sitemap.xml
+Sitemap: https://thepacificsignal.pages.dev/sitemap.xml
