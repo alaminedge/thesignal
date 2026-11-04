@@ -167,6 +167,9 @@ button{font-family:inherit;cursor:pointer}
 @media(max-width:560px){
   body{font-size:16px}
   .ft-top{grid-template-columns:1fr}
+  .ft-top>*{min-width:0}
+  .ft-brand .logo{max-width:100%}
+  .ft-brand .logo-name{font-size:1.25rem}
   .logo{gap:8px}
   .logo img{height:30px}
   .logo-name{font-size:1.1rem}
