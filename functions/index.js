@@ -20,11 +20,21 @@ export async function onRequestGet(context) {
   var env = context.env;
   var url = new URL(context.request.url);
 
+  // Legacy ?category= links are handled client-side: serve the plain static page
+  if (url.searchParams.get('category')) return env.ASSETS.fetch(context.request);
+
+  // Edge cache (60s), same approach as the API: most visitors get the finished HTML instantly
+  var edge = null, cacheKey = null;
+  try {
+    edge = caches.default;
+    cacheKey = new Request(url.origin + '/', { method: 'GET' });
+    var hit = await edge.match(cacheKey);
+    if (hit) return hit;
+  } catch (e) { edge = null; }
+
   // Static shell (index.html) — fetched as "/" so Pages doesn't redirect
   var shell = await env.ASSETS.fetch(context.request);
-
-  // Legacy ?category= links are handled client-side; leave them alone
-  if (url.searchParams.get('category') || shell.status !== 200) return shell;
+  if (shell.status !== 200) return shell;
 
   var data = null;
   try {
@@ -50,7 +60,12 @@ export async function onRequestGet(context) {
   headers.set('Cache-Control', 'public, max-age=0, s-maxage=60');
 
   // Insert after the viewport meta so <meta charset> stays within the first 1024 bytes
-  return new HTMLRewriter()
+  var out = new HTMLRewriter()
     .on('meta[name="viewport"]', { element: function (el) { el.after(html, { html: true }); } })
     .transform(new Response(shell.body, { status: 200, headers: headers }));
+
+  if (edge && cacheKey) {
+    try { context.waitUntil(edge.put(cacheKey, out.clone())); } catch (e) {}
+  }
+  return out;
 }
